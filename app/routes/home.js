@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import styled from "styled-components/native";
 import { AppRegistry, StyleSheet, Text, View } from "react-native";
 
-import Iota from "../libs/iota";
-
 export default class HomeScreen extends Component {
+  static navigationOptions = {
+    header: null
+  };
   render() {
     return (
       <View>
