@@ -1,23 +1,35 @@
 import IOTA from "iota.lib.js";
 
 const iota = new IOTA({
-  provider: "http://localhost:14265"
+  provider: "http://service.iotasupport.com:14265"
 });
 
-const iotaWrapper = props => {
-  this.provider = props.provider;
-};
+export default class iotaWrapper {
+  static node = () => {
+    iota.api.getNodeInfo(function(event) {
+      console.log(event);
+      return event;
+    });
+  };
 
-console.log(
-  iota.api.getNodeInfo(function(error, success) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(success);
-    }
-  })
-);
+  static getAccount = seed => {
+    console.log(seed);
+    iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(event) {
+      console.log(event);
+      return;
+    });
+  };
 
-console.log(iota.version);
+  static newAddress = seed => {
+    iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(event) {
+      console.log(event);
+      return;
+    });
+  };
 
-export default props => iotaWrapper;
+  static toTrytes = data => {
+    console.log(data);
+    console.log(iota.utils.toTrytes(data));
+    return iota.utils.toTrytes(data);
+  };
+}
