@@ -1,15 +1,16 @@
 import React from "react";
 import styled from "styled-components/native";
 import { AppRegistry, StyleSheet, Text, View, TextInput } from "react-native";
-import Iota from "../../libs/iota";
+import Iota, { Valid } from "../../libs/iota";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: "Enter Seed / Password" };
+    this.state = { text: "" };
   }
 
   getAccount(seed) {
+    Iota.node();
     Iota.getAccount(seed);
     this.props.navigation.navigate("Home");
   }
@@ -20,6 +21,11 @@ export default class LoginForm extends React.Component {
           <BottomBorder>
             <TInput
               value={this.state.text}
+              placeholder={"Enter Password"}
+              autoCorrect={false}
+              secureTextEntry={true}
+              placeholderTextColor={"white"}
+              selectTextOnFocus={true}
               onChangeText={text => this.setState({ text })}
               onFocus={() => this.setState({ text: "" })}
             />
