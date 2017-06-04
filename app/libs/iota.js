@@ -1,29 +1,64 @@
 import IOTA from "iota.lib.js";
 
 const iota = new IOTA({
-  provider: "http://service.iotasupport.com:14265"
+  provider: "http://node.iotawallet.info:14265/"
 });
 
 export default class iotaWrapper {
   static node = () => {
-    iota.api.getNodeInfo(function(event) {
-      console.log(event);
-      return event;
+    iota.api.getNodeInfo(function(error, success) {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(success);
+      }
     });
   };
 
   static getAccount = seed => {
     console.log(seed);
-    iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(event) {
-      console.log(event);
-      return;
+    iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(
+      error,
+      success
+    ) {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(success);
+        var transfers = [
+          {
+            address: success.latestAddress,
+            value: 0
+          }
+        ];
+        iotaWrapper.send(seed, 6, 13, transfers);
+      }
     });
   };
 
   static newAddress = seed => {
-    iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(event) {
-      console.log(event);
-      return;
+    iota.api.getNewAddress(iotaWrapper.toTrytes(seed), function(
+      error,
+      success
+    ) {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(success);
+      }
+    });
+  };
+
+  static send = (seed, depth, minMag, transfers) => {
+    iota.api.sendTransfer(seed, depth, minMag, transfers, function(
+      error,
+      success
+    ) {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(success);
+      }
     });
   };
 
@@ -31,5 +66,15 @@ export default class iotaWrapper {
     console.log(data);
     console.log(iota.utils.toTrytes(data));
     return iota.utils.toTrytes(data);
+  };
+}
+
+export class Valid {
+  static isAddress = data => {
+    return iota.valid.isAddress(data);
+  };
+
+  static isTrytes = data => {
+    return iota.valid.isTrytes(data);
   };
 }
