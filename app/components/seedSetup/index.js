@@ -22,7 +22,11 @@ export default class LoginForm extends React.Component {
     if (this.state.first === this.state.second) {
       console.log("Initialising Seed");
       await InitialiseSeed(seed, password);
-      //   console.log(await OpenBox("seed", password));
+      const clearSeed = await OpenBox("seed", password);
+      Iota.getAccount(clearSeed);
+
+      this.setState({ seed: "", first: "", second: "" });
+      this.props.navigation.navigate("Home");
     } else {
       alert("Your passwords didn't match");
       this.setState({ first: "", second: "" });
