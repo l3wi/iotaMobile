@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import Iota from "../../libs/iota";
-import randomSeed from "../../libs/crypto";
+import { randSeed } from "../../libs/crypto";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -40,7 +40,7 @@ export default class LoginForm extends React.Component {
             <ImageButton source={require("../../assets/scan.png")} />
           </Button>
         </Row>
-        <Button onPress={() => this.setState({ seed: randomSeed(81) })}>
+        <Button onPress={() => this.setState({ seed: randSeed(81) })}>
           <AppText>Click to generate a seed</AppText>
         </Button>
       </Col>
