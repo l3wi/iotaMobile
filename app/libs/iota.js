@@ -24,30 +24,32 @@ export default class iotaWrapper {
         console.error(error);
       } else {
         console.log(success);
+        iotaWrapper.newAddress(seed);
         return success;
-        // var transfers = [
-        //   {
-        //     address: success.latestAddress,
-        //     value: 0,
-        //     tag: iotaWrapper.toTrytes("iOSWALLET")
-        //   }
-        // ];
-        // iotaWrapper.send(seed, 6, 13, transfers);
       }
     });
   };
 
   static newAddress = seed => {
-    iota.api.getNewAddress(iotaWrapper.toTrytes(seed), function(
-      error,
-      success
-    ) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(success);
+    iota.api.getNewAddress(
+      iotaWrapper.toTrytes(seed),
+      { checksum: true },
+      function(error, success) {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(success);
+          var transfers = [
+            {
+              address: success,
+              value: 0,
+              tag: iotaWrapper.toTrytes("iOSWALLET")
+            }
+          ];
+          iotaWrapper.send(seed, 6, 18, transfers);
+        }
       }
-    });
+    );
   };
 
   static send = (seed, depth, minMag, transfers) => {
