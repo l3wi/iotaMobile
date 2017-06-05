@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import Iota from "../../libs/iota";
-import { InitialiseSeed, OpenBox, randSeed } from "../../libs/crypto";
+import { InitialiseSeed, OpenBox } from "../../libs/crypto";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -33,10 +33,6 @@ export default class LoginForm extends React.Component {
     }
   };
 
-  getAccount(seed) {
-    Iota.getAccount(seed);
-    this.props.navigation.navigate("Home");
-  }
   render() {
     return (
       <Col>
@@ -57,9 +53,6 @@ export default class LoginForm extends React.Component {
             </Button>*/}
           </Row>
           <Button onPress={() => this.setState({ seed: randSeed(81) })}>
-            <AppText>Click to generate a seed</AppText>
-          </Button>
-          <Button onPress={() => this.getAccount(randSeed(81))}>
             <AppText>Click to generate a seed</AppText>
           </Button>
         </EmptyCol>
