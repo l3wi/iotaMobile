@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components/native";
 import LoginForm from "../components/login";
+import SeedSetup from "../components/seedSetup";
 
 export default class InitialScreen extends Component {
   static navigationOptions = {
@@ -11,9 +12,10 @@ export default class InitialScreen extends Component {
     const { navigate } = this.props.navigation;
     return (
       <Wrapper>
-        <LoginForm {...this.props} />
-        <Row>
+        <AppText>IOTA Mobile Wallet</AppText>
+        {false ? <LoginForm {...this.props} /> : <SeedSetup {...this.props} />}
 
+        <Row>
           <AppText>
             ver 0.0.1
           </AppText>
@@ -26,9 +28,10 @@ export default class InitialScreen extends Component {
 const Wrapper = styled.View`
     height: 100%;
     display:flex;
+    align-items: center;
     justify-content: space-between;
     background: #004f71;
-    padding: 30% 10px 20%;
+    padding: 20px 20px;
 `;
 
 const Row = styled.View`
