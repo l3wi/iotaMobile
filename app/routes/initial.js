@@ -2,26 +2,49 @@ import React, { Component } from "react";
 import styled from "styled-components/native";
 import LoginForm from "../components/login";
 import SeedSetup from "../components/seedSetup";
+import { RetrieveBox, DeleteBox } from "../libs/crypto";
 
 export default class InitialScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      box: false
+    };
+  }
   static navigationOptions = {
     header: null
   };
 
+  componentDidMount() {
+    console.log("Component Mounted");
+    RetrieveBox("seed").then(box => {
+      this.setState({ loading: false, box: box });
+    });
+  }
+
+  getBox = async () => {
+    const box = await RetrieveBox("seed");
+    return true;
+  };
+
   render() {
-    const { navigate } = this.props.navigation;
+    const { box } = this.state;
+    if (!this.state.loading) {
+      return (
+        <Wrapper>
+          <AppText>IOTA Mobile Wallet</AppText>
+          {box ? <LoginForm {...this.props} /> : <SeedSetup {...this.props} />}
+
+          <Row />
+
+        </Wrapper>
+      );
+    }
     return (
-      <Wrapper>
-        <AppText>IOTA Mobile Wallet</AppText>
-        {false ? <LoginForm {...this.props} /> : <SeedSetup {...this.props} />}
-
-        <Row>
-          <AppText>
-            ver 0.0.1
-          </AppText>
-        </Row>
-
-      </Wrapper>
+      <AppText>
+        Loading
+      </AppText>
     );
   }
 }
