@@ -4,7 +4,6 @@ import Iota, { Valid } from "./iota";
 import CryptoJS from "crypto-js";
 import { TextEncoder, TextDecoder } from "text-encoding";
 import * as Keychain from "react-native-keychain";
-import { AsyncStorage } from "react-native";
 
 ///////////////////////////////////////////////////
 //
@@ -18,12 +17,7 @@ import { AsyncStorage } from "react-native";
 
 export const InitialiseSeed = async (seed, password) => {
   if (!Valid.isTrytes(seed)) return [false, "Please enter valid seed."];
-  await GenBox(seed, password);
-  Iota.getAccount(await OpenBox("seed", password), function(error, success) {
-    if (success) {
-      console.log(success);
-    }
-  });
+  return await GenBox(seed, password);
 };
 
 //Generate Secret Box for storing the seed
@@ -42,48 +36,47 @@ export const GenBox = async (seed, pwd) => {
 
 // Store Secret Box in keychain under hashed password
 export const SaveBox = async (type, box) => {
-  await AsyncStorage.setItem(type, JSON.stringify(box), err => {
-    if (err) return false;
+  await Keychain.setInternetCredentials(
+    type,
+    box.nonce,
+    box.box
+  ).then(function() {
+    console.log("Credentials saved successfully!");
     return true;
   });
-  // Keychain.setInternetCredentials(type, nonce, passboxword).then(function() {
-  //   console.log("Credentials saved successfully!");
-  //   return true;
-  // });
-};
-
-// Use password to open Secret Box
-export const OpenBox = async (type, pwd) => {
-  const BoxObj = JSON.parse(await RetrieveBox(type));
-  return uintToS(
-    await nacl.secretbox.open(
-      encUtils.decodeBase64(BoxObj.box),
-      encUtils.decodeBase64(BoxObj.nonce),
-      wordToArray(CryptoJS.SHA256(pwd))
-    )
-  );
 };
 
 // Retrieve Secret Box & Nonce from keychain
 export const RetrieveBox = async type => {
-  try {
-    const value = await AsyncStorage.getItem(type);
-    if (value !== null) {
-      return value;
-    }
-  } catch (error) {
-    // Error retrieving data
-  }
+  const box = await Keychain.getInternetCredentials(type)
+    .then(function(credentials) {
+      if (!credentials) return false;
+      return credentials;
+    })
+    .catch(function(error) {
+      console.log("Keychain couldn't be accessed! Maybe no value set?", error);
+      return false;
+    });
+  return box;
+};
 
-  // Keychain.getGenericPassword()
-  //   .then(function(credentials) {
-  //     console.log(
-  //       "Credentials successfully loaded for user " + credentials.username
-  //     );
-  //   })
-  //   .catch(function(error) {
-  //     console.log("Keychain couldn't be accessed! Maybe no value set?", error);
-  //   });
+// Use password to open Secret Box
+export const OpenBox = async (type, pwd) => {
+  const EncBox = await RetrieveBox(type);
+  const box = await nacl.secretbox.open(
+    encUtils.decodeBase64(EncBox.password),
+    encUtils.decodeBase64(EncBox.username),
+    wordToArray(CryptoJS.SHA256(pwd))
+  );
+  if (!box) return false;
+  return uintToS(box);
+};
+
+// Delete Secret Box & Nonce from keychain
+export const DeleteBox = type => {
+  Keychain.resetInternetCredentials(type).then(function() {
+    console.log("Credentials successfully deleted");
+  });
 };
 
 // Generate crypto quality seed
