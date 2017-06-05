@@ -15,8 +15,7 @@ export default class iotaWrapper {
     });
   };
 
-  static getAccount = seed => {
-    console.log(seed);
+  static getAccount = async seed => {
     iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(
       error,
       success
@@ -25,13 +24,15 @@ export default class iotaWrapper {
         console.error(error);
       } else {
         console.log(success);
-        var transfers = [
-          {
-            address: success.latestAddress,
-            value: 0
-          }
-        ];
-        iotaWrapper.send(seed, 6, 13, transfers);
+        return success;
+        // var transfers = [
+        //   {
+        //     address: success.latestAddress,
+        //     value: 0,
+        //     tag: iotaWrapper.toTrytes("iOSWALLET")
+        //   }
+        // ];
+        // iotaWrapper.send(seed, 6, 13, transfers);
       }
     });
   };
@@ -63,8 +64,6 @@ export default class iotaWrapper {
   };
 
   static toTrytes = data => {
-    console.log(data);
-    console.log(iota.utils.toTrytes(data));
     return iota.utils.toTrytes(data);
   };
 }
