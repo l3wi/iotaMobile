@@ -31,6 +31,7 @@ As specificed in the bounty it will have the following functions:
       - [x] Get latest confirmed balance
       - [x] Display all pending transfers
 - [x] Generate New Address
+      - [x] Show QR code for that
 
 
 - [ ] Settings
