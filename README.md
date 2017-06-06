@@ -31,7 +31,6 @@ As specificed in the bounty it will have the following functions:
       - [x] Get latest confirmed balance
       - [x] Display all pending transfers
 - [x] Generate New Address
-      - [ ] Show as qr code - V0.2
 
 
 - [ ] Settings
@@ -39,7 +38,6 @@ As specificed in the bounty it will have the following functions:
 - [ ] Security
       - [x] Integrate into Native Keystores
       - [x] Encrypt seed in secure box
-      - [ ] Remember Me - V0.2
       - [ ] Destory memory on Background
 
 ### License
