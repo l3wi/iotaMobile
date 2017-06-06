@@ -17,7 +17,6 @@ export default class InitialScreen extends Component {
   };
 
   componentDidMount() {
-    console.log("Component Mounted");
     RetrieveBox("seed").then(box => {
       this.setState({ loading: false, box: box });
     });
