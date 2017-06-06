@@ -16,23 +16,31 @@ Security of the seed while the app is in active use will be handled by the audit
 - [react-native-keychain](https://github.com/oblador/react-native-keychain) - A native wrapper for iOS's Keychain & Android's SharedPreferences
 - [Styled Components](https://github.com/styled-components/styled-components) - A styling library so the app doesn't look crap.
 
-### Features
+### Features - V0.1
 
 As specificed in the bounty it will have the following functions:
 
-- Seed
-  - Generate Seed
-  - Hydrate a pre-exisiting seed
-- Send Transfer
-  - Specify amount
-  - Specify address
-  - Attach to tangle - On compatible nodes
-- Receive Transfer
-  - Get latest confirmed balance
-  - Display all pending transfers
-- Generate New Address
-- Settings
-  - Change node address
+- [x] Seed
+      - [x] Generate Seed
+      - [x] Hydrate a pre-exisiting seed
+- [x] Send Transfer
+      - [ ] Specify amount
+      - [ ] Specify address
+      - [x] Attach to tangle
+- [ ] Receive Transfer
+      - [x] Get latest confirmed balance
+      - [x] Display all pending transfers
+- [x] Generate New Address
+      - [ ] Show as qr code - V0.2
+
+
+- [ ] Settings
+      - [ ] Change node address
+- [ ] Security
+      - [x] Integrate into Native Keystores
+      - [x] Encrypt seed in secure box
+      - [ ] Remember Me - V0.2
+      - [ ] Destory memory on Background
 
 ### License
 
