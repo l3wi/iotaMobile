@@ -15,61 +15,71 @@ export default class iotaWrapper {
     });
   };
 
-  static getAccount = async seed => {
+  static getAccount = seed => {
     console.log("Getting Account");
-    iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(
-      error,
-      success
-    ) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(success);
-        iotaWrapper.newAddress(seed);
-        return success;
-      }
+    var p = new Promise((res, rej) => {
+      iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(
+        error,
+        success
+      ) {
+        if (error) {
+          console.error(error);
+          rej(error);
+        } else {
+          console.log(success);
+          res(success);
+        }
+      });
     });
+    return p;
   };
 
   static newAddress = seed => {
     console.log("Generating New Address");
-    iota.api.getNewAddress(
-      iotaWrapper.toTrytes(seed),
-      { checksum: true },
-      function(error, success) {
-        if (error) {
-          console.error(error);
-        } else {
-          console.log(success);
-          var transfers = [
-            {
-              address: success,
-              value: 0,
-              tag: iotaWrapper.toTrytes("iOSWALLET")
-            }
-          ];
-          iotaWrapper.send(seed, 6, 18, transfers);
+    var p = new Promise((res, rej) => {
+      iota.api.getNewAddress(
+        iotaWrapper.toTrytes(seed),
+        { checksum: true },
+        function(error, success) {
+          if (error) {
+            console.error(error);
+            rej(error);
+          } else {
+            console.log(success);
+            res(success);
+          }
         }
-      }
-    );
+      );
+    });
+
+    return p;
   };
 
   static send = (seed, depth, minMag, transfers) => {
     console.log("Sending Transaction");
-    iota.api.sendTransfer(seed, depth, minMag, transfers, function(
-      error,
-      success
-    ) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(success);
-      }
+    var p = new Promise((res, rej) => {
+      iota.api.sendTransfer(seed, depth, minMag, transfers, function(
+        error,
+        success
+      ) {
+        if (error) {
+          console.error(error);
+          rej(error);
+        } else {
+          console.log(success);
+          res(success);
+        }
+      });
     });
+    return p;
   };
 
   static toTrytes = data => {
     return iota.utils.toTrytes(data);
+  };
+
+  static categorizeTransfers = (transfers, addresses) => {
+    return iota.utils.categorizeTransfers(transfers, addresses);
   };
 }
 
