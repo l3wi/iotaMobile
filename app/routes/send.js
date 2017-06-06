@@ -4,14 +4,13 @@ import { AppRegistry, StyleSheet, Text, View } from "react-native";
 
 import Balance from "../components/balance";
 
-export default class HomeScreen extends Component {
+export default class SendScreen extends Component {
   static navigationOptions = {};
   render() {
     return (
       <Wrapper>
-        <Balance {...this.props} />
         <Text>
-          Home Page
+          Send
         </Text>
       </Wrapper>
     );

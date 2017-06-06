@@ -16,6 +16,7 @@ export default class iotaWrapper {
   };
 
   static getAccount = async seed => {
+    console.log("Getting Account");
     iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(
       error,
       success
@@ -31,6 +32,7 @@ export default class iotaWrapper {
   };
 
   static newAddress = seed => {
+    console.log("Generating New Address");
     iota.api.getNewAddress(
       iotaWrapper.toTrytes(seed),
       { checksum: true },
@@ -53,6 +55,7 @@ export default class iotaWrapper {
   };
 
   static send = (seed, depth, minMag, transfers) => {
+    console.log("Sending Transaction");
     iota.api.sendTransfer(seed, depth, minMag, transfers, function(
       error,
       success

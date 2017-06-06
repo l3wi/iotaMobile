@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { AppRegistry, StyleSheet, Text, View, TextInput } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
 import { OpenBox, SaveBox, DeleteBox } from "../../libs/crypto";
+import { NavigationActions } from "react-navigation";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -10,12 +11,17 @@ export default class LoginForm extends React.Component {
     this.state = { pass: "" };
   }
 
+  resetAction = NavigationActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: "Main" })]
+  });
+
   getAccount = async (seed, password) => {
     const clearSeed = await OpenBox("seed", password);
     this.setState({ pass: "" });
     if (!clearSeed) return alert("Incorrect Password");
     Iota.getAccount(clearSeed).then(box => {
-      console.log(box);
+      this.props.navigation.dispatch(this.resetAction);
     });
   };
   render() {
