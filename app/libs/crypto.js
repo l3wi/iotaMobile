@@ -23,11 +23,7 @@ export const InitialiseSeed = async (seed, password) => {
 //Generate Secret Box for storing the seed
 export const GenBox = async (seed, pwd) => {
   const nonce = await nacl.randomBytes(24);
-  const box = await nacl.secretbox(
-    stringToU8(seed),
-    nonce,
-    wordToArray(CryptoJS.SHA256(pwd))
-  );
+  const box = await nacl.secretbox(stringToU8(seed), nonce, pwd);
   return await SaveBox("seed", {
     nonce: encUtils.encodeBase64(nonce),
     box: encUtils.encodeBase64(box)
@@ -66,7 +62,7 @@ export const OpenBox = async (type, pwd) => {
   const box = await nacl.secretbox.open(
     encUtils.decodeBase64(EncBox.password),
     encUtils.decodeBase64(EncBox.username),
-    wordToArray(CryptoJS.SHA256(pwd))
+    pwd
   );
   if (!box) return false;
   return uintToS(box);
@@ -99,6 +95,9 @@ export const randSeed = length => {
 //////////////////////////
 // Helpers
 //Word Array to Uint8Array
+export const hashPwd = pwd => {
+  return wordToArray(CryptoJS.SHA256(pwd));
+};
 const wordToArray = wordArray => {
   // Shortcuts
   var words = wordArray.words;
