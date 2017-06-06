@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ScrollView, Dimensions, KeyboardAvoidingView } from "react-native";
 import styled from "styled-components/native";
 import LoginForm from "../components/login";
 import SeedSetup from "../components/seedSetup";
@@ -31,15 +32,18 @@ export default class InitialScreen extends Component {
     const { box } = this.state;
     if (!this.state.loading) {
       return (
-        <Wrapper>
-          <AppText>IOTA iOS</AppText>
-          {box
-            ? <LoginForm {...this.props} clear={this.clearBox} />
-            : <SeedSetup {...this.props} />}
+        <KeyboardAvoidingView behavior={"position"}>
+          <ScrollView>
+            <Wrapper>
+              <AppText>IOTA iOS</AppText>
+              {box
+                ? <LoginForm {...this.props} clear={this.clearBox} />
+                : <SeedSetup {...this.props} />}
 
-          <Row />
-
-        </Wrapper>
+              <Row />
+            </Wrapper>
+          </ScrollView>
+        </KeyboardAvoidingView>
       );
     }
     return (
@@ -49,8 +53,10 @@ export default class InitialScreen extends Component {
     );
   }
 }
+var { height, width } = Dimensions.get("window");
+
 const Wrapper = styled.View`
-    height: 100%;
+    height:${height + "px"};
     display:flex;
     align-items: center;
     justify-content: space-between;

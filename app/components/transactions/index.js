@@ -17,7 +17,7 @@ export default class LoginForm extends React.Component {
   }
 
   render() {
-    var account = this.props.account;
+    var { account } = this.props.account;
     return (
       <FlatList
         data={account.transfers}

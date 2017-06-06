@@ -10,11 +10,10 @@ export default class HomeScreen extends Component {
   render() {
     console.log(this.props);
     var { account } = this.props.screenProps.state;
-
     return (
       <Wrapper>
         <Balance account={account} {...this.props} />
-        {!this.props.screenProps.state.account.addresses
+        {!account.transfers[0]
           ? <Transactions account={account} />
           : <PaddedBox>
               <Text>Looks like this is your first time!</Text>
