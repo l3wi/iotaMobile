@@ -32,24 +32,23 @@ export default class InitialScreen extends Component {
     const { box } = this.state;
     if (!this.state.loading) {
       return (
-        <KeyboardAvoidingView behavior={"position"}>
-          <ScrollView>
-            <Wrapper>
-              <AppText>IOTA iOS</AppText>
-              {box
-                ? <LoginForm {...this.props} clear={this.clearBox} />
-                : <SeedSetup {...this.props} />}
+        <ScrollView>
+          <Wrapper>
+            <AppText>IOTA iOS</AppText>
+            {box
+              ? <LoginForm {...this.props} clear={this.clearBox} />
+              : <SeedSetup {...this.props} />}
 
-              <Row />
-            </Wrapper>
-          </ScrollView>
-        </KeyboardAvoidingView>
+          </Wrapper>
+        </ScrollView>
       );
     }
     return (
-      <AppText>
-        Loading
-      </AppText>
+      <Wrapper>
+        <AppText>
+          Loading
+        </AppText>
+      </Wrapper>
     );
   }
 }
@@ -59,7 +58,7 @@ const Wrapper = styled.View`
     height:${height + "px"};
     display:flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     background: #004f71;
     padding: 20px 20px;
 `;
