@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import { AppRegistry, StyleSheet, Text, View, TextInput } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
-import { OpenBox, SaveBox, DeleteBox } from "../../libs/crypto";
+import { OpenBox, SaveBox, DeleteBox, hashPwd } from "../../libs/crypto";
 import { NavigationActions } from "react-navigation";
 
 export default class LoginForm extends React.Component {
@@ -11,19 +11,33 @@ export default class LoginForm extends React.Component {
     this.state = { pass: "" };
   }
 
-  resetAction = NavigationActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({ routeName: "Main" })]
-  });
+  nextRoute = (account, pass) => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: "Main",
+          params: { account: account, pwd: pass }
+        })
+      ]
+    });
+    this.props.navigation.dispatch(resetAction);
+  };
 
   getAccount = async (seed, password) => {
-    const clearSeed = await OpenBox("seed", password);
+    const passHash = hashPwd(password);
+    // Decrypt Seed
+    const clearSeed = await OpenBox("seed", passHash);
     this.setState({ pass: "" });
     if (!clearSeed) return alert("Incorrect Password");
-    Iota.getAccount(clearSeed).then(box => {
-      this.props.navigation.dispatch(this.resetAction);
-    });
+    // Get account
+    const account = await Iota.getAccount(clearSeed);
+    if (!account) return alert("Couldn't fetch wallet");
+    // this.setState({ account });
+    // Push to new page
+    this.nextRoute(account, passHash);
   };
+
   render() {
     return (
       <Col>
@@ -50,7 +64,7 @@ export default class LoginForm extends React.Component {
           </Row>
         </EmptyCol>
 
-        <Button onPress={() => DeleteBox("seed")}>
+        <Button onPress={this.props.clear}>
           <AppText>Load New Wallet</AppText>
         </Button>
       </Col>
@@ -86,7 +100,6 @@ const TInput = styled.TextInput`
     height: 40px;
     width: 100%;
     color: white;
-    font-family: courier;
     text-align: center;
     border-bottom-width: 3px;
     border-bottom-color: white;    
@@ -94,7 +107,6 @@ const TInput = styled.TextInput`
 
 const AppText = styled.Text`
     color: white;
-    font-family: courier;
 `;
 
 const Button = styled.TouchableOpacity`

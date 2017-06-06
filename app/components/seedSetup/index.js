@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import Iota from "../../libs/iota";
-import { InitialiseSeed, OpenBox, randSeed } from "../../libs/crypto";
+import { InitialiseSeed, OpenBox, randSeed, hashPwd } from "../../libs/crypto";
 import { NavigationActions } from "react-navigation";
 
 export default class LoginForm extends React.Component {
@@ -19,19 +19,31 @@ export default class LoginForm extends React.Component {
     this.state = { seed: "", first: "", second: "" };
   }
 
-  resetAction = NavigationActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({ routeName: "Main" })]
-  });
+  nextRoute = (account, pass) => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: "Main",
+          params: { account: account, pwd: pass }
+        })
+      ]
+    });
+    this.props.navigation.dispatch(resetAction);
+  };
 
   setup = async (seed, password) => {
     if (this.state.first === this.state.second) {
+      // Setup Bool for this
+      const passHash = hashPwd(password);
       console.log("Initialising Seed");
-      await InitialiseSeed(seed, password);
-      const clearSeed = await OpenBox("seed", password);
-      Iota.getAccount(clearSeed);
+      await InitialiseSeed(seed, passHash);
+      const clearSeed = await OpenBox("seed", passHash);
+      const account = await Iota.getAccount(clearSeed);
+      if (!account) return alert("Couldn't fetch wallet");
       this.setState({ seed: "", first: "", second: "" });
-      this.props.navigation.dispatch(this.resetAction);
+      // Push to new page
+      this.nextRoute(account, passHash);
     } else {
       alert("Your passwords didn't match");
       this.setState({ first: "", second: "" });
@@ -125,7 +137,6 @@ const BottomBorder = styled.View`
 const TInput = styled.TextInput`
     height: 40px;
     color: white;
-    font-family: courier;
     text-align: center;
     border-bottom-width: 3px;
     border-bottom-color: white;    
@@ -133,7 +144,6 @@ const TInput = styled.TextInput`
 
 const AppText = styled.Text`
     color: white;
-    font-family: courier;
 `;
 
 const ImageButton = styled.Image`
