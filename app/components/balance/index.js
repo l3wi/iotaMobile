@@ -1,6 +1,13 @@
 import React from "react";
 import styled from "styled-components/native";
-import { AppRegistry, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity
+} from "react-native";
 import Iota, { Valid } from "../../libs/iota";
 
 export default class LoginForm extends React.Component {
@@ -9,20 +16,20 @@ export default class LoginForm extends React.Component {
     this.state = { text: "Enter Password" };
   }
 
-  getAccount(seed) {
-    Iota.node();
-    Iota.getAccount(seed);
-    this.props.navigation.navigate("Home");
-  }
   render() {
     return (
       <Wrapper>
-        <View />
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("DrawerOpen")}
+        >
+          <Text>
+            Menu
+          </Text>
+        </TouchableOpacity>
         <Row>
-          <Heading>1020</Heading>
+          <Heading>120</Heading>
           <SubHeading>ti</SubHeading>
         </Row>
-
       </Wrapper>
     );
   }
