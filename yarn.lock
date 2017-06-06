@@ -1208,6 +1208,10 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+date-fns@^1.28.5:
+  version "1.28.5"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.28.5.tgz#257cfc45d322df45ef5658665967ee841cd73faf"
+
 dateformat@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-2.0.0.tgz#2743e3abb5c3fc2462e527dca445e04e9f4dee17"
@@ -4024,6 +4028,10 @@ y18n@^3.2.1:
 yallist@^2.0.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.1.2.tgz#1c11f9218f076089a47dd512f93c6699a6a81d52"
+
+yaqrcode@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/yaqrcode/-/yaqrcode-0.2.1.tgz#ef1cb3320349f6b3bb31cb680a37a8b814bd8ad7"
 
 yargs-parser@^4.2.0:
   version "4.2.1"
