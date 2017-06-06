@@ -11,9 +11,12 @@
 		"iota.lib.js": "^0.2.7",
 		"react": "16.0.0-alpha.6",
 		"react-native": "0.44.2",
+		"react-native-keychain": "^1.2.0",
 		"react-navigation": "^1.0.0-beta.11",
 		"styled-components": "^2.0.0",
+		"text-encoding": "^0.6.4",
 		"tweetnacl": "^1.0.0",
+		"tweetnacl-util": "^0.15.0",
 		"url": "^0.11.0",
 		"xmlhttprequest": "^1.8.0"
 	},
