@@ -22,9 +22,9 @@ export default class InitialScreen extends Component {
     });
   }
 
-  getBox = async () => {
-    const box = await RetrieveBox("seed");
-    return true;
+  clearBox = () => {
+    DeleteBox("seed");
+    this.setState({ box: false });
   };
 
   render() {
@@ -32,8 +32,10 @@ export default class InitialScreen extends Component {
     if (!this.state.loading) {
       return (
         <Wrapper>
-          <AppText>IOTA Mobile Wallet</AppText>
-          {box ? <LoginForm {...this.props} /> : <SeedSetup {...this.props} />}
+          <AppText>IOTA iOS</AppText>
+          {box
+            ? <LoginForm {...this.props} clear={this.clearBox} />
+            : <SeedSetup {...this.props} />}
 
           <Row />
 
@@ -63,6 +65,7 @@ const Row = styled.View`
     align-items: center;
 `;
 const AppText = styled.Text`
+  padding: 30px 0px;
+  font-size: 20px;
     color: white;
-    font-family: courier;
 `;
