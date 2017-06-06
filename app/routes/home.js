@@ -5,13 +5,11 @@ import { AppRegistry, StyleSheet, Text, View } from "react-native";
 import Balance from "../components/balance";
 
 export default class HomeScreen extends Component {
-  static navigationOptions = {
-    header: null
-  };
+  static navigationOptions = {};
   render() {
     return (
       <Wrapper>
-        <Balance />
+        <Balance {...this.props} />
         <Text>
           Home Page
         </Text>
