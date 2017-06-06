@@ -11,6 +11,7 @@ import {
 
 import Iota from "../../libs/iota";
 import { InitialiseSeed, OpenBox, randSeed } from "../../libs/crypto";
+import { NavigationActions } from "react-navigation";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -18,25 +19,25 @@ export default class LoginForm extends React.Component {
     this.state = { seed: "", first: "", second: "" };
   }
 
+  resetAction = NavigationActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: "Main" })]
+  });
+
   setup = async (seed, password) => {
     if (this.state.first === this.state.second) {
       console.log("Initialising Seed");
       await InitialiseSeed(seed, password);
       const clearSeed = await OpenBox("seed", password);
       Iota.getAccount(clearSeed);
-
       this.setState({ seed: "", first: "", second: "" });
-      this.props.navigation.navigate("Home");
+      this.props.navigation.dispatch(this.resetAction);
     } else {
       alert("Your passwords didn't match");
       this.setState({ first: "", second: "" });
     }
   };
 
-  getAccount(seed) {
-    Iota.getAccount(seed);
-    this.props.navigation.navigate("Home");
-  }
   render() {
     return (
       <Col>
@@ -57,9 +58,6 @@ export default class LoginForm extends React.Component {
             </Button>*/}
           </Row>
           <Button onPress={() => this.setState({ seed: randSeed(81) })}>
-            <AppText>Click to generate a seed</AppText>
-          </Button>
-          <Button onPress={() => this.getAccount(randSeed(81))}>
             <AppText>Click to generate a seed</AppText>
           </Button>
         </EmptyCol>
