@@ -6,6 +6,7 @@ import {
   Text,
   View,
   TextInput,
+  Image,
   TouchableOpacity
 } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
@@ -13,22 +14,26 @@ import Iota, { Valid } from "../../libs/iota";
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: "Enter Password" };
   }
 
   render() {
+    var { key, routeName } = this.props.navigation.state;
+    var account = this.props.account;
     return (
       <Wrapper>
-        <TouchableOpacity
+        <MenuButtom
           onPress={() => this.props.navigation.navigate("DrawerOpen")}
         >
-          <Text>
-            Menu
-          </Text>
-        </TouchableOpacity>
+          <Image
+            style={{ width: 25, height: 25 }}
+            source={require("../../assets/icons8-menu.png")}
+          />
+        </MenuButtom>
+        <Page>{routeName}</Page>
+        <View />
         <Row>
-          <Heading>120</Heading>
-          <SubHeading>ti</SubHeading>
+          <Heading>{account.balance}</Heading>
+          <SubHeading> ti</SubHeading>
         </Row>
       </Wrapper>
     );
@@ -41,15 +46,20 @@ const Wrapper = styled.View`
     justify-content: space-between;
     width:100%;
     height: 20%;
-    background-color: rgb(219, 112, 147);
+    background-color: #004f71;
     align-items: center;
-    padding: 20px 40px;
+    padding: 10px 40px;
 `;
 const Row = styled.View`
     display: flex;
     flex-direction: row;   
     justify-content: center;
-    align-items: baseline;
+`;
+
+const MenuButtom = styled.TouchableOpacity`
+  position: absolute;
+  top: 40px;
+  left: 30px;
 `;
 
 const TInput = styled.TextInput`
@@ -61,15 +71,21 @@ const TInput = styled.TextInput`
     border-bottom-color: white;    
 `;
 
+const Page = styled.Text`
+    color: white;
+    position: absolute;
+    left: 29px;
+    bottom: 20px;
+    font-size: 18px;
+`;
+
 const Heading = styled.Text`
     color: white;
-    font-family: courier;
     font-size: 48px;
 `;
 
 const SubHeading = styled.Text`
     color: white;
-    font-family: courier;
     font-size: 24px;
 `;
 
