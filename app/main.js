@@ -30,7 +30,8 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      account: null
+      account: null,
+      node: {}
     };
   }
 
@@ -38,6 +39,7 @@ export default class Main extends Component {
     const account = this.props.navigation.state.params.account;
     this.setState({
       account: account,
+      node: this.props.navigation.state.params.node,
       transfers: Iota.categorizeTransfers(account.transfers, account.addresses),
       pwd: this.props.navigation.state.params.pwd
     });
@@ -56,22 +58,34 @@ export default class Main extends Component {
 
   send = async (depth, minMag, transfers) => {
     if (this.state.pwd) {
-      const result = Iota.send(
+      const result = await Iota.send(
         await OpenBox("seed", this.state.pwd),
         depth,
         minMag,
         transfers
       );
-      console.log(result);
+      return result;
     }
-
     /// Prompt for password entry if no hash in memory.
+  };
+  attachToTangle = async () => {
+    console.log("Attaching address to tanlge");
+    const result = await this.send(6, 18, [
+      {
+        address: this.state.account.latestAddress,
+        value: 0,
+        tag: Iota.toTrytes("iOSWALLET")
+      }
+    ]);
+    console.log(result);
   };
 
   render() {
     var data = {
       state: this.state,
-      newAddress: this.newAddress
+      newAddress: this.newAddress,
+      send: this.send,
+      attachToTangle: this.attachToTangle
     };
     console.log(this.state);
     if (this.state.account) {

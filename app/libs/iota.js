@@ -6,13 +6,18 @@ const iota = new IOTA({
 
 export default class iotaWrapper {
   static node = () => {
-    iota.api.getNodeInfo(function(error, success) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(success);
-      }
+    var p = new Promise((res, rej) => {
+      iota.api.getNodeInfo(function(error, success) {
+        if (error) {
+          console.error(error);
+          rej(error);
+        } else {
+          console.log(success);
+          res(success);
+        }
+      });
     });
+    return p;
   };
 
   static getAccount = seed => {
@@ -66,7 +71,6 @@ export default class iotaWrapper {
           console.error(error);
           rej(error);
         } else {
-          console.log(success);
           res(success);
         }
       });
