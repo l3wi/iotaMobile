@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { AppRegistry, StyleSheet, Text, View } from "react-native";
 
 import Balance from "../components/balance";
+import Send from "../components/send";
 
 export default class SendScreen extends Component {
   static navigationOptions = {};
@@ -12,7 +13,7 @@ export default class SendScreen extends Component {
     return (
       <Wrapper>
         <Balance account={account} {...this.props} />
-
+        <Send {...this.props} />
       </Wrapper>
     );
   }
