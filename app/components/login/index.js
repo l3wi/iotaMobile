@@ -64,10 +64,11 @@ export default class LoginForm extends React.Component {
             </Button>
           </Row>
         </EmptyCol>
-
-        <Button onPress={this.props.clear}>
-          <AppText>Load New Wallet</AppText>
-        </Button>
+        <Row>
+          <Button onPress={this.props.clear}>
+            <AppText>Load New Wallet</AppText>
+          </Button>
+        </Row>
       </Col>
     );
   }
@@ -77,8 +78,6 @@ const Row = styled.View`
     display: flex;
     flex-direction: row;   
     justify-content: center;
-    align-items: center;
-    padding: 20px 0;
 `;
 const Col = styled.View`
     display: flex;
@@ -89,17 +88,18 @@ const Col = styled.View`
     align-items: center;
 `;
 const EmptyCol = styled.View`
+    width: 100%;
     display: flex;
     flex-direction: column;
 `;
 const BottomBorder = styled.View`
-    width: 100%;
+    flex: 1;
     border-bottom-width: 3px;
-      border-bottom-color: white;
+  border-bottom-color: white;
+
 `;
 const TInput = styled.TextInput`
     height: 40px;
-    width: 100%;
     color: white;
     text-align: center;
     border-bottom-width: 3px;
@@ -111,9 +111,10 @@ const AppText = styled.Text`
 `;
 
 const Button = styled.TouchableOpacity`
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
     padding: 10px;
-    margin-left: 10px;
-    margin-bottom: -5px;
+    margin: 20px 0;
     background-color: rgba(255,255,255,.3);
-    width: ${props => (props.full ? "100%" : "auto")};
 `;

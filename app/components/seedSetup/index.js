@@ -129,10 +129,11 @@ const Col = styled.View`
 const EmptyCol = styled.View`
     display: flex;
     flex-direction: column;
+    width: 100%;
 `;
 
 const BottomBorder = styled.View`
-    width:${props => (props.full ? "100%" : "80%")};
+    flex: 1;
     border-bottom-width: 3px;
     border-bottom-color: white;
 `;
@@ -156,7 +157,7 @@ const ImageButton = styled.Image`
 const Button = styled.TouchableOpacity`
     justify-content: center;
     padding: 10px;
-    margin:0 10px;
+    margin:20px 0px;
     margin-bottom: -5px;
     background-color: rgba(255,255,255,.3);
     width: ${props => (props.full ? "100%" : "auto")};
