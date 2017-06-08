@@ -7,49 +7,106 @@ import {
   View,
   TextInput,
   Image,
+  Picker,
   TouchableOpacity
 } from "react-native";
+import { Select, Option } from "react-native-chooser";
+
 import Iota, { Valid } from "../../libs/iota";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      address: "",
+      amount: 0,
+      unit: "i",
+      message: ""
+    };
   }
+
+  create = () => {
+    console.log(Iota.utils.addChecksum(this.state.address));
+    const transfer = [
+      {
+        address: this.state.address,
+        value: this.state.amount
+        // message: Iota.toTrytes(this.state.message)
+      }
+    ];
+    this.props.screenProps.send(6, 18, transfer);
+  };
 
   render() {
     return (
       <Wrapper>
+        <Padding />
         <Row>
           <Long>
             <TInput
+              value={this.state.address}
               placeholder={"Paste Address"}
               autoCorrect={false}
               placeholderTextColor={"#2d353e"}
+              onChangeText={address => this.setState({ address })}
             />
           </Long>
         </Row>
         <Row>
           <Short>
             <TInput
+              value={this.state.amount}
               placeholder={"Enter Amount"}
               autoCorrect={false}
+              keyboardType={"numeric"}
               placeholderTextColor={"#2d353e"}
+              onChangeText={amount => this.setState({ amount })}
             />
           </Short>
-          <Button>
-            <Text>
-              Gi
-            </Text>
-          </Button>
+          <Select
+            onSelect={data => this.setState({ unit: data })}
+            defaultText="i"
+            style={{
+              borderWidth: 0,
+              width: 50,
+              backgroundColor: "#2d353e",
+              alignItems: "center",
+              marginLeft: 10
+            }}
+            transparent={true}
+            textStyle={{ fontSize: 18, color: "white" }}
+            optionListStyle={{
+              borderWidth: 0,
+              backgroundColor: "rgba(255,255,255,1)",
+              width: 50,
+              height: 200
+            }}
+          >
+            <Option value="i">i</Option>
+            <Option value="ki">Ki</Option>
+            <Option value="mi">Mi</Option>
+            <Option value="gi">Gi</Option>
+            <Option value="ti">Ti</Option>
+
+          </Select>
         </Row>
         <Row>
           <Long>
             <TInput
+              value={this.state.message}
               placeholder={"Enter Message"}
               autoCorrect={false}
               placeholderTextColor={"#2d353e"}
+              onChangeText={message => this.setState({ message })}
             />
           </Long>
+        </Row>
+        <Row>
+          <FullButton onPress={() => this.create()}>
+            <ButtonText>
+              Send Transaction
+            </ButtonText>
+          </FullButton>
         </Row>
       </Wrapper>
     );
@@ -63,6 +120,10 @@ const Wrapper = styled.View`
     width:100%;
     align-items: center;
     padding: 10px 40px;
+`;
+
+const Padding = styled.View`
+    padding-top: 30px;
 `;
 const Row = styled.View`
     display: flex;
@@ -85,7 +146,7 @@ const Short = styled.View`
 const TInput = styled.TextInput`
     height: 40px;
     width: 100%;
-    color: white;
+    color: #2d353e;
     text-align: center;
     border-bottom-width: 3px;
     border-bottom-color: white;    
@@ -96,10 +157,24 @@ const SubHeading = styled.Text`
     font-size: 24px;
 `;
 
+const FullButton = styled.TouchableOpacity`
+    flex: 1;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #2d353e;
+    flex-direction: row;   
+    justify-content: center;
+`;
+
 const Button = styled.TouchableOpacity`
     flex: .2;
     padding: 10px;
     margin: 10px;
     background-color: #2d353e;
-    width: ${props => (props.full ? "100%" : "auto")};
+    flex-direction: row;   
+    justify-content: center;
+`;
+
+const ButtonText = styled.Text`
+    color: white;
 `;
