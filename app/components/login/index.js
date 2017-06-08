@@ -11,13 +11,13 @@ export default class LoginForm extends React.Component {
     this.state = { pass: "" };
   }
 
-  nextRoute = (account, pass) => {
+  nextRoute = (account, pass, node) => {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
         NavigationActions.navigate({
           routeName: "Main",
-          params: { account: account, pwd: pass }
+          params: { account: account, pwd: pass, node: node }
         })
       ]
     });
@@ -26,6 +26,7 @@ export default class LoginForm extends React.Component {
 
   getAccount = async (seed, password) => {
     const passHash = hashPwd(password);
+    const node = await Iota.node();
     // Decrypt Seed
     const clearSeed = await OpenBox("seed", passHash);
     this.setState({ pass: "" });
@@ -35,7 +36,7 @@ export default class LoginForm extends React.Component {
     if (!account) return alert("Couldn't fetch wallet");
     // this.setState({ account });
     // Push to new page
-    this.nextRoute(account, passHash);
+    this.nextRoute(account, passHash, node);
   };
 
   render() {
