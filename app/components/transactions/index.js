@@ -9,18 +9,30 @@ import {
   TouchableOpacity
 } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
-import { format, parse } from "date-fns";
-
+import format from "date-fns/format";
+import parse from "date-fns/parse";
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      account: false,
+      loading: true
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ account: this.props.account, loading: false });
   }
 
   render() {
-    var { account } = this.props.account;
+    var { account, loading } = this.state;
     return (
       <FlatList
-        data={account.transfers}
+        data={
+          !account
+            ? []
+            : account.transfers.sort((a, b) => b[0].timestamp - a[0].timestamp)
+        }
         keyExtractor={(item, index) => index}
         renderItem={({ item, index }) => (
           <Item key={index} width={width}>
@@ -33,8 +45,7 @@ export default class LoginForm extends React.Component {
             <Row>
               <Text>No Message</Text>
               <Text>
-                {JSON.stringify(item[0].timestamp)}
-                {/*{format(parse(item[0].timestamp), "MM/DD/YYYY")}*/}
+                {getDate(item[0].timestamp)}
               </Text>
             </Row>
           </Item>
@@ -45,6 +56,9 @@ export default class LoginForm extends React.Component {
 }
 const { height, width } = Dimensions.get("window");
 
+const getDate = m => {
+  return format(parse(m * 1000), "HH:mm - MM/DD/YYYY");
+};
 const Item = styled.View`
     width: ${props => props.width + "px"};
     padding: 20px 50px;
