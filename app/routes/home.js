@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components/native";
-import { AppRegistry, StyleSheet, Text, View } from "react-native";
+import { AppRegistry, StyleSheet, Text, View, ScrollView } from "react-native";
 
 import Balance from "../components/balance";
 import Transactions from "../components/transactions";
@@ -15,13 +15,15 @@ export default class HomeScreen extends Component {
         <Balance account={account} node={node} {...this.props} />
         {account.transfers[0]
           ? <Transactions account={account} />
-          : <PaddedBox>
-              <Text>Looks like this is your first time!</Text>
-              <Text>
-                You'll need to generate an address and attach it to the tangle.
-              </Text>
+          : <ScrollView>
+              <PaddedBox>
+                <Text>Looks like this is your first time!</Text>
+                <Text>
+                  You'll need to generate an address and attach it to the tangle.
+                </Text>
 
-            </PaddedBox>}
+              </PaddedBox>
+            </ScrollView>}
       </Wrapper>
     );
   }

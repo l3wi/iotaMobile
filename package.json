@@ -12,6 +12,7 @@
 		"iota.lib.js": "^0.2.7",
 		"react": "16.0.0-alpha.6",
 		"react-native": "0.44.2",
+		"react-native-chooser": "^1.5.2",
 		"react-native-keychain": "^1.2.0",
 		"react-navigation": "^1.0.0-beta.11",
 		"styled-components": "^2.0.0",
