@@ -59,7 +59,7 @@ const Wrapper = styled.View`
     display:flex;
     align-items: center;
     justify-content: flex-start;
-    background: #004f71;
+    background: #2d353e;
     padding: 20px 20px;
 `;
 

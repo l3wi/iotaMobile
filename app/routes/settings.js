@@ -31,15 +31,16 @@ export default class InitialScreen extends Component {
   };
 
   render() {
-    console.log(this.props);
     var { account } = this.props.screenProps.state;
     return (
       <Wrapper>
         <Balance account={account} {...this.props} />
+        <Row>
+          <Button onPress={() => this.clear()}>
+            <WhiteText>Delete Seed</WhiteText>
+          </Button>
+        </Row>
 
-        <Button onPress={() => this.clear()}>
-          <WhiteText>Delete Seed</WhiteText>
-        </Button>
       </Wrapper>
     );
   }
@@ -65,9 +66,10 @@ const AppText = styled.Text`
 const Button = styled.TouchableOpacity`
     align-items: center;
     padding: 10px;
-    margin: 20px 0px 0 0 ;
-    background-color: #004f71;
-    width: 80%;
+    margin: 20px 20px ;
+    background-color: #2d353e;
+    flex: 1;
+
 `;
 const WhiteText = styled.Text`
   color: white;
