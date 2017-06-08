@@ -17,17 +17,50 @@ export default class LoginForm extends React.Component {
   }
 
   render() {
-    return <View />;
+    return (
+      <Wrapper>
+        <Row>
+          <Long>
+            <TInput
+              placeholder={"Paste Address"}
+              autoCorrect={false}
+              placeholderTextColor={"#2d353e"}
+            />
+          </Long>
+        </Row>
+        <Row>
+          <Short>
+            <TInput
+              placeholder={"Enter Amount"}
+              autoCorrect={false}
+              placeholderTextColor={"#2d353e"}
+            />
+          </Short>
+          <Button>
+            <Text>
+              Gi
+            </Text>
+          </Button>
+        </Row>
+        <Row>
+          <Long>
+            <TInput
+              placeholder={"Enter Message"}
+              autoCorrect={false}
+              placeholderTextColor={"#2d353e"}
+            />
+          </Long>
+        </Row>
+      </Wrapper>
+    );
   }
 }
 
 const Wrapper = styled.View`
     display: flex;
-    flex-direction: row;   
+    flex-direction: column;   
     justify-content: space-between;
     width:100%;
-    height: 20%;
-    background-color: #004f71;
     align-items: center;
     padding: 10px 40px;
 `;
@@ -37,32 +70,25 @@ const Row = styled.View`
     justify-content: center;
 `;
 
-const MenuButtom = styled.TouchableOpacity`
-  position: absolute;
-  top: 40px;
-  left: 30px;
+const Long = styled.View`
+    flex: 1;
+    border-bottom-width: 3px;
+    margin-bottom: 10px;
+    border-bottom-color: #2d353e;
 `;
-
+const Short = styled.View`
+    flex: 1;
+    border-bottom-width: 3px;
+    margin-bottom: 10px;
+    border-bottom-color: #2d353e;
+`;
 const TInput = styled.TextInput`
     height: 40px;
+    width: 100%;
     color: white;
-    font-family: courier;
     text-align: center;
     border-bottom-width: 3px;
     border-bottom-color: white;    
-`;
-
-const Page = styled.Text`
-    color: white;
-    position: absolute;
-    left: 29px;
-    bottom: 20px;
-    font-size: 18px;
-`;
-
-const Heading = styled.Text`
-    color: white;
-    font-size: 48px;
 `;
 
 const SubHeading = styled.Text`
@@ -71,9 +97,9 @@ const SubHeading = styled.Text`
 `;
 
 const Button = styled.TouchableOpacity`
+    flex: .2;
     padding: 10px;
-    margin-left: 10px;
-    margin-bottom: -5px;
-    background-color: rgba(255,255,255,.3);
+    margin: 10px;
+    background-color: #2d353e;
     width: ${props => (props.full ? "100%" : "auto")};
 `;
