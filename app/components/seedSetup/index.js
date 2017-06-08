@@ -97,6 +97,8 @@ export default class LoginForm extends React.Component {
                 placeholder={"Confirm Password"}
                 placeholderTextColor={"white"}
                 secureTextEntry={true}
+                onSubmitEditing={() =>
+                  this.setup(this.state.seed, this.state.first)}
                 onChangeText={second => this.setState({ second })}
               />
             </BottomBorder>
