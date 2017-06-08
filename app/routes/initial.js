@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { ScrollView, Dimensions, KeyboardAvoidingView } from "react-native";
+import {
+  ScrollView,
+  Dimensions,
+  KeyboardAvoidingView,
+  Image
+} from "react-native";
 import styled from "styled-components/native";
 import LoginForm from "../components/login";
 import SeedSetup from "../components/seedSetup";
@@ -34,7 +39,6 @@ export default class InitialScreen extends Component {
       return (
         <ScrollView>
           <Wrapper>
-            <AppText>IOTA iOS</AppText>
             {box
               ? <LoginForm {...this.props} clear={this.clearBox} />
               : <SeedSetup {...this.props} />}
