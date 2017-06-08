@@ -14,11 +14,25 @@ import Iota, { Valid } from "../../libs/iota";
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      account: false,
+      loading: true,
+      node: false
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      account: this.props.account,
+      loading: false,
+      node: this.props.node
+    });
   }
 
   render() {
     var { key, routeName } = this.props.navigation.state;
-    var account = this.props.account;
+    var { account, loading, node } = this.state;
+    console.log(account);
     return (
       <Wrapper>
         <MenuButtom
@@ -30,11 +44,23 @@ export default class LoginForm extends React.Component {
           />
         </MenuButtom>
         <Page>{routeName}</Page>
+        {/*{node
+          ? <Milestone>
+              {node.latestMilestoneIndex}
+              {" "}
+              :
+              {" "}
+              {node.latestSolidSubtangleMilestoneIndex}
+
+            </Milestone>
+          : null}*/}
         <View />
-        <Row>
-          <Heading>{account.balance}</Heading>
-          <SubHeading> ti</SubHeading>
-        </Row>
+        {!loading
+          ? <Row>
+              <Heading>{account.balance}</Heading>
+              <SubHeading> ti</SubHeading>
+            </Row>
+          : null}
       </Wrapper>
     );
   }
@@ -46,7 +72,7 @@ const Wrapper = styled.View`
     justify-content: space-between;
     width:100%;
     height: 20%;
-    background-color: #004f71;
+    background-color: #2d353e;
     align-items: center;
     padding: 10px 40px;
 `;
@@ -54,6 +80,13 @@ const Row = styled.View`
     display: flex;
     flex-direction: row;   
     justify-content: center;
+`;
+
+const Milestone = styled.Text`
+  position: absolute;
+  color: white;
+  bottom: 20px;
+  right: 30px;
 `;
 
 const MenuButtom = styled.TouchableOpacity`
