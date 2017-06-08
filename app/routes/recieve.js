@@ -7,6 +7,7 @@ import {
   View,
   Image,
   Clipboard,
+  ScrollView,
   TouchableOpacity
 } from "react-native";
 import qr from "yaqrcode";
@@ -42,17 +43,23 @@ export default class RecieveScreen extends Component {
     return (
       <Wrapper>
         <Balance account={account} {...this.props} />
-        <CopyAddress onPress={() => copy(account.latestAddress)}>
-          <Text>{account.latestAddress}</Text>
-        </CopyAddress>
-        <QR source={{ uri: qr(account.latestAddress), scale: 2 }} />
-        {!called
-          ? <Button onPress={this.callNewAddress}>
-              <WhiteText>New Address</WhiteText>
-            </Button>
-          : <Button onPress={this.props.screenProps.attachToTangle}>
-              <WhiteText>Attach to tangle</WhiteText>
-            </Button>}
+        <ScrollView style={{ width: "100%" }}>
+          <Col>
+            <CopyAddress onPress={() => copy(account.latestAddress)}>
+              <Text>{account.latestAddress}</Text>
+            </CopyAddress>
+            <QR source={{ uri: qr(account.latestAddress), scale: 2 }} />
+            {!called
+              ? <Button onPress={this.callNewAddress}>
+                  <WhiteText>New Address</WhiteText>
+                </Button>
+              : <Button onPress={this.props.screenProps.attachToTangle}>
+                  <WhiteText>Attach to tangle</WhiteText>
+                </Button>}
+
+          </Col>
+
+        </ScrollView>
 
       </Wrapper>
     );
@@ -64,6 +71,11 @@ const Wrapper = styled.View`
     display:flex;
     align-items: center;
     justify-content: flex-start;
+`;
+const Col = styled.View`
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 const Button = styled.TouchableOpacity`
     align-items: center;

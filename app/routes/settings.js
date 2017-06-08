@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { OpenBox, DeleteBox } from "../libs/crypto";
 import Balance from "../components/balance";
@@ -35,12 +35,14 @@ export default class InitialScreen extends Component {
     return (
       <Wrapper>
         <Balance account={account} {...this.props} />
-        <Row>
-          <Button onPress={() => this.clear()}>
-            <WhiteText>Delete Seed</WhiteText>
-          </Button>
-        </Row>
+        <ScrollView style={{ width: "100%" }}>
 
+          <Row>
+            <Button onPress={() => this.clear()}>
+              <WhiteText>Delete Seed</WhiteText>
+            </Button>
+          </Row>
+        </ScrollView>
       </Wrapper>
     );
   }
