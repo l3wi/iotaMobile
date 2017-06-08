@@ -10,7 +10,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import qr from "yaqrcode";
-
+import Iota from "../libs/iota";
 import Balance from "../components/balance";
 
 copy = address => {
@@ -19,10 +19,26 @@ copy = address => {
 };
 
 export default class RecieveScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      called: false
+    };
+  }
+
+  componentWillUnmount() {
+    this.setState({ called: false });
+  }
+
+  callNewAddress = () => {
+    this.props.screenProps.newAddress;
+    this.setState({ called: true });
+  };
+
   static navigationOptions = {};
   render() {
-    console.log(this.props);
     var { account } = this.props.screenProps.state;
+    var { called } = this.state;
     return (
       <Wrapper>
         <Balance account={account} {...this.props} />
@@ -30,13 +46,14 @@ export default class RecieveScreen extends Component {
           <Text>{account.latestAddress}</Text>
         </CopyAddress>
         <QR source={{ uri: qr(account.latestAddress), scale: 2 }} />
-        <Button onPress={this.props.screenProps.newAddress}>
-          <WhiteText>New Address</WhiteText>
-        </Button>
+        {!called
+          ? <Button onPress={this.callNewAddress}>
+              <WhiteText>New Address</WhiteText>
+            </Button>
+          : <Button onPress={this.props.screenProps.attachToTangle}>
+              <WhiteText>Attach to tangle</WhiteText>
+            </Button>}
 
-        <Button onPress={this.props.screenProps.send}>
-          <WhiteText>Attach to tangle</WhiteText>
-        </Button>
       </Wrapper>
     );
   }
@@ -52,7 +69,7 @@ const Button = styled.TouchableOpacity`
     align-items: center;
     padding: 10px;
     margin: 20px 0px 0 0 ;
-    background-color: #004f71;
+    background-color: #2d353e;
     width: 80%;
 `;
 
@@ -60,7 +77,7 @@ const CopyAddress = styled.TouchableOpacity`
     align-items: center;
     padding: 10px;
     margin: 20px 0px;
-    background-color: rgba(255,255,255,.3);
+    background-color: rgba(255,255,255,.4);
     width: 80%;
 `;
 const WhiteText = styled.Text`
