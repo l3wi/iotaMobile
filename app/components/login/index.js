@@ -1,6 +1,13 @@
 import React from "react";
 import styled from "styled-components/native";
-import { AppRegistry, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image
+} from "react-native";
 import Iota, { Valid } from "../../libs/iota";
 import { OpenBox, SaveBox, DeleteBox, hashPwd } from "../../libs/crypto";
 import { NavigationActions } from "react-navigation";
@@ -24,7 +31,7 @@ export default class LoginForm extends React.Component {
     this.props.navigation.dispatch(resetAction);
   };
 
-  getAccount = async (seed, password) => {
+  getAccount = async password => {
     const passHash = hashPwd(password);
     const node = await Iota.node();
     // Decrypt Seed
@@ -42,7 +49,10 @@ export default class LoginForm extends React.Component {
   render() {
     return (
       <Col>
+        <Logo source={require("../../assets/iota.png")} />
+
         <EmptyCol>
+
           <Row>
             <BottomBorder>
               <TInput
@@ -52,14 +62,13 @@ export default class LoginForm extends React.Component {
                 secureTextEntry={true}
                 placeholderTextColor={"white"}
                 selectTextOnFocus={true}
+                onSubmitEditing={() => this.getAccount(this.state.pass)}
                 onChangeText={pass => this.setState({ pass })}
               />
             </BottomBorder>
           </Row>
           <Row>
-            <Button
-              onPress={() => this.getAccount(this.state.pass, this.state.pass)}
-            >
+            <Button onPress={() => this.getAccount(this.state.pass)}>
               <AppText>Login</AppText>
             </Button>
           </Row>
@@ -81,12 +90,18 @@ const Row = styled.View`
 `;
 const Col = styled.View`
     display: flex;
-    height:80%;
+    height:100%;
     width:80%;
     flex-direction: column;   
     justify-content: space-around;
     align-items: center;
 `;
+
+const Logo = styled.Image`
+  width: 160px;
+  height:160px;
+`;
+
 const EmptyCol = styled.View`
     width: 100%;
     display: flex;
