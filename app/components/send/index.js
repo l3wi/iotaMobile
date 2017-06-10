@@ -19,19 +19,29 @@ export default class LoginForm extends React.Component {
     super(props);
     this.state = {
       address: "",
-      amount: 0,
+      amount: "0",
       unit: "i",
       message: ""
     };
   }
 
-  create = () => {
-    console.log(Iota.utils.addChecksum(this.state.address));
+  create = (address, amount, unit, message) => {
+    // Thanks dom :)
+    if (!address) {
+      alert("Address is required");
+      return;
+    } else if (address.length == 81) {
+      alert("Missing address checksum");
+      return;
+    } else if (address.length != 90) {
+      alert("Incorrect address length");
+      return;
+    }
     const transfer = [
       {
-        address: this.state.address,
-        value: this.state.amount
-        // message: Iota.toTrytes(this.state.message)
+        address: address,
+        value: amount,
+        message: Iota.toTrytes(this.state.message)
       }
     ];
     this.props.screenProps.send(6, 18, transfer);
@@ -102,7 +112,15 @@ export default class LoginForm extends React.Component {
           </Long>
         </Row>
         <Row>
-          <FullButton onPress={() => this.create()}>
+          <FullButton
+            onPress={() =>
+              this.create(
+                this.state.address,
+                this.state.amount,
+                this.state.unit,
+                this.state.message
+              )}
+          >
             <ButtonText>
               Send Transaction
             </ButtonText>
