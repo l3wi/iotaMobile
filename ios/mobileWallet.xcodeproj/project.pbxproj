@@ -13,6 +13,7 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* mobileWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* mobileWalletTests.m */; };
+		07ABA7240F504B3197870AD9 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F913ADEA54904BB7B2C5ECE3 /* libRNKeychain.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -22,7 +23,6 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		19683FB556814463894442A5 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B88665C415314575860CE922 /* libRNKeychain.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -229,9 +229,9 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		D741BD751EEABB3B00F5E635 /* PBXContainerItemProxy */ = {
+		D72DDD091EEC30390054CD33 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 63B582D125B045D0B89EBD76 /* RNKeychain.xcodeproj */;
+			containerPortal = 5EB529E0889F4B4FBDECF629 /* RNKeychain.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5D82366F1B0CE05B005A9EF3;
 			remoteInfo = RNKeychain;
@@ -261,11 +261,11 @@
 		2D02E47B1E0B4A5D006451C7 /* mobileWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "mobileWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* mobileWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "mobileWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
-		63B582D125B045D0B89EBD76 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
+		5EB529E0889F4B4FBDECF629 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		B88665C415314575860CE922 /* libRNKeychain.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNKeychain.a; sourceTree = "<group>"; };
-		D741BD771EEABFB700F5E635 /* mobileWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = mobileWallet.entitlements; path = mobileWallet/mobileWallet.entitlements; sourceTree = "<group>"; };
+		D72DDD0B1EEC30450054CD33 /* mobileWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = mobileWallet.entitlements; path = mobileWallet/mobileWallet.entitlements; sourceTree = "<group>"; };
+		F913ADEA54904BB7B2C5ECE3 /* libRNKeychain.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNKeychain.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,7 +292,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				19683FB556814463894442A5 /* libRNKeychain.a in Frameworks */,
+				07ABA7240F504B3197870AD9 /* libRNKeychain.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,7 +401,7 @@
 		13B07FAE1A68108700A75B9A /* mobileWallet */ = {
 			isa = PBXGroup;
 			children = (
-				D741BD771EEABFB700F5E635 /* mobileWallet.entitlements */,
+				D72DDD0B1EEC30450054CD33 /* mobileWallet.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -460,7 +460,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				63B582D125B045D0B89EBD76 /* RNKeychain.xcodeproj */,
+				5EB529E0889F4B4FBDECF629 /* RNKeychain.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -497,10 +497,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D741BD531EEABB3B00F5E635 /* Products */ = {
+		D72DDCED1EEC30390054CD33 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D741BD761EEABB3B00F5E635 /* libRNKeychain.a */,
+				D72DDD0A1EEC30390054CD33 /* libRNKeychain.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -669,8 +669,8 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = D741BD531EEABB3B00F5E635 /* Products */;
-					ProjectRef = 63B582D125B045D0B89EBD76 /* RNKeychain.xcodeproj */;
+					ProductGroup = D72DDCED1EEC30390054CD33 /* Products */;
+					ProjectRef = 5EB529E0889F4B4FBDECF629 /* RNKeychain.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -859,11 +859,11 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D741BD761EEABB3B00F5E635 /* libRNKeychain.a */ = {
+		D72DDD0A1EEC30390054CD33 /* libRNKeychain.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNKeychain.a;
-			remoteRef = D741BD751EEABB3B00F5E635 /* PBXContainerItemProxy */;
+			remoteRef = D72DDD091EEC30390054CD33 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1062,7 +1062,7 @@
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 				);
 				INFOPLIST_FILE = mobileWallet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1070,6 +1070,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = mobileWallet;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1086,7 +1087,7 @@
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 				);
 				INFOPLIST_FILE = mobileWallet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1094,6 +1095,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = mobileWallet;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

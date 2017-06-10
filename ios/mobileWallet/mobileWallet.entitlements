@@ -4,7 +4,7 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)au.com.twopeaks.mobileWallet</string>
+		<string>$(AppIdentifierPrefix)works.tangle.mobileWallet</string>
 	</array>
 </dict>
 </plist>
