@@ -23,12 +23,20 @@ export default class RecieveScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      called: false
+      called: false,
+      account: {}
     };
   }
 
-  componentWillUnmount() {
-    this.setState({ called: false });
+  componentWillReceiveProps(props) {
+    this.setState({ called: false, account: props.screenProps.state.account });
+  }
+
+  componentWillMount() {
+    this.setState({
+      called: false,
+      account: this.props.screenProps.state.account
+    });
   }
 
   callNewAddress = () => {
@@ -38,28 +46,29 @@ export default class RecieveScreen extends Component {
 
   static navigationOptions = {};
   render() {
-    var { account } = this.props.screenProps.state;
-    var { called } = this.state;
+    var { account, called } = this.state;
     return (
       <Wrapper>
         <Balance account={account} {...this.props} />
         <ScrollView style={{ width: "100%" }}>
-          <Col>
-            <CopyAddress onPress={() => copy(account.latestAddress)}>
-              <Text>{account.latestAddress}</Text>
-            </CopyAddress>
-            <QR source={{ uri: qr(account.latestAddress), scale: 2 }} />
+          {account.latestAddress
+            ? <Col>
+                <CopyAddress onPress={() => copy(account.latestAddress)}>
+                  <Text>{account.latestAddress}</Text>
+                </CopyAddress>
+                <QR source={{ uri: qr(account.latestAddress), scale: 4 }} />
 
-            {account.transfers[account.transfers.length - 1] ===
-              account.latestAddress
-              ? <Button onPress={this.callNewAddress}>
-                  <WhiteText>New Address</WhiteText>
-                </Button>
-              : <Button onPress={this.props.screenProps.attachToTangle}>
-                  <WhiteText>Attach to tangle</WhiteText>
-                </Button>}
+                {account.transfers[account.transfers.length - 1] ===
+                  account.latestAddress
+                  ? <Button onPress={this.callNewAddress}>
+                      <WhiteText>New Address</WhiteText>
+                    </Button>
+                  : <Button onPress={this.props.screenProps.attachToTangle}>
+                      <WhiteText>Attach to tangle</WhiteText>
+                    </Button>}
 
-          </Col>
+              </Col>
+            : null}
 
         </ScrollView>
 
