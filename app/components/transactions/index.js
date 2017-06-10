@@ -19,6 +19,9 @@ export default class LoginForm extends React.Component {
       loading: true
     };
   }
+  componentWillReceiveProps(props) {
+    this.setState({ loading: false, account: props.account });
+  }
 
   componentDidMount() {
     this.setState({ account: this.props.account, loading: false });
