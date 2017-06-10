@@ -53,10 +53,30 @@ export default class RecieveScreen extends Component {
         <ScrollView style={{ width: "100%" }}>
           {account.latestAddress
             ? <Col>
-                <CopyAddress onPress={() => copy(account.latestAddress)}>
-                  <Text>{account.latestAddress}</Text>
+                <CopyAddress
+                  onPress={() =>
+                    copy(
+                      Iota.addChecksum(
+                        account.addresses[account.addresses.length - 1]
+                      )
+                    )}
+                >
+                  <Address>
+                    {Iota.addChecksum(
+                      account.addresses[account.addresses.length - 1]
+                    )}
+                  </Address>
                 </CopyAddress>
-                <QR source={{ uri: qr(account.latestAddress), scale: 4 }} />
+                <QR
+                  source={{
+                    uri: qr(
+                      Iota.addChecksum(
+                        account.addresses[account.addresses.length - 1]
+                      )
+                    ),
+                    scale: 4
+                  }}
+                />
 
                 {account.transfers[account.transfers.length - 1] ===
                   account.latestAddress
@@ -106,6 +126,10 @@ const CopyAddress = styled.TouchableOpacity`
 const WhiteText = styled.Text`
   color: white;
 `;
+const Address = styled.Text`
+  text-align: center;
+`;
+
 const QR = styled.Image`
   height: 320px;
   width: 320px;
