@@ -49,7 +49,9 @@ export default class RecieveScreen extends Component {
               <Text>{account.latestAddress}</Text>
             </CopyAddress>
             <QR source={{ uri: qr(account.latestAddress), scale: 2 }} />
-            {!called
+
+            {account.transfers[account.transfers.length - 1] ===
+              account.latestAddress
               ? <Button onPress={this.callNewAddress}>
                   <WhiteText>New Address</WhiteText>
                 </Button>
