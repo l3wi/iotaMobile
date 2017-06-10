@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import styled from "styled-components/native";
-import { AppRegistry, StyleSheet, Text, View, StatusBar } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  AppState
+} from "react-native";
 import { OpenBox, SaveBox, DeleteBox, hashPwd } from "./libs/crypto";
-
+import timer from "react-native-timer";
 import { DrawerNavigator } from "react-navigation";
 
 import HomeScreen from "./routes/home";
@@ -36,6 +43,7 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
+    timer.setInterval("refresh", this.refreshWallet, 90000);
     const account = this.props.navigation.state.params.account;
     this.setState({
       account: account,
@@ -43,7 +51,34 @@ export default class Main extends Component {
       transfers: Iota.categorizeTransfers(account.transfers, account.addresses),
       pwd: this.props.navigation.state.params.pwd
     });
+    /// Listen for state changes
+    AppState.addEventListener("change", this.nullify);
   }
+
+  componentWillUnmount() {
+    console.log("Clearing interval and removing listeners");
+    timer.clearInterval("refresh");
+    AppState.removeEventListener("change", this.nullify);
+  }
+
+  refreshWallet = () => {
+    console.log("Updating");
+    this.getAccount();
+  };
+  nullify = nextAppState => {
+    if (nextAppState === "inactive" || nextAppState === "background") {
+      console.log(nextAppState);
+    }
+  };
+
+  getAccount = async () => {
+    const account = await Iota.getAccount(
+      await OpenBox("seed", this.state.pwd)
+    );
+    if (!account) return alert("Couldn't fetch wallet");
+    this.setState({ account: account });
+    return;
+  };
 
   newAddress = async () => {
     if (this.state.pwd) {
@@ -88,6 +123,7 @@ export default class Main extends Component {
       attachToTangle: this.attachToTangle
     };
     console.log(this.state);
+
     if (this.state.account) {
       return (
         <Wrapper>
