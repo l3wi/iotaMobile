@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
 
-export default class LoginForm extends React.Component {
+export default class Balance extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +19,14 @@ export default class LoginForm extends React.Component {
       loading: true,
       node: false
     };
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      account: this.props.account,
+      loading: false,
+      node: this.props.node
+    });
   }
 
   componentDidMount() {
@@ -32,7 +40,6 @@ export default class LoginForm extends React.Component {
   render() {
     var { key, routeName } = this.props.navigation.state;
     var { account, loading, node } = this.state;
-    console.log(account);
     return (
       <Wrapper>
         <MenuButtom
