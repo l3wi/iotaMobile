@@ -8,17 +8,26 @@ import {
   StatusBar,
   AppState
 } from "react-native";
-import { OpenBox, SaveBox, DeleteBox, hashPwd } from "./libs/crypto";
 import timer from "react-native-timer";
-import { DrawerNavigator } from "react-navigation";
+import { DrawerNavigator, NavigationActions } from "react-navigation";
 
+// My libs
+import Iota from "./libs/iota";
+import {
+  OpenBox,
+  SaveBox,
+  DeleteBox,
+  hashPwd,
+  stringToU8,
+  uintToS
+} from "./libs/crypto";
+// App routes
 import HomeScreen from "./routes/home";
 import SendScreen from "./routes/send";
 import RecieveScreen from "./routes/recieve";
 import SettingsScreen from "./routes/settings";
 
-import Iota from "./libs/iota";
-
+// Initialise Routes for the main app
 const MainScreenNavigator = DrawerNavigator(
   {
     Transactions: { screen: HomeScreen },
@@ -42,6 +51,7 @@ export default class Main extends Component {
     };
   }
 
+  // When the MAIN component enters
   componentDidMount() {
     timer.setInterval("refresh", this.refreshWallet, 90000);
     const account = this.props.navigation.state.params.account;
@@ -98,12 +108,12 @@ export default class Main extends Component {
     this.setState({ account: account });
     return;
   };
-
+  // Generate new addreress
   newAddress = async () => {
     if (this.state.pwd) {
       const addy = await Iota.newAddress(await OpenBox("seed", this.state.pwd));
       const newAccount = this.state.account;
-      newAccount.latestAddress = addy;
+      newAccount.push(addy);
       console.log(newAccount);
       this.setState({ account: newAccount });
     }
@@ -119,12 +129,13 @@ export default class Main extends Component {
         transfers
       );
       return result;
+    } else {
+      alert("Please relogin to the app");
     }
-    /// Prompt for password entry if no hash in memory.
   };
   attachToTangle = async () => {
     console.log("Attaching address to tanlge");
-    const result = await this.send(6, 18, [
+    const result = await this.send(6, 15, [
       {
         address: this.state.account.latestAddress,
         value: 0,
@@ -141,8 +152,6 @@ export default class Main extends Component {
       send: this.send,
       attachToTangle: this.attachToTangle
     };
-    console.log(this.state);
-
     if (this.state.account) {
       return (
         <Wrapper>
