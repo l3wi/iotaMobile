@@ -55,22 +55,41 @@ export default class Main extends Component {
     AppState.addEventListener("change", this.nullify);
   }
 
+  // When the MAIN component leaves
   componentWillUnmount() {
-    console.log("Clearing interval and removing listeners");
+    console.log("Main umnounted");
     timer.clearInterval("refresh");
     AppState.removeEventListener("change", this.nullify);
   }
 
+  // Func that get called to refresh the wallet
   refreshWallet = () => {
-    console.log("Updating");
+    console.log("Timer: Updating the Wallet");
     this.getAccount();
   };
+  // Func that get called to null write the pwd
   nullify = nextAppState => {
-    if (nextAppState === "inactive" || nextAppState === "background") {
-      console.log(nextAppState);
+    console.log("App changed to: ", nextAppState);
+    if (nextAppState === "inactive") {
+      // Writing it 'null'
+      this.setState({ pwd: stringToU8("000000000000000000000000") });
+      // Removing it's refs do the GC can clean it
+      delete this.state.pwd;
+      // Construct a reset action for the naviggator
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({
+            routeName: "Initial"
+          })
+        ]
+      });
+      this.props.navigation.dispatch(resetAction);
+      console.log("Key Cleaned & Rerouted to login");
     }
   };
 
+  // Get Account
   getAccount = async () => {
     const account = await Iota.getAccount(
       await OpenBox("seed", this.state.pwd)
