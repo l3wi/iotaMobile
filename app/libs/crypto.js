@@ -8,7 +8,7 @@ import * as Keychain from "react-native-keychain";
 ///////////////////////////////////////////////////
 //
 //  Basic Gist: Key is always stored at rest in
-//  system secure store. Password is entered and a
+//  system secure store. Password is entered  and a
 //  hash is used as key to retrieve the box and
 //  then decrypted. Then its passed as a var in
 //  the required function.
@@ -120,5 +120,3 @@ const stringToU8 = string => {
 const uintToS = uintArray => {
   return new TextDecoder("utf-8").decode(uintArray);
 };
-
-export default length => {};
