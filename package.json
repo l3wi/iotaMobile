@@ -7,14 +7,16 @@
 		"test": "jest"
 	},
 	"dependencies": {
+		"buffer": "^5.0.6",
 		"crypto-js": "^3.1.9-1",
 		"date-fns": "^1.28.5",
 		"iota.lib.js": "^0.2.7",
 		"react": "16.0.0-alpha.6",
-		"react-native": "0.44.2",
+		"react-native": "0.44.0",
 		"react-native-chooser": "^1.5.2",
 		"react-native-keychain": "^1.2.0",
-		"react-navigation": "^1.0.0-beta.11",
+		"react-native-timer": "^1.3.1",
+		"react-navigation": "^1.0.0-beta.10",
 		"styled-components": "^2.0.0",
 		"text-encoding": "^0.6.4",
 		"tweetnacl": "^1.0.0",
@@ -25,9 +27,7 @@
 	},
 	"devDependencies": {
 		"babel-jest": "20.0.3",
-		"babel-preset-react-native": "1.9.2",
-		"jest": "20.0.4",
-		"react-test-renderer": "16.0.0-alpha.6"
+		"babel-preset-react-native": "1.9.2"
 	},
 	"jest": {
 		"preset": "react-native"
