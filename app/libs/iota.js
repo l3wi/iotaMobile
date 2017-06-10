@@ -85,6 +85,10 @@ export default class iotaWrapper {
   static categorizeTransfers = (transfers, addresses) => {
     return iota.utils.categorizeTransfers(transfers, addresses);
   };
+
+  static addChecksum = address => {
+    return iota.utils.addChecksum(address);
+  };
 }
 
 export class Valid {
