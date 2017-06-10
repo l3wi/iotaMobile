@@ -19,7 +19,7 @@ export default class LoginForm extends React.Component {
     super(props);
     this.state = {
       address: "",
-      amount: "0",
+      amount: 0,
       unit: "i",
       message: ""
     };
@@ -37,14 +37,16 @@ export default class LoginForm extends React.Component {
       alert("Incorrect address length");
       return;
     }
+
     const transfer = [
       {
         address: address,
-        value: amount,
-        message: Iota.toTrytes(this.state.message)
+        value: parseInt(amount),
+        message: Iota.toTrytes(this.state.message),
+        tag: Iota.toTrytes("iOSWALLET")
       }
     ];
-    this.props.screenProps.send(6, 18, transfer);
+    this.props.screenProps.send(6, 15, transfer);
   };
 
   render() {
