@@ -112,11 +112,11 @@ const wordToArray = wordArray => {
 };
 
 //String to Uint8Array
-const stringToU8 = string => {
+export const stringToU8 = string => {
   return new TextEncoder().encode(string);
 };
 
 //Uint8Array to string
-const uintToS = uintArray => {
+export const uintToS = uintArray => {
   return new TextDecoder("utf-8").decode(uintArray);
 };
