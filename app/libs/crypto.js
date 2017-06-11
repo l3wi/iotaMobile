@@ -1,19 +1,13 @@
+// NaCl JS implimentation
 import nacl from "tweetnacl";
-// import encUtils from "tweetnacl-util";
+// Standford Javascript Crypto Lib (Used for secure PRNG & SHA256 in React Native)
+import sjcl from "sjcl";
+// Simple wrapper for iota.lib.js
 import Iota, { Valid } from "./iota";
-import CryptoJS from "crypto-js";
+// Basic Encoding Shims
 import { TextEncoder, TextDecoder } from "text-encoding";
+// RN Keychain module
 import * as Keychain from "react-native-keychain";
-
-///////////////////////////////////////////////////
-//
-//  Basic Gist: Key is always stored at rest in
-//  system secure store. Password is entered  and a
-//  hash is used as key to retrieve the box and
-//  then decrypted. Then its passed as a var in
-//  the required function.
-//
-///////////////////////////////////////////////////
 
 export const InitialiseSeed = async (seed, password) => {
   if (!Valid.isTrytes(seed)) return [false, "Please enter valid seed."];
@@ -75,28 +69,33 @@ export const DeleteBox = type => {
   });
 };
 
-// Generate crypto quality seed
+// Use SJCL for generating Rand Array
+const randArray = length => {
+  var wordCount = Math.ceil(length * 0.25);
+  var randomBytes = sjcl.random.randomWords(wordCount, 10);
+  var hexString = sjcl.codec.hex.fromBits(randomBytes);
+  hexString = hexString.substr(0, length * 2);
+  return new Buffer(hexString, "hex");
+};
+
+// Generate crypto quality seed from a rand array
 export const randSeed = length => {
   var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
   var i;
   var result = "";
-  if (window.crypto && window.crypto.getRandomValues) {
-    values = new Uint32Array(length);
-    window.crypto.getRandomValues(values);
-    for (i = 0; i < length; i++) {
-      result += charset[values[i] % charset.length];
-    }
-    return result;
-  } else
-    throw new Error(
-      "Your browser sucks and can't generate secure random numbers"
-    );
+  values = randArray(length);
+  for (i = 0; i < length; i++) {
+    result += charset[values[i] % charset.length];
+  }
+  return result;
 };
 //////////////////////////
 // Helpers
+
 //Word Array to Uint8Array
 export const hashPwd = pwd => {
-  return wordToArray(CryptoJS.SHA256(pwd));
+  const hash = sjcl.hash.sha256.hash(pwd);
+  return decodeBase64(sjcl.codec.base64.fromBits(hash));
 };
 const wordToArray = wordArray => {
   // Shortcuts
@@ -126,7 +125,6 @@ const encodeBase64 = function(arr) {
   var i, s = [], len = arr.length;
   for (i = 0; i < len; i++)
     s.push(String.fromCharCode(arr[i]));
-  console.log(btoa(s.join("")));
   return btoa(s.join(""));
 };
 
@@ -136,10 +134,55 @@ const decodeBase64 = function(s) {
   var i, d = atob(s), b = new Uint8Array(d.length);
   for (i = 0; i < d.length; i++)
     b[i] = d.charCodeAt(i);
-  console.log(b);
   return b;
 };
 
+// Setting char set for atob/btoa
+const chars =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+/// Btoa Polyfill
+const btoa = input => {
+  let str = input;
+  let output = "";
+
+  for (
+    let block = 0, charCode, i = 0, map = chars;
+    str.charAt(i | 0) || ((map = "="), i % 1);
+    output += map.charAt(63 & (block >> (8 - i % 1 * 8)))
+  ) {
+    charCode = str.charCodeAt((i += 3 / 4));
+
+    block = (block << 8) | charCode;
+  }
+
+  return output;
+};
+
+/// Atob Polyfill
+const atob = input => {
+  let str = input.replace(/=+$/, "");
+  let output = "";
+
+  if (str.length % 4 == 1) {
+    throw new Error(
+      "'atob' failed: The string to be decoded is not correctly encoded."
+    );
+  }
+  for (
+    let bc = 0, bs = 0, buffer, i = 0;
+    (buffer = str.charAt(i++));
+    ~buffer && ((bs = bc % 4 ? bs * 64 + buffer : buffer), bc++ % 4)
+      ? (output += String.fromCharCode(255 & (bs >> ((-2 * bc) & 6))))
+      : 0
+  ) {
+    buffer = chars.indexOf(buffer);
+  }
+
+  return output;
+};
+
+// Make sure base64 is ok
 const validateBase64 = s => {
   if (
     !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(s)
