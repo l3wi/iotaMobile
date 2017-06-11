@@ -1,5 +1,5 @@
 import nacl from "tweetnacl";
-import encUtils from "tweetnacl-util";
+// import encUtils from "tweetnacl-util";
 import Iota, { Valid } from "./iota";
 import CryptoJS from "crypto-js";
 import { TextEncoder, TextDecoder } from "text-encoding";
@@ -25,8 +25,8 @@ export const GenBox = async (seed, pwd) => {
   const nonce = await nacl.randomBytes(24);
   const box = await nacl.secretbox(stringToU8(seed), nonce, pwd);
   return await SaveBox("seed", {
-    nonce: encUtils.encodeBase64(nonce),
-    box: encUtils.encodeBase64(box)
+    nonce: encodeBase64(nonce),
+    box: encodeBase64(box)
   });
 };
 
@@ -60,8 +60,8 @@ export const RetrieveBox = async type => {
 export const OpenBox = async (type, pwd) => {
   const EncBox = await RetrieveBox(type);
   const box = await nacl.secretbox.open(
-    encUtils.decodeBase64(EncBox.password),
-    encUtils.decodeBase64(EncBox.username),
+    decodeBase64(EncBox.password),
+    decodeBase64(EncBox.username),
     pwd
   );
   if (!box) return false;
@@ -119,4 +119,31 @@ export const stringToU8 = string => {
 //Uint8Array to string
 export const uintToS = uintArray => {
   return new TextDecoder("utf-8").decode(uintArray);
+};
+
+/// uint8 to Base64
+const encodeBase64 = function(arr) {
+  var i, s = [], len = arr.length;
+  for (i = 0; i < len; i++)
+    s.push(String.fromCharCode(arr[i]));
+  console.log(btoa(s.join("")));
+  return btoa(s.join(""));
+};
+
+/// Base64 to Uint8
+const decodeBase64 = function(s) {
+  // validateBase64(s);
+  var i, d = atob(s), b = new Uint8Array(d.length);
+  for (i = 0; i < d.length; i++)
+    b[i] = d.charCodeAt(i);
+  console.log(b);
+  return b;
+};
+
+const validateBase64 = s => {
+  if (
+    !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(s)
+  ) {
+    throw new TypeError("invalid encoding");
+  }
 };
