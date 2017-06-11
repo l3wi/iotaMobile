@@ -19,6 +19,7 @@ export default class LoginForm extends React.Component {
     this.state = {
       account: false,
       loading: true,
+      item: {},
       modalVisible: false
     };
   }
@@ -30,14 +31,14 @@ export default class LoginForm extends React.Component {
     this.setState({ account: this.props.account, loading: false });
   }
 
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
+  setModalVisible(item) {
+    this.setState({ item: item, modalVisible: !this.state.modalVisible });
   }
 
   render() {
-    var { account, loading } = this.state;
+    var { item, account, loading } = this.state;
     return (
-      <View>
+      <Wrapper>
         <FlatList
           data={
             !account
@@ -51,16 +52,33 @@ export default class LoginForm extends React.Component {
             <Item
               key={index}
               width={width}
-              onPress={() => this.setModalVisible(!this.state.modalVisible)}
+              onPress={() => this.setModalVisible(item[0])}
             >
               <Row>
-                <Header {...item[0]}>{item[0].value} <Unit>Gi</Unit></Header>
+                <Header {...item[0]}>{item[0].value} <Unit>i</Unit></Header>
+                {account.addresses.some(addy => addy === item[0].address)
+                  ? <Row center>
+                      <Text>Recieved</Text>
+
+                      <Image
+                        source={require("../../assets/recieved.png")}
+                        style={{ width: 30, height: 30, marginLeft: 10 }}
+                      />
+                    </Row>
+                  : <Row center>
+                      <Text>Sent</Text>
+
+                      <Image
+                        source={require("../../assets/icons8-logout_rounded_filled.png")}
+                        style={{ width: 30, height: 30, marginLeft: 10 }}
+                      />
+                    </Row>}
+
+              </Row>
+              <Row>
                 <Text>
                   {item[0].persistence ? "Confirmed" : "Pending"}
                 </Text>
-              </Row>
-              <Row>
-                <Text>No Message</Text>
                 <Text>
                   {getDate(item[0].timestamp)}
                 </Text>
@@ -76,33 +94,41 @@ export default class LoginForm extends React.Component {
             alert("Modal has been closed.");
           }}
         >
+          {item
+            ? <ModalBack>
+                <Close
+                  onPress={() => {
+                    this.setModalVisible(!this.state.modalVisible);
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/close.png")}
+                    style={{ height: 30, width: 30 }}
+                  />
+                </Close>
+                <ModalBody>
+                  <Text>Hash:</Text>
+                  <Text>{item.hash}</Text>
+                  <Text>Bundle:</Text>
 
-          <ModalBack>
-            <Close
-              onPress={() => {
-                this.setModalVisible(!this.state.modalVisible);
-              }}
-            >
-              <Image
-                source={require("../../assets/close.png")}
-                style={{ height: 30, width: 30 }}
-              />
-            </Close>
-            <ModalBody>
-              <Text>Hello World!</Text>
+                  <Text>{item.bundle}</Text>
+                  {!item.persistence
+                    ? <Button
+                        onPress={() => {
+                          this.setModalVisible(!this.state.modalVisible);
+                        }}
+                      >
+                        <Word>Replay Transaction</Word>
+                      </Button>
+                    : null}
 
-              <Button
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}
-              >
-                <Text>Hide Modal</Text>
-              </Button>
-            </ModalBody>
-          </ModalBack>
+                </ModalBody>
+              </ModalBack>
+            : null}
+
         </Modal>
 
-      </View>
+      </Wrapper>
     );
   }
 }
@@ -125,7 +151,10 @@ const Button = styled.TouchableOpacity`
     justify-content: center;
     padding: 10px;
     margin: 10px 0;
-    background-color: rgba(0,0,0,.3);
+    background-color: #2d353e;
+`;
+const Word = styled.Text`
+  color: white;
 `;
 
 const ModalBack = styled.View`
@@ -138,8 +167,12 @@ const ModalBack = styled.View`
 `;
 
 const getDate = m => {
-  return format(parse(m * 1000), "HH:mm - MM/DD/YYYY");
+  return format(parse(m * 1000), "HH:mm A - DD/MM");
 };
+
+const Wrapper = styled.View`
+  flex: 1;
+`;
 const Item = styled.TouchableOpacity`
     width: ${props => props.width + "px"};
     padding: 20px 50px;
@@ -150,6 +183,7 @@ const Item = styled.TouchableOpacity`
 const Row = styled.View`
     display: flex;
     flex-direction: row;
+    align-items: ${props => (props.center ? "center" : "flex-start")};
     justify-content: space-between;
     background: white;
 `;
@@ -157,10 +191,8 @@ const Row = styled.View`
 const Header = styled.Text`
     font-size: 30px;
     margin-bottom: 10px;
-    color: #005629;
 `;
 
 const Unit = styled.Text`
     font-size: 26px;
-    color: #005629;
 `;
