@@ -11,8 +11,8 @@ import {
   Image
 } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
-import format from "date-fns/format";
-import parse from "date-fns/parse";
+import { formatAmount, getDate } from "../../libs/utils";
+
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -55,7 +55,11 @@ export default class LoginForm extends React.Component {
               onPress={() => this.setModalVisible(item[0])}
             >
               <Row>
-                <Header {...item[0]}>{item[0].value} <Unit>i</Unit></Header>
+                <Header {...item[0]}>
+                  {formatAmount(item[0].value, "bal")}
+                  {" "}
+                  <Unit>{formatAmount(item[0].value, "unit")}</Unit>
+                </Header>
                 {account.addresses.some(addy => addy === item[0].address)
                   ? <Row center>
                       <Text>Recieved</Text>
@@ -166,16 +170,12 @@ const ModalBack = styled.View`
   background-color: rgba(0, 0, 0, 0.70);
 `;
 
-const getDate = m => {
-  return format(parse(m * 1000), "HH:mm A - DD/MM");
-};
-
 const Wrapper = styled.View`
   flex: 1;
 `;
 const Item = styled.TouchableOpacity`
     width: ${props => props.width + "px"};
-    padding: 20px 50px;
+    padding: 5% 10%;
     margin-bottom: 5px;
     background: white;
 `;
