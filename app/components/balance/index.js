@@ -10,6 +10,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
+import { formatAmount } from "../../libs/utils";
 
 export default class Balance extends React.Component {
   constructor(props) {
@@ -64,8 +65,8 @@ export default class Balance extends React.Component {
         <View />
         {!loading
           ? <Row>
-              <Heading>{account.balance}</Heading>
-              <SubHeading> ti</SubHeading>
+              <Heading>{formatAmount(account.balance, "bal")}</Heading>
+              <SubHeading> {formatAmount(account.balance, "unit")}</SubHeading>
             </Row>
           : null}
       </Wrapper>
