@@ -33,36 +33,41 @@ export default class InitialScreen extends Component {
     this.setState({ box: false });
   };
 
+  loading = () => {
+    this.setState({ loading: true });
+  };
+
   render() {
     const { box } = this.state;
-    if (!this.state.loading) {
-      return (
-        <ScrollView>
-          <Wrapper>
-            {box
-              ? <LoginForm {...this.props} clear={this.clearBox} />
-              : <SeedSetup {...this.props} />}
-
-          </Wrapper>
-        </ScrollView>
-      );
-    }
     return (
-      <Wrapper>
-        <AppText>
-          Loading
-        </AppText>
-      </Wrapper>
+      <ScrollView>
+        {!this.state.loading
+          ? <Wrapper>
+              {box
+                ? <LoginForm
+                    {...this.props}
+                    clear={this.clearBox}
+                    loading={this.loading}
+                  />
+                : <SeedSetup {...this.props} loading={this.loading} />}
+            </Wrapper>
+          : <Wrapper loading>
+              <Logo source={require("../assets/iota.png")} />
+              <AppText>
+                Loading
+              </AppText>
+            </Wrapper>}
+      </ScrollView>
     );
   }
 }
 var { height, width } = Dimensions.get("window");
 
 const Wrapper = styled.View`
-    height:${height + "px"};
+    height: ${height + "px"};
     display:flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: ${props => (props.loading ? "space-around" : "flex-start")};
     background: #2d353e;
     padding: 20px 20px;
 `;
@@ -77,4 +82,9 @@ const AppText = styled.Text`
   padding: 30px 0px;
   font-size: 20px;
     color: white;
+`;
+
+const Logo = styled.Image`
+  width: 160px;
+  height:160px;
 `;
