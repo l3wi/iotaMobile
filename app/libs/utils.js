@@ -44,8 +44,12 @@ const sigFigs = (n, sig) => {
   return Math.round(n * mult) / mult;
 };
 
-const converter = (amount, unit) => {
+export const converter = (amount, unit) => {
+  console.log(amount);
   switch (unit) {
+    case "Ki":
+      return amount * Math.pow(10, 3);
+      break;
     case "Mi":
       return amount * Math.pow(10, 6);
       break;
