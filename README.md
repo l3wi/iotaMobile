@@ -13,33 +13,50 @@ Security of the seed while the app is in active use will be handled by the audit
 - [React Native](https://facebook.github.io/react-native/) - Facebook's crossplatform mobile framework
 - [iota.lib.js](https://github.com/iotaledger/iota.lib.js) - IOTA foundation's client library for the IOTA Token
 - [TweetNaCl.js](https://github.com/dchest/tweetnacl-js) - A javascript port of popular encryption library NaCl
+- [Stanford Javascript Crypto Library](https://github.com/bitwiseshiftleft/sjcl) - Standford's JS crypto library, handles hashing and PRNG for the app
 - [react-native-keychain](https://github.com/oblador/react-native-keychain) - A native wrapper for iOS's Keychain & Android's SharedPreferences
 - [Styled Components](https://github.com/styled-components/styled-components) - A styling library so the app doesn't look crap.
+
+
+
+### Structure
+
+The applicaiton is structured in the following way:
+
+```
+
+- app --- components // Smaller react components for use in routes
+	 | --- libs 	  // Libraries for iterfacing with IOTA & Crypto
+	 | --- routes	  // Application routes
+	 | --- assets	  // Images and assets
+	 | --- main.js 	  // Parent of the main wallet view (Handles state for the moment)
+	 | --- entry.js   // Entry point for the application. 
+```
+
+
 
 ### Features - V0.1
 
 As specificed in the bounty it will have the following functions:
 
-- [x] Seed
-      - [x] Generate Seed
-      - [x] Hydrate a pre-exisiting seed
-- [x] Send Transfer
-      - [x] Specify amount
-      - [x] Specify address
-      - [x] Attach to tangle
-- [x] Receive Transfer
-      - [x] Get latest confirmed balance
-      - [x] Display all pending transfers
-- [x] Generate New Address
-      - [x] Show QR code for that
-
-
-- [x] Settings
-      - [x] Change node address
-- [x] Security
-      - [x] Integrate into Native Keystores
-      - [x] Encrypt seed in secure box
-      - [x] Destory memory on Background
+- Seed
+  - Generate Seed
+  - Hydrate a pre-exisiting seed
+- Send Transfer
+  - Specify amount
+  - Specify address
+  - Attach to tangle
+- Receive Transfer
+  - Get latest confirmed balance
+  - Display all pending transfers
+- Generate New Address
+  - Show QR code for that
+- Settings
+     - Change node address
+- Security
+     - Integrate into Native Keystores
+     - Encrypt seed in secure box
+     - Destory memory on Background
 
 ### License
 
