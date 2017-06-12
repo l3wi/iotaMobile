@@ -57,15 +57,15 @@ The applicaiton is structured in the following way:
 
 ### Setup
 ```
-git clone 
+git clone https://github.com/l3wi/iotaMobile.git 	//clone the repo
 
-cd iotaMobile
+cd iotaMobile  						// CD into directory
 
-npm install -g react-native-cli yarn
+npm install -g react-native-cli yarn 			// Install Yarn and ReactNative CLI 
 
-yarn
+yarn  							// Install Deps
 
-react-native run-ios (replace ios with android for android)
+react-native run-ios  					// Launch emulator and start bundler
 
 ```
 
