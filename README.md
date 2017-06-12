@@ -17,24 +17,6 @@ Security of the seed while the app is in active use will be handled by the audit
 - [react-native-keychain](https://github.com/oblador/react-native-keychain) - A native wrapper for iOS's Keychain & Android's SharedPreferences
 - [Styled Components](https://github.com/styled-components/styled-components) - A styling library so the app doesn't look crap.
 
-
-
-### Structure
-
-The applicaiton is structured in the following way:
-
-```
-
-- app --- components // Smaller react components for use in routes
-	 | --- libs 	  // Libraries for iterfacing with IOTA & Crypto
-	 | --- routes	  // Application routes
-	 | --- assets	  // Images and assets
-	 | --- main.js 	  // Parent of the main wallet view (Handles state for the moment)
-	 | --- entry.js   // Entry point for the application. 
-```
-
-
-
 ### Features - V0.1
 
 As specificed in the bounty it will have the following functions:
@@ -57,6 +39,35 @@ As specificed in the bounty it will have the following functions:
      - Integrate into Native Keystores
      - Encrypt seed in secure box
      - Destory memory on Background
+
+
+### Structure
+
+The applicaiton is structured in the following way:
+
+```
+
+- app --- components // Smaller react components for use in routes
+	 | --- libs 	  // Libraries for iterfacing with IOTA & Crypto
+	 | --- routes	  // Application routes
+	 | --- assets	  // Images and assets
+	 | --- main.js 	  // Parent of the main wallet view (Handles state for the moment)
+	 | --- entry.js   // Entry point for the application. 
+```
+
+### Setup
+```
+git clone 
+
+cd iotaMobile
+
+npm install -g react-native-cli yarn
+
+yarn
+
+react-native run-ios (replace ios with android for android)
+
+```
 
 ### License
 
