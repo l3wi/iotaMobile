@@ -24,22 +24,22 @@ As specificed in the bounty it will have the following functions:
       - [x] Generate Seed
       - [x] Hydrate a pre-exisiting seed
 - [x] Send Transfer
-      - [ ] Specify amount
-      - [ ] Specify address
+      - [x] Specify amount
+      - [x] Specify address
       - [x] Attach to tangle
-- [ ] Receive Transfer
+- [x] Receive Transfer
       - [x] Get latest confirmed balance
       - [x] Display all pending transfers
 - [x] Generate New Address
       - [x] Show QR code for that
 
 
-- [ ] Settings
-      - [ ] Change node address
-- [ ] Security
+- [x] Settings
+      - [x] Change node address
+- [x] Security
       - [x] Integrate into Native Keystores
       - [x] Encrypt seed in secure box
-      - [ ] Destory memory on Background
+      - [x] Destory memory on Background
 
 ### License
 
