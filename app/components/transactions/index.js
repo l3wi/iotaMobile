@@ -119,10 +119,12 @@ export default class LoginForm extends React.Component {
                 <ModalBody>
 
                   <Text>Bundle:</Text>
+                  {item[0]
+                    ? <TouchableOpacity onPress={() => copy(item[0].bundle)}>
+                        <Text>{item[0].bundle.substring(0, 20)}...</Text>
+                      </TouchableOpacity>
+                    : null}
 
-                  <TouchableOpacity onPress={() => copy(item[0].bundle)}>
-                    <Text>{item[0].bundle.substring(0, 20)}...</Text>
-                  </TouchableOpacity>
                   <Text>Hash:</Text>
                   {item.map((item, index) => (
                     <TouchableOpacity
