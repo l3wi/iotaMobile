@@ -1,6 +1,6 @@
 import IOTA from "iota.lib.js";
 
-const iota = new IOTA({
+export const iota = new IOTA({
   provider: "http://node.iotawallet.info:14265/"
 });
 
@@ -9,7 +9,7 @@ export default class iotaWrapper {
     var p = new Promise((res, rej) => {
       iota.api.getNodeInfo(function(error, success) {
         if (error) {
-          console.error(error);
+          alert(error);
           rej(error);
         } else {
           console.log(success);
@@ -28,7 +28,7 @@ export default class iotaWrapper {
         success
       ) {
         if (error) {
-          console.error(error);
+          alert(error);
           rej(error);
         } else {
           console.log(success);
@@ -47,7 +47,7 @@ export default class iotaWrapper {
         { checksum: true },
         function(error, success) {
           if (error) {
-            console.error(error);
+            alert(error);
             rej(error);
           } else {
             console.log(success);
@@ -68,7 +68,22 @@ export default class iotaWrapper {
         success
       ) {
         if (error) {
-          console.error(error);
+          alert(error);
+          rej(error);
+        } else {
+          res(success);
+        }
+      });
+    });
+    return p;
+  };
+
+  static replay = (depth, minMag, hash) => {
+    console.log("Replaying Transaction");
+    var p = new Promise((res, rej) => {
+      iota.api.replayBundle(depth, minMag, hash, function(error, success) {
+        if (error) {
+          alert(error);
           rej(error);
         } else {
           res(success);
@@ -88,6 +103,10 @@ export default class iotaWrapper {
 
   static addChecksum = address => {
     return iota.utils.addChecksum(address);
+  };
+
+  static removeChecksum = address => {
+    return iota.utils.noChecksum(address);
   };
 }
 
