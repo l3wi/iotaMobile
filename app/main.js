@@ -103,6 +103,8 @@ export default class Main extends Component {
   // Get Account
   getAccount = async () => {
     this.setState({ loading: { title: "Updating Wallet" } }, async () => {
+      this.forceUpdate();
+
       const account = await Iota.getAccount(
         await OpenBox("seed", this.state.pwd)
       );
@@ -115,6 +117,8 @@ export default class Main extends Component {
   newAddress = async () => {
     if (this.state.pwd) {
       this.setState({ loading: { title: "Generating Address" } }, async () => {
+        this.forceUpdate();
+
         const addy = await Iota.newAddress(
           await OpenBox("seed", this.state.pwd)
         );
@@ -135,6 +139,8 @@ export default class Main extends Component {
 
   attachToTangle = async () => {
     this.setState({ loading: { title: "Attaching Wallet" } }, async () => {
+      this.forceUpdate();
+
       console.log("Attaching address to tanlge");
       const result = await this.send(6, 15, [
         {
@@ -152,6 +158,8 @@ export default class Main extends Component {
   send = async (depth, minMag, transfers) => {
     if (this.state.pwd) {
       this.setState({ loading: { title: "Sending to Tangle" } }, async () => {
+        this.forceUpdate();
+
         const result = await Iota.send(
           await OpenBox("seed", this.state.pwd),
           depth,
