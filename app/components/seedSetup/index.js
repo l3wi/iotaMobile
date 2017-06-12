@@ -41,6 +41,7 @@ export default class LoginForm extends React.Component {
       console.log("Initialising Seed");
       await InitialiseSeed(seed, passHash);
       const clearSeed = await OpenBox("seed", passHash);
+      this.props.loading();
       const account = await Iota.getAccount(clearSeed);
       if (!account) return alert("Couldn't fetch wallet");
       this.setState({ seed: "", first: "", second: "" });
