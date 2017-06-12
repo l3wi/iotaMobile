@@ -11,7 +11,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Select, Option } from "react-native-chooser";
-
+import { converter } from "../../libs/utils";
 import Iota, { Valid } from "../../libs/iota";
 
 export default class LoginForm extends React.Component {
@@ -38,15 +38,18 @@ export default class LoginForm extends React.Component {
       return;
     }
 
+    const value = parseInt(converter(amount, unit));
+    console.log(value);
     const transfer = [
       {
         address: address,
-        value: parseInt(amount),
+        value: value,
         message: Iota.toTrytes(this.state.message),
         tag: Iota.toTrytes("iOSWALLET")
       }
     ];
-    this.props.screenProps.send(6, 15, transfer);
+    this.setState({ address: "", amount: 0, unit: "i", message: "" });
+    this.props.screenProps.send(9, 15, transfer);
   };
 
   render() {
@@ -95,10 +98,10 @@ export default class LoginForm extends React.Component {
             }}
           >
             <Option value="i">i</Option>
-            <Option value="ki">Ki</Option>
-            <Option value="mi">Mi</Option>
-            <Option value="gi">Gi</Option>
-            <Option value="ti">Ti</Option>
+            <Option value="Ki">Ki</Option>
+            <Option value="Mi">Mi</Option>
+            <Option value="Gi">Gi</Option>
+            <Option value="Ti">Ti</Option>
 
           </Select>
         </Row>
