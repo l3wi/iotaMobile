@@ -8,10 +8,16 @@ import {
   Dimensions,
   TouchableOpacity,
   Modal,
+  Clipboard,
   Image
 } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
 import { formatAmount, getDate } from "../../libs/utils";
+
+copy = address => {
+  Clipboard.setString(address);
+  alert("Copied to clip board");
+};
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -19,7 +25,7 @@ export default class LoginForm extends React.Component {
     this.state = {
       account: false,
       loading: true,
-      item: {},
+      item: [],
       modalVisible: false
     };
   }
@@ -52,7 +58,7 @@ export default class LoginForm extends React.Component {
             <Item
               key={index}
               width={width}
-              onPress={() => this.setModalVisible(item[0])}
+              onPress={() => this.setModalVisible(item)}
             >
               <Row>
                 <Header {...item[0]}>
@@ -111,15 +117,26 @@ export default class LoginForm extends React.Component {
                   />
                 </Close>
                 <ModalBody>
-                  <Text>Hash:</Text>
-                  <Text>{item.hash}</Text>
+
                   <Text>Bundle:</Text>
 
-                  <Text>{item.bundle}</Text>
+                  <TouchableOpacity onPress={() => copy(item[0].bundle)}>
+                    <Text>{item[0].bundle.substring(0, 20)}...</Text>
+                  </TouchableOpacity>
+                  <Text>Hash:</Text>
+                  {item.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => copy(item.hash)}
+                    >
+                      <Text>{item.hash.substring(0, 20)}...</Text>
+                    </TouchableOpacity>
+                  ))}
+
                   {!item.persistence
                     ? <Button
                         onPress={() => {
-                          this.setModalVisible(!this.state.modalVisible);
+                          this.props.screenProps.replay(item[0].hash);
                         }}
                       >
                         <Word>Replay Transaction</Word>
