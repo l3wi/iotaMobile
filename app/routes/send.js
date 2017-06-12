@@ -9,10 +9,10 @@ export default class SendScreen extends Component {
   static navigationOptions = {};
   render() {
     console.log(this.props);
-    var { account } = this.props.screenProps.state;
+    var { account, loading } = this.props.screenProps.state;
     return (
       <Wrapper>
-        <Balance account={account} {...this.props} />
+        <Balance account={account} loading={loading} {...this.props} />
         <ScrollView style={{ width: "100%" }}>
           <Send {...this.props} />
 

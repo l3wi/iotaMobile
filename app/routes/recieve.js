@@ -29,58 +29,65 @@ export default class RecieveScreen extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({ called: false, account: props.screenProps.state.account });
+    this.setState({
+      called: false,
+      account: props.screenProps.state.account,
+      loading: props.screenProps.state.loading
+    });
   }
 
   componentWillMount() {
     this.setState({
       called: false,
-      account: this.props.screenProps.state.account
+      account: this.props.screenProps.state.account,
+      loading: this.props.screenProps.state.loading
     });
   }
 
-  callNewAddress = () => {
-    this.props.screenProps.newAddress;
-    this.setState({ called: true });
-  };
-
   static navigationOptions = {};
   render() {
-    var { account, called } = this.state;
+    var { account, called, loading } = this.state;
     return (
       <Wrapper>
-        <Balance account={account} {...this.props} />
+        <Balance account={account} loading={loading} {...this.props} />
         <ScrollView style={{ width: "100%" }}>
+          {/*Wait for account to load*/}
           {account.latestAddress
             ? <Col>
-                <CopyAddress
-                  onPress={() =>
-                    copy(
-                      Iota.addChecksum(
-                        account.addresses[account.addresses.length - 1]
-                      )
-                    )}
-                >
-                  <Address>
-                    {Iota.addChecksum(
-                      account.addresses[account.addresses.length - 1]
-                    )}
-                  </Address>
-                </CopyAddress>
-                <QR
-                  source={{
-                    uri: qr(
-                      Iota.addChecksum(
-                        account.addresses[account.addresses.length - 1]
-                      )
-                    ),
-                    scale: 4
-                  }}
-                />
+                {/*If you dont have any addresses show attach button*/}
+                {account.addresses[account.addresses.length - 1]
+                  ? <Col>
+                      <CopyAddress
+                        onPress={() =>
+                          copy(
+                            Iota.addChecksum(
+                              account.addresses[account.addresses.length - 1]
+                            )
+                          )}
+                      >
+                        <Address>
+                          {Iota.addChecksum(
+                            account.addresses[account.addresses.length - 1]
+                          )}
+                        </Address>
+                      </CopyAddress>
+                      <QR
+                        source={{
+                          uri: qr(
+                            Iota.addChecksum(
+                              account.addresses[account.addresses.length - 1]
+                            )
+                          ),
+                          scale: 4
+                        }}
+                      />
 
-                {account.transfers[account.transfers.length - 1] ===
+                    </Col>
+                  : null}
+
+                {account.addresses[account.addresses.length - 1] !==
                   account.latestAddress
-                  ? <Button onPress={this.callNewAddress}>
+                  ? <Button onPress={this.props.screenProps.newAddress}>
                       <WhiteText>New Address</WhiteText>
                     </Button>
                   : <Button onPress={this.props.screenProps.attachToTangle}>

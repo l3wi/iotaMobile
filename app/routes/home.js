@@ -9,12 +9,17 @@ export default class HomeScreen extends Component {
   static navigationOptions = {};
   render() {
     console.log(this.props);
-    var { account, node } = this.props.screenProps.state;
+    var { account, node, loading } = this.props.screenProps.state;
     return (
       <Wrapper>
-        <Balance account={account} node={node} {...this.props} />
+        <Balance
+          account={account}
+          loading={loading}
+          node={node}
+          {...this.props}
+        />
         {account.transfers[0]
-          ? <Transactions account={account} />
+          ? <Transactions account={account} {...this.props} />
           : <ScrollView>
               <PaddedBox>
                 <Text>Looks like this is your first time!</Text>

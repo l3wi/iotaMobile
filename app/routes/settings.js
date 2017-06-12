@@ -10,7 +10,8 @@ export default class InitialScreen extends Component {
     super(props);
     this.state = {
       loading: true,
-      box: false
+      box: false,
+      rememberMe: 10
     };
   }
   static navigationOptions = {
@@ -19,6 +20,7 @@ export default class InitialScreen extends Component {
 
   clear = () => {
     DeleteBox("seed");
+    alert("Seed was cleared. Please close the app.");
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
@@ -31,12 +33,31 @@ export default class InitialScreen extends Component {
   };
 
   render() {
-    var { account } = this.props.screenProps.state;
+    var { account, loading } = this.props.screenProps.state;
     return (
       <Wrapper>
-        <Balance account={account} {...this.props} />
+        <Balance account={account} loading={loading} {...this.props} />
         <ScrollView style={{ width: "100%" }}>
 
+          <Row>
+            <BottomBorder>
+              <TInput
+                value={this.state.rememberMe}
+                autoCorrect={false}
+                placeholderTextColor={"white"}
+                secureTextEntry={true}
+                onChangeText={first => this.setState({ first })}
+              />
+            </BottomBorder>
+            <Button onPress={() => this.showSeed()}>
+              <WhiteText>Set Remember Me</WhiteText>
+            </Button>
+          </Row>
+          <Row>
+            <Button onPress={() => this.showSeed()}>
+              <WhiteText>Show Seed</WhiteText>
+            </Button>
+          </Row>
           <Row>
             <Button onPress={() => this.clear()}>
               <WhiteText>Delete Seed</WhiteText>
@@ -59,6 +80,22 @@ const Row = styled.View`
     flex-direction: row;   
     justify-content: center;
     align-items: center;
+        margin: 20px 20px ;
+
+`;
+
+const BottomBorder = styled.View`
+    flex: 1;
+    border-bottom-width: 3px;
+    border-bottom-color: #2d353e;
+    margin-right: 30px;
+`;
+const TInput = styled.TextInput`
+    height: 40px;
+    color: #2d353e;
+    text-align: center;
+    border-bottom-width: 3px;
+    border-bottom-color: #2d353e;    
 `;
 const AppText = styled.Text`
   padding: 30px 0px;
@@ -68,7 +105,6 @@ const AppText = styled.Text`
 const Button = styled.TouchableOpacity`
     align-items: center;
     padding: 10px;
-    margin: 20px 20px ;
     background-color: #2d353e;
     flex: 1;
 

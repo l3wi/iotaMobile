@@ -17,7 +17,8 @@ export default class Balance extends React.Component {
     super(props);
     this.state = {
       account: false,
-      loading: true,
+      init: false,
+      loading: false,
       node: false
     };
   }
@@ -25,7 +26,7 @@ export default class Balance extends React.Component {
   componentWillReceiveProps(props) {
     this.setState({
       account: this.props.account,
-      loading: false,
+      loading: this.props.loading,
       node: this.props.node
     });
   }
@@ -33,16 +34,19 @@ export default class Balance extends React.Component {
   componentDidMount() {
     this.setState({
       account: this.props.account,
-      loading: false,
-      node: this.props.node
+      loading: this.props.loading,
+      node: this.props.node,
+      int: true
     });
   }
 
   render() {
     var { key, routeName } = this.props.navigation.state;
-    var { account, loading, node } = this.state;
+    var { account, loading, node, int } = this.state;
+    console.log(loading);
+
     return (
-      <Wrapper>
+      <Wrapper loading={loading}>
         <MenuButtom
           onPress={() => this.props.navigation.navigate("DrawerOpen")}
         >
@@ -52,18 +56,13 @@ export default class Balance extends React.Component {
           />
         </MenuButtom>
         <Page>{routeName}</Page>
-        {/*{node
+        {loading
           ? <Milestone>
-              {node.latestMilestoneIndex}
-              {" "}
-              :
-              {" "}
-              {node.latestSolidSubtangleMilestoneIndex}
-
+              {loading.title}
             </Milestone>
-          : null}*/}
+          : null}
         <View />
-        {!loading
+        {int
           ? <Row>
               <Heading>{formatAmount(account.balance, "bal")}</Heading>
               <SubHeading> {formatAmount(account.balance, "unit")}</SubHeading>
@@ -80,7 +79,7 @@ const Wrapper = styled.View`
     justify-content: space-between;
     width:100%;
     height: 20%;
-    background-color: #2d353e;
+    background-color: ${props => (props.loading ? "#4c4184" : "#2d353e")};
     align-items: center;
     padding: 10px 40px;
 `;
