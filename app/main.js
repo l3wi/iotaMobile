@@ -47,7 +47,8 @@ export default class Main extends Component {
     super(props);
     this.state = {
       account: null,
-      node: {}
+      node: {},
+      loading: false
     };
   }
 
@@ -101,48 +102,76 @@ export default class Main extends Component {
 
   // Get Account
   getAccount = async () => {
-    const account = await Iota.getAccount(
-      await OpenBox("seed", this.state.pwd)
-    );
-    if (!account) return alert("Couldn't fetch wallet");
-    this.setState({ account: account });
-    return;
+    this.setState({ loading: { title: "Updating Wallet" } }, async () => {
+      const account = await Iota.getAccount(
+        await OpenBox("seed", this.state.pwd)
+      );
+      if (!account) return alert("Couldn't fetch wallet");
+      this.setState({ account: account, loading: false });
+      this.forceUpdate();
+    });
   };
   // Generate new addreress
   newAddress = async () => {
     if (this.state.pwd) {
-      const addy = await Iota.newAddress(await OpenBox("seed", this.state.pwd));
-      const newAccount = this.state.account;
-      newAccount.push(addy);
-      console.log(newAccount);
-      this.setState({ account: newAccount });
+      this.setState({ loading: { title: "Generating Address" } }, async () => {
+        const addy = await Iota.newAddress(
+          await OpenBox("seed", this.state.pwd)
+        );
+        if (
+          this.state.account.addresses[
+            this.state.account.addresses.length - 1
+          ] !== this.state.account.latestAddress
+        ) {
+          const newAccount = this.state.account;
+          newAccount.addresses.push(Iota.removeChecksum(addy));
+          this.setState({ account: newAccount, loading: false });
+          this.forceUpdate();
+        }
+      });
     }
     /// Prompt for password entry if no hash in memory.
   };
 
+  attachToTangle = async () => {
+    this.setState({ loading: { title: "Attaching Wallet" } }, async () => {
+      console.log("Attaching address to tanlge");
+      const result = await this.send(6, 15, [
+        {
+          address: this.state.account.addresses[
+            this.state.account.addresses.length - 1
+          ],
+          value: 0,
+          tag: Iota.toTrytes("iOSWALLET")
+        }
+      ]);
+      this.getAccount();
+    });
+  };
+
   send = async (depth, minMag, transfers) => {
     if (this.state.pwd) {
-      const result = await Iota.send(
-        await OpenBox("seed", this.state.pwd),
-        depth,
-        minMag,
-        transfers
-      );
-      return result;
+      this.setState({ loading: { title: "Sending to Tangle" } }, async () => {
+        const result = await Iota.send(
+          await OpenBox("seed", this.state.pwd),
+          depth,
+          minMag,
+          transfers
+        );
+        this.setState({ loading: false });
+        this.forceUpdate();
+      });
     } else {
       alert("Please relogin to the app");
     }
   };
-  attachToTangle = async () => {
-    console.log("Attaching address to tanlge");
-    const result = await this.send(6, 15, [
-      {
-        address: this.state.account.latestAddress,
-        value: 0,
-        tag: Iota.toTrytes("iOSWALLET")
-      }
-    ]);
-    console.log(result);
+
+  replay = async hash => {
+    this.setState({ loading: { title: "Replaying Bundle" } }, async () => {
+      const result = await Iota.replay(9, 15, hash);
+      this.setState({ loading: false });
+      this.forceUpdate();
+    });
   };
 
   render() {
@@ -150,7 +179,8 @@ export default class Main extends Component {
       state: this.state,
       newAddress: this.newAddress,
       send: this.send,
-      attachToTangle: this.attachToTangle
+      attachToTangle: this.attachToTangle,
+      replay: this.replay
     };
     if (this.state.account) {
       return (
