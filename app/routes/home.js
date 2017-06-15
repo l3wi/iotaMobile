@@ -22,11 +22,11 @@ export default class HomeScreen extends Component {
           ? <Transactions account={account} {...this.props} />
           : <ScrollView>
               <PaddedBox>
-                <Text>Looks like this is your first time!</Text>
-                <Text>
-                  You'll need to generate an address and attach it to the tangle.
-                </Text>
-
+                <Header>Looks like this is your first time!</Header>
+                <Words>
+                  You'll need to go to Recieve and generate an address then
+                  attach it to the tangle.
+                </Words>
               </PaddedBox>
             </ScrollView>}
       </Wrapper>
@@ -48,4 +48,16 @@ const PaddedBox = styled.View`
     display:flex;
     align-items: center;
     justify-content: flex-start;
+`;
+
+const Header = styled.Text`
+  font-size: 20px;
+    text-align: center;
+
+  margin-bottom: 20px;
+`;
+
+const Words = styled.Text`
+  text-align: center;
+  margin-bottom: 20px;
 `;
