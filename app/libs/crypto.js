@@ -71,11 +71,7 @@ export const DeleteBox = type => {
 
 // Use SJCL for generating Rand Array
 const randArray = length => {
-  var wordCount = Math.ceil(length * 0.25);
-  var randomBytes = sjcl.random.randomWords(wordCount, 10);
-  var hexString = sjcl.codec.hex.fromBits(randomBytes);
-  hexString = hexString.substr(0, length * 2);
-  return new Buffer(hexString, "hex");
+  return sjcl.random.randomWords(length, 10);
 };
 
 // Generate crypto quality seed from a rand array
@@ -83,9 +79,9 @@ export const randSeed = length => {
   var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
   var i;
   var result = "";
-  values = randArray(length);
+  var values = randArray(length);
   for (i = 0; i < length; i++) {
-    result += charset[values[i] % charset.length];
+    result += charset[Math.abs(values[i]) % charset.length];
   }
   return result;
 };
@@ -122,18 +118,20 @@ export const uintToS = uintArray => {
 
 /// uint8 to Base64
 const encodeBase64 = function(arr) {
-  var i, s = [], len = arr.length;
-  for (i = 0; i < len; i++)
-    s.push(String.fromCharCode(arr[i]));
+  var i,
+    s = [],
+    len = arr.length;
+  for (i = 0; i < len; i++) s.push(String.fromCharCode(arr[i]));
   return btoa(s.join(""));
 };
 
 /// Base64 to Uint8
 const decodeBase64 = function(s) {
   // validateBase64(s);
-  var i, d = atob(s), b = new Uint8Array(d.length);
-  for (i = 0; i < d.length; i++)
-    b[i] = d.charCodeAt(i);
+  var i,
+    d = atob(s),
+    b = new Uint8Array(d.length);
+  for (i = 0; i < d.length; i++) b[i] = d.charCodeAt(i);
   return b;
 };
 
