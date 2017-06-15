@@ -85,6 +85,10 @@ export default class RecieveScreen extends Component {
                     </Col>
                   : null}
 
+                {!account.addresses[0]
+                  ? <Text>Click below to generate your first address</Text>
+                  : null}
+
                 {account.addresses[account.addresses.length - 1] !==
                   account.latestAddress
                   ? <Button onPress={this.props.screenProps.newAddress}>
