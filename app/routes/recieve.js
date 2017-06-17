@@ -86,7 +86,7 @@ export default class RecieveScreen extends Component {
                   : null}
 
                 {!account.addresses[0]
-                  ? <Text style={{ marginTop: "20px" }}>
+                  ? <Text style={{ marginTop: 20 }}>
                       Click below to generate your first address
                     </Text>
                   : null}

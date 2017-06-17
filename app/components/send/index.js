@@ -19,7 +19,7 @@ export default class LoginForm extends React.Component {
     super(props);
     this.state = {
       address: "",
-      amount: 0,
+      amount: "0",
       unit: "i",
       message: ""
     };
@@ -48,7 +48,7 @@ export default class LoginForm extends React.Component {
         tag: Iota.toTrytes("iOSWALLET")
       }
     ];
-    this.setState({ address: "", amount: 0, unit: "i", message: "" });
+    this.setState({ address: "", amount: "0", unit: "i", message: "" });
     this.props.screenProps.send(9, 15, transfer);
   };
 
