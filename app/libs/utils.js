@@ -45,7 +45,6 @@ const sigFigs = (n, sig) => {
 };
 
 export const converter = (amount, unit) => {
-  console.log(amount);
   switch (unit) {
     case "Ki":
       return amount * Math.pow(10, 3);
