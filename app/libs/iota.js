@@ -39,6 +39,24 @@ export default class iotaWrapper {
     return p;
   };
 
+  static getTransfers = seed => {
+    console.log("Getting Transfers");
+    var p = new Promise((res, rej) => {
+      iota.api.getTransfers(iotaWrapper.toTrytes(seed), function(
+        error,
+        success
+      ) {
+        if (error) {
+          alert(error);
+          rej(error);
+        } else {
+          console.log(success);
+          res(success);
+        }
+      });
+    });
+    return p;
+  };
   static newAddress = seed => {
     console.log("Generating New Address");
     var p = new Promise((res, rej) => {
@@ -60,21 +78,44 @@ export default class iotaWrapper {
     return p;
   };
 
-  static send = (seed, depth, minMag, transfers) => {
+  static send = (seed, depth, minMag, transfers, inputs) => {
     console.log("Sending Transaction");
     var p = new Promise((res, rej) => {
-      iota.api.sendTransfer(seed, depth, minMag, transfers, function(
-        error,
-        success
-      ) {
-        if (error) {
-          alert(error);
-          rej(error);
-        } else {
-          res(success);
+      iota.api.sendTransfer(
+        iotaWrapper.toTrytes(seed),
+        depth,
+        minMag,
+        transfers,
+        { inputs: inputs },
+        function(error, success) {
+          if (error) {
+            alert(error);
+            rej(error);
+          } else {
+            res(success);
+          }
         }
-      });
+      );
     });
+    //   iota.api.prepareTransfers(
+    //     seed,
+    //     transfers,
+    //     function(e, s) {
+    //       if (s) {
+    //         console.log(s);
+    //         iota.api.sendTrytes(s, depth, minMag, function(e, s) {
+    //           if (s) {
+    //             res(s);
+    //           } else {
+    //             rej(e);
+    //           }
+    //         });
+    //       } else {
+    //         rej(e);
+    //       }
+    //     }
+    //   );
+    // });
     return p;
   };
 
