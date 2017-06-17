@@ -51,7 +51,7 @@ const PaddedBox = styled.View`
 `;
 
 const Header = styled.Text`
-  font-size: 20px;
+  font-size: 18px;
     text-align: center;
 
   margin-bottom: 20px;
