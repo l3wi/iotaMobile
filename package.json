@@ -8,14 +8,13 @@
     "postinstall": "./node_modules/.bin/rn-nodeify --install 'crypto,stream,events,vm' --hack"
   },
   "dependencies": {
-    "crypto-js": "^3.1.9-1",
     "date-fns": "^1.28.5",
     "events": "^1.1.1",
     "iota.lib.js": "https://github.com/l3wi/iota.lib.js.git",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
     "react-native-chooser": "^1.5.2",
-    "react-native-crypto": "^2.0.1",
+    "react-native-crypto": "^2.0.2",
     "react-native-keychain": "^1.2.0",
     "react-native-randombytes": "^2.2.0",
     "react-native-timer": "^1.3.1",
