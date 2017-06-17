@@ -54,7 +54,7 @@ export default class LoginForm extends React.Component {
                 )
           }
           keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) => (
+          renderItem={({ item, index }) =>
             <Item
               key={index}
               width={width}
@@ -93,8 +93,7 @@ export default class LoginForm extends React.Component {
                   {getDate(item[0].timestamp)}
                 </Text>
               </Row>
-            </Item>
-          )}
+            </Item>}
         />
         <Modal
           animationType={"fade"}
@@ -126,14 +125,14 @@ export default class LoginForm extends React.Component {
                     : null}
 
                   <Text>Hash:</Text>
-                  {item.map((item, index) => (
+                  {item.map((item, index) =>
                     <TouchableOpacity
                       key={index}
                       onPress={() => copy(item.hash)}
                     >
                       <Text>{item.hash.substring(0, 20)}...</Text>
                     </TouchableOpacity>
-                  ))}
+                  )}
 
                   {!item.persistence
                     ? <Button
