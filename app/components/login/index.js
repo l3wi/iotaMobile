@@ -52,29 +52,32 @@ export default class LoginForm extends React.Component {
     return (
       <Col>
         <Logo source={require("../../assets/iota.png")} />
+        {this.props.box
+          ? <EmptyCol>
 
-        <EmptyCol>
+              <Row>
+                <BottomBorder>
+                  <TInput
+                    value={this.state.pass}
+                    placeholder={"Enter Password"}
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    placeholderTextColor={"white"}
+                    selectTextOnFocus={true}
+                    onSubmitEditing={() => this.getAccount(this.state.pass)}
+                    onChangeText={pass => this.setState({ pass })}
+                  />
+                </BottomBorder>
+              </Row>
+              <Row>
+                <Button onPress={() => this.getAccount(this.state.pass)}>
+                  <AppText>Login</AppText>
+                </Button>
+              </Row>
 
-          <Row>
-            <BottomBorder>
-              <TInput
-                value={this.state.pass}
-                placeholder={"Enter Password"}
-                autoCorrect={false}
-                secureTextEntry={true}
-                placeholderTextColor={"white"}
-                selectTextOnFocus={true}
-                onSubmitEditing={() => this.getAccount(this.state.pass)}
-                onChangeText={pass => this.setState({ pass })}
-              />
-            </BottomBorder>
-          </Row>
-          <Row>
-            <Button onPress={() => this.getAccount(this.state.pass)}>
-              <AppText>Login</AppText>
-            </Button>
-          </Row>
-        </EmptyCol>
+            </EmptyCol>
+          : null}
+
         <Row>
           <Button onPress={this.props.clear}>
             <AppText>Load New Wallet</AppText>
