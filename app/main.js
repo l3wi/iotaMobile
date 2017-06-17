@@ -108,10 +108,6 @@ export default class Main extends Component {
       const account = await Iota.getAccount(
         await OpenBox("seed", this.state.pwd)
       );
-      const transfers = await Iota.getTransfers(
-        await OpenBox("seed", this.state.pwd)
-      );
-      console.log(transfers);
       if (!account) return alert("Couldn't fetch wallet");
       this.setState({ account: account, loading: false });
       this.forceUpdate();
