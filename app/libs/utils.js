@@ -15,16 +15,16 @@ export const formatAmount = (amount, ternary) => {
   }
   if (amount >= 1000000000000000) {
     units = "Pi";
-    sanitisedAmount = sigFigs(converter(amount, units), 4);
+    sanitisedAmount = sigFigs(reducer(amount, units), 4);
   } else if (amount >= 1000000000000) {
     units = "Ti";
-    sanitisedAmount = sigFigs(converter(amount, units), 4);
+    sanitisedAmount = sigFigs(reducer(amount, units), 4);
   } else if (amount >= 1000000000) {
     units = "Gi";
-    sanitisedAmount = sigFigs(converter(amount, units), 4);
+    sanitisedAmount = sigFigs(reducer(amount, units), 4);
   } else if (amount >= 1000000) {
     units = "Mi";
-    sanitisedAmount = sigFigs(converter(amount, units), 4);
+    sanitisedAmount = sigFigs(reducer(amount, units), 4);
   } else {
     units = "i";
     sanitisedAmount = amount;
@@ -60,6 +60,28 @@ export const converter = (amount, unit) => {
       break;
     case "Pi":
       return amount * Math.pow(10, 15);
+      break;
+    default:
+      return amount;
+  }
+};
+
+export const reducer = (amount, unit) => {
+  switch (unit) {
+    case "Ki":
+      return amount / Math.pow(10, 3);
+      break;
+    case "Mi":
+      return amount / Math.pow(10, 6);
+      break;
+    case "Gi":
+      return amount / Math.pow(10, 9);
+      break;
+    case "Ti":
+      return amount / Math.pow(10, 12);
+      break;
+    case "Pi":
+      return amount / Math.pow(10, 15);
       break;
     default:
       return amount;
