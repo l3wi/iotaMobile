@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, TouchableOpacity, ScrollView } from "react-native";
+import { Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import styled from "styled-components/native";
 import { OpenBox, DeleteBox } from "../libs/crypto";
 import Balance from "../components/balance";
@@ -20,7 +20,7 @@ export default class InitialScreen extends Component {
 
   clear = () => {
     DeleteBox("seed");
-    alert("Seed was cleared. Please close the app.");
+    Alert.alert("Seed was cleared", "Please close the app.");
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
@@ -32,32 +32,27 @@ export default class InitialScreen extends Component {
     this.props.navigation.dispatch(resetAction);
   };
 
+  showSeed = async () => {
+    console.log(this.props.screenProps.state);
+    const seed = await OpenBox("seed", this.props.screenProps.state.pwd);
+    Alert.alert("Wallet Seed", seed);
+  };
   render() {
-    var { account, loading, rememberMe } = this.props.screenProps.state;
+    console.log(this.props.screenProps.state);
+    var { account, loading, rememberMe, pwd } = this.props.screenProps.state;
     return (
       <Wrapper>
         <Balance account={account} loading={loading} {...this.props} />
-        <ScrollView style={{ width: "100%" }}>
-
-          <Row>
-            <BottomBorder>
-              <TInput
-                value={rememberMe}
-                autoCorrect={false}
-                placeholder={rememberMe}
-                placeholderTextColor={"black"}
-                onChangeText={first => this.setState({ rememberMe })}
-              />
-            </BottomBorder>
-            <Button wide onPress={() => this.showSeed()}>
-              <WhiteText>Set Remember Me</WhiteText>
-            </Button>
-          </Row>
+        <ScrollView
+          style={{ width: "100%" }}
+          contentContainerStyle={{ justifyContent: "space-around" }}
+        >
           <Row>
             <Button onPress={() => this.showSeed()}>
               <WhiteText>Show Seed</WhiteText>
             </Button>
           </Row>
+          <Spacer />
           <Row>
             <Button onPress={() => this.clear()}>
               <WhiteText>Delete Seed</WhiteText>
@@ -111,4 +106,8 @@ const Button = styled.TouchableOpacity`
 `;
 const WhiteText = styled.Text`
   color: white;
+`;
+
+const Spacer = styled.View`
+  height: 50px;
 `;
