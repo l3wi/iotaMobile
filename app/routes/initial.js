@@ -3,11 +3,14 @@ import {
   ScrollView,
   Dimensions,
   KeyboardAvoidingView,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
 import styled from "styled-components/native";
 import LoginForm from "../components/login";
 import SeedSetup from "../components/seedSetup";
+import Modal from "../components/initalModal";
+
 import { RetrieveBox, DeleteBox } from "../libs/crypto";
 
 export default class InitialScreen extends Component {
@@ -15,7 +18,8 @@ export default class InitialScreen extends Component {
     super(props);
     this.state = {
       loading: true,
-      box: false
+      box: false,
+      modal: false
     };
   }
   static navigationOptions = {
@@ -24,13 +28,17 @@ export default class InitialScreen extends Component {
 
   componentDidMount() {
     RetrieveBox("seed").then(box => {
-      this.setState({ loading: false, box: box });
+      this.setState({ loading: false, box: box, login: true });
     });
   }
 
   clearBox = () => {
     DeleteBox("seed");
-    this.setState({ box: false });
+    this.setState({ login: false });
+  };
+
+  close = () => {
+    this.setState({ modal: false });
   };
 
   loading = message => {
@@ -42,14 +50,25 @@ export default class InitialScreen extends Component {
   };
 
   render() {
-    const { box } = this.state;
+    const { box, login, modal } = this.state;
     return (
-      <ScrollView>
+      <ScrollView style={{ position: "relative" }}>
+        <Modal {...this.state} close={this.close} />
         {!this.state.loading
           ? <Wrapper>
-              {box
+              {!modal
+                ? <OpenModal onPress={() => this.setState({ modal: true })}>
+                    <Image
+                      source={require("../assets/icons8-settings.png")}
+                      style={{ height: 25, width: 25 }}
+                    />
+                  </OpenModal>
+                : null}
+
+              {login
                 ? <LoginForm
                     {...this.props}
+                    box={box}
                     clear={this.clearBox}
                     loading={this.loading}
                   />
@@ -92,4 +111,12 @@ const AppText = styled.Text`
 const Logo = styled.Image`
   width: 160px;
   height:160px;
+`;
+
+const OpenModal = styled.TouchableOpacity`
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  height: 35px;
+  width: 35px;
 `;
