@@ -33,7 +33,7 @@ export default class InitialScreen extends Component {
   };
 
   render() {
-    var { account, loading } = this.props.screenProps.state;
+    var { account, loading, rememberMe } = this.props.screenProps.state;
     return (
       <Wrapper>
         <Balance account={account} loading={loading} {...this.props} />
@@ -42,14 +42,14 @@ export default class InitialScreen extends Component {
           <Row>
             <BottomBorder>
               <TInput
-                value={this.state.rememberMe}
+                value={rememberMe}
                 autoCorrect={false}
-                placeholderTextColor={"white"}
-                secureTextEntry={true}
-                onChangeText={first => this.setState({ first })}
+                placeholder={rememberMe}
+                placeholderTextColor={"black"}
+                onChangeText={first => this.setState({ rememberMe })}
               />
             </BottomBorder>
-            <Button onPress={() => this.showSeed()}>
+            <Button wide onPress={() => this.showSeed()}>
               <WhiteText>Set Remember Me</WhiteText>
             </Button>
           </Row>
@@ -106,7 +106,7 @@ const Button = styled.TouchableOpacity`
     align-items: center;
     padding: 10px;
     background-color: #2d353e;
-    flex: 1;
+    flex: ${props => (props.wide ? 1.8 : 1)};
 
 `;
 const WhiteText = styled.Text`
