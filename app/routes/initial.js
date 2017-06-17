@@ -33,8 +33,12 @@ export default class InitialScreen extends Component {
     this.setState({ box: false });
   };
 
-  loading = () => {
-    this.setState({ loading: true });
+  loading = message => {
+    if (!message) {
+      this.setState({ loading: false });
+    } else {
+      this.setState({ loading: message || "Loading" });
+    }
   };
 
   render() {
@@ -54,7 +58,7 @@ export default class InitialScreen extends Component {
           : <Wrapper loading>
               <Logo source={require("../assets/iota.png")} />
               <AppText>
-                Loading
+                {this.state.loading}
               </AppText>
             </Wrapper>}
       </ScrollView>
@@ -67,7 +71,8 @@ const Wrapper = styled.View`
     height: ${height + "px"};
     display:flex;
     align-items: center;
-    justify-content: ${props => (props.loading ? "space-around" : "flex-start")};
+    justify-content: ${props =>
+      props.loading ? "space-around" : "flex-start"};
     background: #2d353e;
     padding: 20px 20px;
 `;

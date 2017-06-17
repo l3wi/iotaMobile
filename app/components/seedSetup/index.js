@@ -34,14 +34,14 @@ export default class LoginForm extends React.Component {
 
   setup = async (seed, password) => {
     if (this.state.first === this.state.second) {
-      this.props.loading();
+      this.props.loading("Encrypting Seed");
       // Setup Bool for this
       const node = await Iota.node();
 
       const passHash = hashPwd(password);
-      console.log("Initialising Seed");
       await InitialiseSeed(seed, passHash);
       const clearSeed = await OpenBox("seed", passHash);
+      this.props.loading("Getting Wallet");
       const account = await Iota.getAccount(clearSeed);
       if (!account) {
         this.props.loading();
