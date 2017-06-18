@@ -38,11 +38,17 @@ export default class LoginForm extends React.Component {
     // Decrypt Seed
     const clearSeed = await OpenBox("seed", passHash);
     this.setState({ pass: "" });
-    if (!clearSeed) return alert("Incorrect Password");
+    if (!clearSeed) {
+      this.props.loading();
+      return alert("Incorrect Password");
+    }
     // Get account
     this.props.loading("Getting Wallet");
     const account = await Iota.getAccount(clearSeed);
-    if (!account) return alert("Couldn't fetch wallet");
+    if (!account) {
+      this.props.loading();
+      return alert("Couldn't fetch wallet");
+    }
     // this.setState({ account });
     // Push to new page
     this.nextRoute(account, passHash, node);
