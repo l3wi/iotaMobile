@@ -43,7 +43,6 @@ export default class LoginForm extends React.Component {
     }
 
     const value = converter(amount, unit);
-    console.log(value);
     if (value % 1 != 0) {
       Alert.alert("Error", "You can't send fractions of an IOTA");
       return;
