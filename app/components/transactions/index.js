@@ -47,11 +47,6 @@ export default class LoginForm extends React.Component {
     }
   };
 
-  copy = address => {
-    Clipboard.setString(address);
-    alert("Copied to clip board");
-  };
-
   _onRefresh = () => {
     this.setState({ loading: true });
     this.props.screenProps.getWallet();
