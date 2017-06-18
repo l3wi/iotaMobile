@@ -9,15 +9,13 @@ import {
   TouchableOpacity,
   Modal,
   Clipboard,
-  Image
+  Image,
+  RefreshControl
 } from "react-native";
 import Iota, { Valid } from "../../libs/iota";
 import { formatAmount, getDate } from "../../libs/utils";
 
-copy = address => {
-  Clipboard.setString(address);
-  alert("Copied to clip board");
-};
+import Transaction from "./modal";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -30,19 +28,38 @@ export default class LoginForm extends React.Component {
     };
   }
   componentWillReceiveProps(props) {
-    this.setState({ loading: false, account: props.account });
+    const loading = props.loading ? true : false;
+    this.setState({ loading: loading, account: props.account });
   }
 
-  componentDidMount() {
-    this.setState({ account: this.props.account, loading: false });
+  componentWillMount() {
+    this.setState({
+      account: this.props.account,
+      loading: false
+    });
   }
 
-  setModalVisible(item) {
-    this.setState({ item: item, modalVisible: !this.state.modalVisible });
-  }
+  setModalVisible = item => {
+    if (item) {
+      this.setState({ item: item, modalVisible: true });
+    } else {
+      this.setState({ item: false, modalVisible: false });
+    }
+  };
+
+  copy = address => {
+    Clipboard.setString(address);
+    alert("Copied to clip board");
+  };
+
+  _onRefresh = () => {
+    this.setState({ loading: true });
+    this.props.screenProps.getWallet();
+    console.log("Pull to Refresh Actioned");
+  };
 
   render() {
-    var { item, account, loading } = this.state;
+    var { item, account, loading, refreshing } = this.state;
     return (
       <Wrapper>
         <FlatList
@@ -53,6 +70,12 @@ export default class LoginForm extends React.Component {
                   (a, b) => b[0].timestamp - a[0].timestamp
                 )
           }
+          refreshing={this.state.loading}
+          onRefresh={() =>
+            <RefreshControl
+              refreshing={this.state.loading}
+              onRefresh={this._onRefresh()}
+            />}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) =>
             <Item
@@ -95,98 +118,16 @@ export default class LoginForm extends React.Component {
               </Row>
             </Item>}
         />
-        <Modal
-          animationType={"fade"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            alert("Modal has been closed.");
-          }}
-        >
-          {item
-            ? <ModalBack>
-                <Close
-                  onPress={() => {
-                    this.setModalVisible(!this.state.modalVisible);
-                  }}
-                >
-                  <Image
-                    source={require("../../assets/close.png")}
-                    style={{ height: 30, width: 30 }}
-                  />
-                </Close>
-                <ModalBody>
-
-                  <Text>Bundle:</Text>
-                  {item[0]
-                    ? <TouchableOpacity onPress={() => copy(item[0].bundle)}>
-                        <Text>{item[0].bundle.substring(0, 20)}...</Text>
-                      </TouchableOpacity>
-                    : null}
-
-                  <Text>Hash:</Text>
-                  {item.map((item, index) =>
-                    <TouchableOpacity
-                      key={index}
-                      onPress={() => copy(item.hash)}
-                    >
-                      <Text>{item.hash.substring(0, 20)}...</Text>
-                    </TouchableOpacity>
-                  )}
-
-                  {!item.persistence
-                    ? <Button
-                        onPress={() => {
-                          this.props.screenProps.replay(item[0].hash);
-                        }}
-                      >
-                        <Word>Replay Transaction</Word>
-                      </Button>
-                    : null}
-
-                </ModalBody>
-              </ModalBack>
-            : null}
-
-        </Modal>
-
+        <Transaction
+          item={item}
+          modalVisible={this.state.modalVisible}
+          setModalVisible={this.setModalVisible}
+        />
       </Wrapper>
     );
   }
 }
 const { height, width } = Dimensions.get("window");
-
-const ModalBody = styled.View`
-  padding: 20px;
-  width: 70%;
-  background: white;
-`;
-
-const Close = styled.TouchableOpacity`
-    position: absolute;
-    top: 40px;
-    right: 40px;
-`;
-
-const Button = styled.TouchableOpacity`
-    flex-direction: row;
-    justify-content: center;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: #2d353e;
-`;
-const Word = styled.Text`
-  color: white;
-`;
-
-const ModalBack = styled.View`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.70);
-`;
 
 const Wrapper = styled.View`
   flex: 1;
