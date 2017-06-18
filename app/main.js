@@ -187,6 +187,7 @@ export default class Main extends Component {
     var data = {
       state: this.state,
       newAddress: this.newAddress,
+      getWallet: this.getAccount,
       send: this.send,
       attachToTangle: this.attachToTangle,
       replay: this.replay
