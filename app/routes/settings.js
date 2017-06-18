@@ -1,7 +1,14 @@
 import React, { Component } from "react";
-import { Text, TouchableOpacity, ScrollView, Alert } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  AlertIOS
+} from "react-native";
 import styled from "styled-components/native";
-import { OpenBox, DeleteBox } from "../libs/crypto";
+import { OpenBox, DeleteBox, hashPwd } from "../libs/crypto";
+import { changeRemoteNode, getNode } from "../libs/iota";
 import Balance from "../components/balance";
 import { NavigationActions } from "react-navigation";
 
@@ -11,13 +18,23 @@ export default class InitialScreen extends Component {
     this.state = {
       loading: true,
       box: false,
-      rememberMe: 10
+      rememberMe: 10,
+      remoteNode: ""
     };
   }
   static navigationOptions = {
     header: null
   };
 
+  componentWillMount() {
+    this.findNode();
+  }
+  // Gets node to display in the page (Could be paassed down)
+  findNode = async () => {
+    const node = await getNode();
+    this.setState({ remoteNode: node });
+  };
+  // Clears the application
   clear = () => {
     DeleteBox("seed");
     Alert.alert("Seed was cleared", "Please close the app.");
@@ -32,30 +49,69 @@ export default class InitialScreen extends Component {
     this.props.navigation.dispatch(resetAction);
   };
 
-  showSeed = async () => {
+  // Shows seed
+  showSeed = async pwd => {
     console.log(this.props.screenProps.state);
-    const seed = await OpenBox("seed", this.props.screenProps.state.pwd);
-    Alert.alert("Wallet Seed", seed);
+    const seed = await OpenBox("seed", hashPwd(pwd));
+    if (!seed) return Alert.alert("Error", "Incorrect Password");
+    Alert.alert("Wallet Seed:", seed);
   };
+
   render() {
-    console.log(this.props.screenProps.state);
-    var { account, loading, rememberMe, pwd } = this.props.screenProps.state;
+    var { account, loading } = this.props.screenProps.state;
+    var { remoteNode, rememberMe } = this.state;
     return (
       <Wrapper>
         <Balance account={account} loading={loading} {...this.props} />
         <ScrollView
-          style={{ width: "100%" }}
-          contentContainerStyle={{ justifyContent: "space-around" }}
+          style={{ width: "100%", height: "80%" }}
+          contentContainerStyle={{ justifyContent: "space-between" }}
         >
-          <Row>
-            <Button onPress={() => this.showSeed()}>
-              <WhiteText>Show Seed</WhiteText>
-            </Button>
-          </Row>
+          <EmptyCol>
+            {/*<Row between>
+              <Text>Remember me timeout: </Text>
+              <Text>10 min</Text>
+            </Row>*/}
+            <Row between>
+              <Text>Remote Node: </Text>
+              <Text>{remoteNode}</Text>
+            </Row>
+            <Row>
+              <Button
+                onPress={() => {
+                  AlertIOS.prompt(
+                    "Enter node url",
+                    null,
+                    text => changeRemoteNode(text) && this.findNode(),
+                    "plain-text",
+                    "http://",
+                    "url"
+                  );
+                }}
+              >
+                <WhiteText>Change remote node</WhiteText>
+              </Button>
+            </Row>
+            <Row>
+              <Button
+                onPress={() => {
+                  AlertIOS.prompt(
+                    "Enter a password",
+                    null,
+                    text => this.showSeed(text),
+                    "secure-text"
+                  );
+                }}
+              >
+                <WhiteText>Show Seed</WhiteText>
+              </Button>
+            </Row>
+          </EmptyCol>
+
           <Spacer />
           <Row>
             <Button onPress={() => this.clear()}>
-              <WhiteText>Delete Seed</WhiteText>
+              <WhiteText>Delete Seed & Reset Wallet</WhiteText>
             </Button>
           </Row>
         </ScrollView>
@@ -70,13 +126,17 @@ const Wrapper = styled.View`
     align-items: center;
     justify-content: flex-start;
 `;
+const EmptyCol = styled.View`
+    flex:1;
+    flex-direction: column;
+    width: 100%;
+`;
 const Row = styled.View`
     display: flex;
     flex-direction: row;   
-    justify-content: center;
+    justify-content: ${props => (props.between ? "space-between" : "center")};
     align-items: center;
-        margin: 20px 20px ;
-
+    margin: 20px 20px ;
 `;
 
 const BottomBorder = styled.View`
