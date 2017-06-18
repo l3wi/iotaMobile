@@ -27,7 +27,11 @@ export default class InitialModal extends React.Component {
 
   getNode = async () => {
     await AsyncStorage.getItem("node", (err, result) => {
-      this.setState({ url: JSON.parse(result) });
+      if (!result) {
+        this.setState({ url: "http://node.iotawallet.info:14265/" });
+      } else {
+        this.setState({ url: JSON.parse(result) });
+      }
     });
   };
 
@@ -70,7 +74,7 @@ export default class InitialModal extends React.Component {
               />
             </BottomBorder>
             <Word />
-            <Word>Developed by Lewis Freiberg</Word>
+            <Word>Developed by @lewi</Word>
 
           </ModalBody>
 
