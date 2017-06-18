@@ -132,25 +132,6 @@ export default class iotaWrapper {
         }
       );
     });
-    //   iota.api.prepareTransfers(
-    //     seed,
-    //     transfers,
-    //     function(e, s) {
-    //       if (s) {
-    //         console.log(s);
-    //         iota.api.sendTrytes(s, depth, minMag, function(e, s) {
-    //           if (s) {
-    //             res(s);
-    //           } else {
-    //             rej(e);
-    //           }
-    //         });
-    //       } else {
-    //         rej(e);
-    //       }
-    //     }
-    //   );
-    // });
     return p;
   };
 
