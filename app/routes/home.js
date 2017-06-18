@@ -19,7 +19,7 @@ export default class HomeScreen extends Component {
           {...this.props}
         />
         {account.transfers[0]
-          ? <Transactions account={account} {...this.props} />
+          ? <Transactions account={account} loading={loading} {...this.props} />
           : <ScrollView>
               <PaddedBox>
                 <Header>Looks like this is your first time!</Header>
