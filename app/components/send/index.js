@@ -8,7 +8,8 @@ import {
   TextInput,
   Image,
   Picker,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { Select, Option } from "react-native-chooser";
 import { converter } from "../../libs/utils";
@@ -28,17 +29,26 @@ export default class LoginForm extends React.Component {
   create = (address, amount, unit, message) => {
     // Thanks dom :)
     if (!address) {
-      alert("Address is required");
+      Alert.alert("Error", "Address is required");
       return;
     } else if (address.length == 81) {
-      alert("Missing address checksum");
+      Alert.alert("Error", "Missing address checksum");
       return;
     } else if (address.length != 90) {
-      alert("Incorrect address length");
+      Alert.alert("Error", "Incorrect address length");
+      return;
+    } else if (isNaN(amount)) {
+      Alert.alert("Error", "Please enter a valid number");
       return;
     }
 
-    const value = parseInt(converter(amount, unit));
+    const value = converter(amount, unit);
+    console.log(value);
+    if (value % 1 != 0) {
+      Alert.alert("Error", "You can't send fractions of an IOTA");
+      return;
+    }
+
     console.log(value);
     const transfer = [
       {
