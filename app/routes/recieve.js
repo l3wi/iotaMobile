@@ -30,7 +30,6 @@ export default class RecieveScreen extends Component {
 
   componentWillReceiveProps(props) {
     this.setState({
-      called: false,
       account: props.screenProps.state.account,
       loading: props.screenProps.state.loading
     });
@@ -43,6 +42,15 @@ export default class RecieveScreen extends Component {
       loading: this.props.screenProps.state.loading
     });
   }
+  newAddress = () => {
+    this.setState({ called: true });
+    this.props.screenProps.newAddress();
+  };
+
+  attach = () => {
+    this.setState({ called: false });
+    this.props.screenProps.attachToTangle();
+  };
 
   static navigationOptions = {};
   render() {
@@ -71,16 +79,20 @@ export default class RecieveScreen extends Component {
                           )}
                         </Address>
                       </CopyAddress>
-                      <QR
-                        source={{
-                          uri: qr(
-                            Iota.addChecksum(
-                              account.addresses[account.addresses.length - 1]
-                            )
-                          ),
-                          scale: 4
-                        }}
-                      />
+                      {account.addresses[account.addresses.length - 1]
+                        ? <QR
+                            source={{
+                              uri: qr(
+                                Iota.addChecksum(
+                                  account.addresses[
+                                    account.addresses.length - 1
+                                  ]
+                                )
+                              ),
+                              scale: 4
+                            }}
+                          />
+                        : null}
 
                     </Col>
                   : null}
@@ -91,12 +103,13 @@ export default class RecieveScreen extends Component {
                     </Text>
                   : null}
 
-                {account.addresses[account.addresses.length - 1] !==
-                  account.latestAddress
-                  ? <Button onPress={this.props.screenProps.newAddress}>
+                {!called &&
+                  account.addresses[account.addresses.length - 1] !==
+                    account.latestAddress
+                  ? <Button onPress={() => this.newAddress()}>
                       <WhiteText>New Address</WhiteText>
                     </Button>
-                  : <Button onPress={this.props.screenProps.attachToTangle}>
+                  : <Button onPress={() => this.attach()}>
                       <WhiteText>Attach to tangle</WhiteText>
                     </Button>}
 
