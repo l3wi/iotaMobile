@@ -96,8 +96,9 @@ const Milestone = styled.Text`
 
 const MenuButtom = styled.TouchableOpacity`
   position: absolute;
-  top: 40px;
-  left: 30px;
+  padding: 20px;
+  top: 20px;
+  left: 10px;
 `
 
 const TInput = styled.TextInput`
