@@ -1,8 +1,10 @@
 import IOTA from "iota.lib.js";
 import { AsyncStorage } from "react-native";
 
+var defaultNode = "http://node.iotawallet.info:14265/";
+
 export var iota = new IOTA({
-  provider: "http://node.iotawallet.info:14265/"
+  provider: defaultNode
 });
 
 (async () => {
@@ -17,7 +19,7 @@ export var iota = new IOTA({
       } else {
         console.log("Using default node");
         iota = new IOTA({
-          provider: "http://node.iotawallet.info:14265/"
+          provider: defaultNode
         });
       }
     });
@@ -37,6 +39,17 @@ export const changeRemoteNode = async url => {
     // Error saving data
   }
   alert("Node Changed");
+};
+
+export const getNode = async () => {
+  var node = defaultNode;
+  await AsyncStorage.getItem("node", (err, result) => {
+    const remotenode = JSON.parse(result);
+    if (node) {
+      node = remotenode;
+    }
+  });
+  return node;
 };
 
 export default class iotaWrapper {
