@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  ScrollView,
   Dimensions,
   KeyboardAvoidingView,
   Image,
@@ -52,7 +51,7 @@ export default class InitialScreen extends Component {
   render() {
     const { box, login, modal } = this.state;
     return (
-      <ScrollView style={{ position: "relative" }}>
+      <Main style={{ position: "relative" }}>
         <Modal {...this.state} close={this.close} />
         {!this.state.loading
           ? <Wrapper>
@@ -80,18 +79,20 @@ export default class InitialScreen extends Component {
                 {this.state.loading}
               </AppText>
             </Wrapper>}
-      </ScrollView>
+      </Main>
     );
   }
 }
 var { height, width } = Dimensions.get("window");
 
+const Main = styled.View`
+
+`;
 const Wrapper = styled.View`
-    height: ${height + "px"};
+    height: 100%;
     display:flex;
     align-items: center;
-    justify-content: ${props =>
-      props.loading ? "space-around" : "flex-start"};
+    justify-content: ${props => (props.loading ? "space-around" : "center")};
     background: #2d353e;
     padding: 20px 20px;
 `;
