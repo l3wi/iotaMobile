@@ -70,7 +70,6 @@ export default class LoginForm extends React.Component {
     newItem[0].sent = this.state.account.addresses.some(
       addy => addy === item[0].address
     );
-    console.log(newItem);
     return (
       <ListItem
         key={index}
