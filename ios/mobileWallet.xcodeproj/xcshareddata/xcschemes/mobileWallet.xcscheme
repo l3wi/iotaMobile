@@ -3,7 +3,7 @@
    LastUpgradeVersion = "0620"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
@@ -31,11 +31,11 @@
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                BuildableName = "mobileWallet.app"
                BlueprintName = "mobileWallet"
-               ReferencedContainer = "container:../../../../../../../../Users/chelsf/Documents/Playground/iota/iotaMobile/ios/mobileWallet.xcodeproj">
+               ReferencedContainer = "container:mobileWallet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
-            buildForTesting = "NO"
+            buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
@@ -45,7 +45,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "mobileWalletTests.xctest"
                BlueprintName = "mobileWalletTests"
-               ReferencedContainer = "container:../../../../../../../../Users/chelsf/Documents/Playground/iota/iotaMobile/ios/mobileWallet.xcodeproj">
+               ReferencedContainer = "container:mobileWallet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -56,6 +56,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
+               BuildableName = "mobileWalletTests.xctest"
+               BlueprintName = "mobileWalletTests"
+               ReferencedContainer = "container:mobileWallet.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -63,7 +73,7 @@
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "mobileWallet.app"
             BlueprintName = "mobileWallet"
-            ReferencedContainer = "container:../../../../../../../../Users/chelsf/Documents/Playground/iota/iotaMobile/ios/mobileWallet.xcodeproj">
+            ReferencedContainer = "container:mobileWallet.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -86,7 +96,7 @@
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "mobileWallet.app"
             BlueprintName = "mobileWallet"
-            ReferencedContainer = "container:../../../../../../../../Users/chelsf/Documents/Playground/iota/iotaMobile/ios/mobileWallet.xcodeproj">
+            ReferencedContainer = "container:mobileWallet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -105,7 +115,7 @@
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "mobileWallet.app"
             BlueprintName = "mobileWallet"
-            ReferencedContainer = "container:../../../../../../../../Users/chelsf/Documents/Playground/iota/iotaMobile/ios/mobileWallet.xcodeproj">
+            ReferencedContainer = "container:mobileWallet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
