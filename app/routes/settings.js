@@ -9,6 +9,7 @@ import {
 import styled from "styled-components/native";
 import { OpenBox, DeleteBox, hashPwd } from "../libs/crypto";
 import { changeRemoteNode, getNode } from "../libs/iota";
+import { getRemember, setRemember } from "../libs/remember";
 import Balance from "../components/balance";
 import { NavigationActions } from "react-navigation";
 
@@ -18,7 +19,7 @@ export default class InitialScreen extends Component {
     this.state = {
       loading: true,
       box: false,
-      rememberMe: 10,
+      rememberMe: null,
       remoteNode: ""
     };
   }
@@ -28,12 +29,19 @@ export default class InitialScreen extends Component {
 
   componentWillMount() {
     this.findNode();
+    this.findRemember();
   }
   // Gets node to display in the page (Could be paassed down)
   findNode = async () => {
     const node = await getNode();
     this.setState({ remoteNode: node });
   };
+
+  findRemember = async () => {
+    const time = await getRemember();
+    this.setState({ rememberMe: time });
+  };
+
   // Clears the application
   clear = () => {
     DeleteBox("seed");
@@ -68,13 +76,30 @@ export default class InitialScreen extends Component {
           contentContainerStyle={{ justifyContent: "space-between" }}
         >
           <EmptyCol>
-            {/*<Row between>
+            <Row between>
               <Text>Remember me timeout: </Text>
-              <Text>10 min</Text>
-            </Row>*/}
+              <Text>{rememberMe} Min</Text>
+            </Row>
+
             <Row between>
               <Text>Remote Node: </Text>
               <Text>{remoteNode}</Text>
+            </Row>
+            <Row>
+              <Button
+                onPress={() => {
+                  AlertIOS.prompt(
+                    "Enter timeout in minutes:",
+                    null,
+                    text => setRemember(text) && this.findRemember(),
+                    "plain-text",
+                    "",
+                    "number-pad"
+                  );
+                }}
+              >
+                <WhiteText>Set Remember Me Timeout</WhiteText>
+              </Button>
             </Row>
             <Row>
               <Button

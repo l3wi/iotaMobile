@@ -22,6 +22,8 @@ import {
   stringToU8,
   uintToS
 } from "./libs/crypto";
+import { exitApp, ExpiredRemember } from "./libs/remember";
+
 // App routes
 import HomeScreen from "./routes/home";
 import SendScreen from "./routes/send";
@@ -71,19 +73,11 @@ export default class Main extends Component {
   componentWillUnmount() {
     // timer.clearInterval("refresh");
     AppState.removeEventListener("change", this.nullify);
-    /* stop worker */
-    this.worker.terminate();
   }
-
-  // Func that get called to refresh the wallet
-  // refreshWallet = () => {
-  //   console.log("Timer: Updating the Wallet");
-  //   this.getAccount();
-  // };
   // Func that get called to null write the pwd
   nullify = nextAppState => {
     console.log("App changed to: ", nextAppState);
-    if (nextAppState === "inactive") {
+    if (nextAppState === "active" && ExpiredRemember()) {
       // Writing it 'null'
       this.setState({ pwd: stringToU8("000000000000000000000000") });
       // Removing it's refs do the GC can clean it
@@ -99,6 +93,8 @@ export default class Main extends Component {
       });
       this.props.navigation.dispatch(resetAction);
       console.log("Key Cleaned & Rerouted to login");
+    } else if (nextAppState === "inactive") {
+      exitApp();
     }
   };
 
