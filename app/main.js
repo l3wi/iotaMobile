@@ -6,7 +6,8 @@ import {
   Text,
   View,
   StatusBar,
-  AppState
+  AppState,
+  Alert
 } from "react-native";
 import timer from "react-native-timer";
 import { DrawerNavigator, NavigationActions } from "react-navigation";
@@ -54,7 +55,7 @@ export default class Main extends Component {
 
   // When the MAIN component enters
   componentDidMount() {
-    timer.setInterval("refresh", this.refreshWallet, 90000);
+    // timer.setInterval("refresh", this.refreshWallet, 90000);
     const account = this.props.navigation.state.params.account;
     this.setState({
       account: account,
@@ -68,16 +69,17 @@ export default class Main extends Component {
 
   // When the MAIN component leaves
   componentWillUnmount() {
-    console.log("Main umnounted");
-    timer.clearInterval("refresh");
+    // timer.clearInterval("refresh");
     AppState.removeEventListener("change", this.nullify);
+    /* stop worker */
+    this.worker.terminate();
   }
 
   // Func that get called to refresh the wallet
-  refreshWallet = () => {
-    console.log("Timer: Updating the Wallet");
-    this.getAccount();
-  };
+  // refreshWallet = () => {
+  //   console.log("Timer: Updating the Wallet");
+  //   this.getAccount();
+  // };
   // Func that get called to null write the pwd
   nullify = nextAppState => {
     console.log("App changed to: ", nextAppState);
@@ -104,7 +106,10 @@ export default class Main extends Component {
   getAccount = async () => {
     this.setState({ loading: { title: "Updating Wallet" } }, async () => {
       this.forceUpdate();
-
+      Alert.alert(
+        "Note",
+        "The wallet is running a hashing function. It may be slow during this process. \n \n Please be patient"
+      );
       const account = await Iota.getAccount(
         await OpenBox("seed", this.state.pwd)
       );
@@ -152,6 +157,7 @@ export default class Main extends Component {
         }
       ]);
       this.getAccount();
+      return;
     });
   };
 
@@ -159,7 +165,10 @@ export default class Main extends Component {
     if (this.state.pwd) {
       this.setState({ loading: { title: "Sending to Tangle" } }, async () => {
         this.forceUpdate();
-
+        Alert.alert(
+          "Note",
+          "The wallet is running a hashing function. It may be slow during this process. \n \n Please be patient"
+        );
         const result = await Iota.send(
           await OpenBox("seed", this.state.pwd),
           depth,
