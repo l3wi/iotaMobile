@@ -3561,6 +3561,10 @@ rn-nodeify@mvayngrib/rn-nodeify:
     semver "^5.0.1"
     xtend "^4.0.0"
 
+rn-workers@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/rn-workers/-/rn-workers-0.1.6.tgz#1f70446153929c8d082123896af5936ced7a0d6e"
+
 rndm@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/rndm/-/rndm-1.2.0.tgz#f33fe9cfb52bbfd520aa18323bc65db110a1b76c"
