@@ -19,21 +19,10 @@ export default class TransactionModal extends React.Component {
   render() {
     var { item, modalVisible } = this.props;
     return (
-      <Modal
-        animationType={"fade"}
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          alert("Modal has been closed.");
-        }}
-      >
+      <Modal animationType={"fade"} transparent={true} visible={modalVisible}>
         {item
           ? <ModalBack>
-              <Close
-                onPress={() => {
-                  this.props.setModalVisible(false);
-                }}
-              >
+              <Close onPress={() => this.props.setModalVisible([])}>
                 <Image
                   source={require("../../assets/close.png")}
                   style={{ height: 30, width: 30 }}
@@ -44,7 +33,9 @@ export default class TransactionModal extends React.Component {
                 <Text>Bundle:</Text>
                 {item[0]
                   ? <TouchableOpacity onPress={() => this.copy(item[0].bundle)}>
-                      <Text>{item[0].bundle.substring(0, 20)}...</Text>
+                      <Text>
+                        {item[0].bundle.substring(0, 20)}...
+                      </Text>
                     </TouchableOpacity>
                   : null}
 

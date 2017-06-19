@@ -40,10 +40,10 @@ export default class LoginForm extends React.Component {
   }
 
   setModalVisible = item => {
-    if (item) {
+    if (item[0]) {
       this.setState({ item: item, modalVisible: true });
     } else {
-      this.setState({ item: false, modalVisible: false });
+      this.setState({ item: [], modalVisible: false });
     }
   };
 
@@ -71,7 +71,13 @@ export default class LoginForm extends React.Component {
       addy => addy === item[0].address
     );
     console.log(newItem);
-    return <ListItem key={index} item={newItem} />;
+    return (
+      <ListItem
+        key={index}
+        item={newItem}
+        setModalVisible={this.setModalVisible}
+      />
+    );
   };
 
   render() {
@@ -95,6 +101,7 @@ export default class LoginForm extends React.Component {
           item={item}
           modalVisible={this.state.modalVisible}
           setModalVisible={this.setModalVisible}
+          {...this.props}
         />
       </Wrapper>
     );
@@ -104,7 +111,7 @@ export default class LoginForm extends React.Component {
 class ListItem extends React.PureComponent {
   render() {
     return (
-      <Item onPress={() => this.setModalVisible(item)}>
+      <Item onPress={() => this.props.setModalVisible(this.props.item)}>
         <Row>
           <Header {...this.props.item[0]}>
             {formatAmount(this.props.item[0].value, "bal")}
