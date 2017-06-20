@@ -49,7 +49,7 @@ export default class LoginForm extends React.Component {
 
   _onRefresh = () => {
     // this.setState({ loading: true });
-    this.props.screenProps.getWallet();
+    this.props.refresh();
     console.log("Pull to Refresh Actioned");
   };
 
@@ -153,6 +153,7 @@ const { height, width } = Dimensions.get("window");
 
 const Wrapper = styled.View`
   flex: 1;
+  background: #eee;
 `;
 const Item = styled.TouchableOpacity`
     width: ${width + "px"};

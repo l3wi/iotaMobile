@@ -16,24 +16,17 @@ import Iota from "../../libs/iota";
 import { InitialiseSeed, OpenBox, randSeed, hashPwd } from "../../libs/crypto";
 import { NavigationActions } from "react-navigation";
 
-export default class LoginForm extends React.Component {
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../../actions";
+
+class SetupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = { seed: "", first: "", second: "" };
   }
 
-  nextRoute = (account, pass, node) => {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: "Main",
-          params: { account: account, pwd: pass, node: node }
-        })
-      ]
-    });
-    this.props.navigation.dispatch(resetAction);
-  };
+  nextRoute = (account, pass, node) => {};
 
   setup = async (seed, password) => {
     // Check for Seed
@@ -62,14 +55,20 @@ export default class LoginForm extends React.Component {
     await InitialiseSeed(seed, passHash);
     const clearSeed = await OpenBox("seed", passHash);
     this.props.loading("Getting Wallet");
-    const account = await Iota.getAccount(clearSeed);
+    var account = await Iota.getAccount(clearSeed);
     if (!account) {
       this.props.loading();
       return alert("Couldn't fetch wallet");
     }
-    this.setState({ seed: "", first: "", second: "" });
+    // this.setState({ account });
     // Push to new page
-    this.nextRoute(account, passHash, node);
+    this.props.setAccount(account);
+    this.props.setPwd(passHash);
+
+    this.props.navigator.resetTo({
+      screen: "transactions",
+      passProps: { account: account, pwd: pass, node: node }
+    });
   };
 
   render() {
@@ -223,3 +222,12 @@ const Button = styled.TouchableOpacity`
     background-color: rgba(255,255,255,.3);
     width: ${props => (props.full ? "100%" : "auto")};
 `;
+function mapStateToProps(state, ownProps) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SetupForm);

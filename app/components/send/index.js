@@ -48,17 +48,17 @@ export default class LoginForm extends React.Component {
       return;
     }
 
-    console.log(value);
+    console.log(parseInt(value, 10));
     const transfer = [
       {
         address: address,
-        value: value,
+        value: parseInt(value, 10),
         message: Iota.toTrytes(this.state.message),
         tag: Iota.toTrytes("iOSWALLET")
       }
     ];
-    this.setState({ address: "", amount: "0", unit: "i", message: "" });
     this.props.screenProps.send(9, 15, transfer);
+    this.setState({ address: "", amount: "0", unit: "i", message: "" });
   };
 
   render() {
