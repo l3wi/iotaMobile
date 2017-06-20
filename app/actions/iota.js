@@ -33,6 +33,18 @@ export const getAccount = pwd => {
   };
 };
 
+export function startLoading(data) {
+  return {
+    type: types.LOADING,
+    data
+  };
+}
+
+export function finishLoading() {
+  return {
+    type: types.LOADING
+  };
+}
 export function setAccount(account) {
   return {
     type: types.SET_ACCOUNT,

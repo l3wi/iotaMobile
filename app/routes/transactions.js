@@ -29,10 +29,10 @@ class TransactionsScreen extends Component {
     var { account, loading } = this.props;
     return (
       <Wrapper>
-        <Balance account={account} loading={false} {...this.props} />
+        <Balance account={account} loading={loading} {...this.props} />
         <Transactions
           account={account}
-          loading={false}
+          loading={loading}
           refresh={this.refresh}
           {...this.props}
         />
@@ -53,7 +53,7 @@ function mapStateToProps(state, ownProps) {
   return {
     account: state.iota.account,
     pwd: state.iota.pwd,
-    loading: state.loading
+    loading: state.iota.loading
   };
 }
 

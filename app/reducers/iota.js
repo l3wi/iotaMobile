@@ -13,6 +13,15 @@ export const iota = createReducer(
       let newState = state;
       newState.pwd = action.pwd;
       return newState;
+    },
+    [types.LOADING](state, action) {
+      let newState = state;
+      if (action.data) {
+        newState.loading = action.data;
+      } else {
+        newState.loading = false;
+      }
+      return newState;
     }
   }
 );

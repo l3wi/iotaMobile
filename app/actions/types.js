@@ -6,6 +6,9 @@ export const SEND = "SEND";
 export const REPLAY = "REPLAY";
 export const SET_PWD = "SET_PWD";
 
+// UTILS
+export const LOADING = "LOADING";
+
 // Crypto
 export const RETRIEVE_BOX = "RETRIEVE_BOX";
 export const DELETE_BOX = "DELETE_BOX";
