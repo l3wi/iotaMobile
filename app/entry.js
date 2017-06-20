@@ -1,11 +1,10 @@
-import React, { Component } from "react";
-import styled from "styled-components/native";
-import { AppRegistry, StyleSheet, Text, View, StatusBar } from "react-native";
 import { Navigation } from "react-native-navigation";
-import { registerScreens } from "./loadRoutes";
+import { Provider } from "react-redux";
 
+import { registerScreens } from "./loadRoutes";
+import { store } from "./store";
 // screen related book keeping
-registerScreens();
+registerScreens(store, Provider);
 
 Navigation.startSingleScreenApp({
   screen: {
