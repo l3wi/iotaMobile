@@ -52,7 +52,9 @@ export default class TransactionModal extends React.Component {
                 {!item.persistence
                   ? <Button
                       onPress={() => {
-                        this.props.screenProps.replay(item[0].hash);
+                        this.props.screenProps.replay(
+                          item[item.length - 1].hash
+                        );
                       }}
                     >
                       <Word>Replay Transaction</Word>
