@@ -26,8 +26,6 @@ class SetupForm extends React.Component {
     this.state = { seed: "", first: "", second: "" };
   }
 
-  nextRoute = (account, pass, node) => {};
-
   setup = async (seed, password) => {
     // Check for Seed
     if (seed === "")
@@ -66,8 +64,7 @@ class SetupForm extends React.Component {
     this.props.setPwd(passHash);
 
     this.props.navigator.resetTo({
-      screen: "transactions",
-      passProps: { account: account, pwd: pass, node: node }
+      screen: "transactions"
     });
   };
 
