@@ -41,8 +41,7 @@ export default class Balance extends React.Component {
   // }
 
   render() {
-    var { account, loading, node } = this.props;
-    console.log(this.props.navigator);
+    var { account, loading, node, title } = this.props;
     return (
       <Wrapper loading={loading}>
         <MenuButtom
@@ -56,10 +55,10 @@ export default class Balance extends React.Component {
             source={require("../../assets/icons8-menu.png")}
           />
         </MenuButtom>
-        {/*<Page>{routeName}</Page>*/}
+        <Page>{title}</Page>
         {loading
           ? <Milestone>
-              {loading.title}
+              {loading}
             </Milestone>
           : null}
         <View />
