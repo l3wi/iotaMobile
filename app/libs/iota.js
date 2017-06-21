@@ -126,7 +126,7 @@ export default class iotaWrapper {
     return p;
   };
 
-  static send = (seed, depth, minMag, transfers, inputs) => {
+  static send = (seed, depth, minMag, transfers) => {
     console.log("Sending Transaction");
     var p = new Promise((res, rej) => {
       iota.api.sendTransfer(
@@ -134,7 +134,6 @@ export default class iotaWrapper {
         depth,
         minMag,
         transfers,
-        { inputs: inputs },
         function(error, success) {
           if (error) {
             alert(error);

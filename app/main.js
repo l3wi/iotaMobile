@@ -77,7 +77,7 @@ export default class Main extends Component {
   // Func that get called to null write the pwd
   nullify = nextAppState => {
     console.log("App changed to: ", nextAppState);
-    if (nextAppState === "active" && ExpiredRemember()) {
+    if (nextAppState === "active" && !ExpiredRemember()) {
       // Writing it 'null'
       this.setState({ pwd: stringToU8("000000000000000000000000") });
       // Removing it's refs do the GC can clean it
@@ -169,8 +169,7 @@ export default class Main extends Component {
           await OpenBox("seed", this.state.pwd),
           depth,
           minMag,
-          transfers,
-          this.state.account.inputs
+          transfers
         );
         this.setState({ loading: false });
         this.forceUpdate();
