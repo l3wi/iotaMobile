@@ -8,6 +8,8 @@ import {
   TextInput,
   Image
 } from "react-native";
+import { Navigation } from "react-native-navigation";
+
 import Iota, { Valid } from "../../libs/iota";
 import { OpenBox, SaveBox, DeleteBox, hashPwd } from "../../libs/crypto";
 
@@ -21,35 +23,26 @@ class LoginForm extends React.Component {
     this.state = { pass: "" };
   }
 
-  nextRoute = (account, pass, node) => {};
-
   getAccount = async password => {
     const passHash = hashPwd(password);
-    this.props.loading("Getting Node");
-    const node = await Iota.node();
+    this.props.startLoading("Getting Node");
     // Decrypt Seed
-    const clearSeed = await OpenBox("seed", passHash);
-    this.setState({ pass: "" });
-    if (!clearSeed) {
-      this.props.loading();
+    // Navigation.showModal({ screen: "loading" });
+    const clearSeed = this.setState({ pass: "" });
+    if (!await OpenBox("seed", passHash)) {
+      this.props.finishLoading();
       return alert("Incorrect Password");
-    }
-    // Get account
-    this.props.loading("Getting Wallet");
-    var account = await Iota.getAccount(clearSeed);
-    if (!account) {
-      this.props.loading();
-      return alert("Couldn't fetch wallet");
     }
     // Store password
     this.props.setPwd(passHash);
+    // Get account
+    this.props.startLoading("Getting Wallet");
+    this.props.getAccount(passHash, this.props.navigator);
 
-    // Save Account
-    this.props.setAccount(account);
-    // Push to new nav state
-    this.props.navigator.resetTo({
-      screen: "transactions"
-    });
+    // // Push to new nav stateAccount
+    // this.props.navigator.resetTo({
+    //   screen: "transactions"
+    // });
   };
 
   render() {
