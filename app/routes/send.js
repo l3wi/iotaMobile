@@ -10,13 +10,36 @@ import Balance from "../components/balance";
 import Send from "../components/send";
 
 class SendScreen extends Component {
-  static navigationOptions = {};
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+  onNavigatorEvent(event) {
+    if (event.type == "DeepLink") {
+      this.props.navigator.resetTo({
+        screen: event.link,
+        animated: false
+      });
+      this.props.navigator.toggleDrawer({
+        side: "left",
+        to: "close"
+      });
+    }
+  }
+  static navigatorStyle = {
+    navBarHidden: true // make the nav bar hidden
+  };
   render() {
     console.log(this.props);
     var { account, loading } = this.props;
     return (
       <Wrapper>
-        <Balance account={account} loading={loading} {...this.props} />
+        <Balance
+          title={"Send"}
+          account={account}
+          loading={loading}
+          {...this.props}
+        />
         <ScrollView style={{ width: "100%" }}>
           <Send {...this.props} />
 

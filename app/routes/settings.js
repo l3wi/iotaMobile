@@ -21,15 +21,28 @@ import { NavigationActions } from "react-navigation";
 class InitialScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: true,
-      box: false,
-      rememberMe: null,
-      remoteNode: ""
-    };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
-  static navigationOptions = {
-    header: null
+  onNavigatorEvent(event) {
+    if (event.type == "DeepLink") {
+      this.props.navigator.resetTo({
+        screen: event.link,
+        animated: false
+      });
+      this.props.navigator.toggleDrawer({
+        side: "left",
+        to: "close"
+      });
+    }
+  }
+  state = {
+    loading: true,
+    box: false,
+    rememberMe: null,
+    remoteNode: ""
+  };
+  static navigatorStyle = {
+    navBarHidden: true // make the nav bar hidden
   };
 
   componentWillMount() {
@@ -50,16 +63,10 @@ class InitialScreen extends Component {
   // Clears the application
   clear = () => {
     DeleteBox("seed");
-    Alert.alert("Seed was cleared", "Please close the app.");
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: "Initial"
-        })
-      ]
+    Alert.alert("Seed was cleared");
+    this.props.navigator.resetTo({
+      screen: "auth"
     });
-    this.props.navigation.dispatch(resetAction);
   };
 
   // Shows seed
@@ -74,7 +81,12 @@ class InitialScreen extends Component {
     var { remoteNode, rememberMe } = this.state;
     return (
       <Wrapper>
-        <Balance account={account} loading={loading} {...this.props} />
+        <Balance
+          title={"Settings"}
+          account={account}
+          loading={loading}
+          {...this.props}
+        />
         <ScrollView
           style={{ width: "100%", height: "80%" }}
           contentContainerStyle={{ justifyContent: "space-between" }}

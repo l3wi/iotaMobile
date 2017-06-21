@@ -25,28 +25,29 @@ copy = address => {
 };
 
 class RecieveScreen extends Component {
+  state = {
+    called: false
+  };
   constructor(props) {
     super(props);
-    this.state = {
-      called: false,
-      account: {}
-    };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
+  onNavigatorEvent(event) {
+    if (event.type == "DeepLink") {
+      this.props.navigator.resetTo({
+        screen: event.link,
+        animated: false
+      });
+      this.props.navigator.toggleDrawer({
+        side: "left",
+        to: "close"
+      });
+    }
+  }
+  static navigatorStyle = {
+    navBarHidden: true // make the nav bar hidden
+  };
 
-  componentWillReceiveProps(props) {
-    this.setState({
-      account: props.screenProps.state.account,
-      loading: props.screenProps.state.loading
-    });
-  }
-
-  componentWillMount() {
-    this.setState({
-      called: false,
-      account: this.props.screenProps.state.account,
-      loading: this.props.screenProps.state.loading
-    });
-  }
   newAddress = () => {
     this.setState({ called: true });
     this.props.screenProps.newAddress();
@@ -54,7 +55,15 @@ class RecieveScreen extends Component {
 
   attach = () => {
     this.setState({ called: false });
-    this.props.screenProps.attachToTangle();
+    this.props.sendTransaction(this.props.pwd, 6, 15, [
+      {
+        address: this.props.account.addresses[
+          this.props.account.addresses.length - 1
+        ],
+        value: 0,
+        tag: Iota.toTrytes("iOSWALLET")
+      }
+    ]);
   };
 
   static navigationOptions = {};
@@ -63,7 +72,12 @@ class RecieveScreen extends Component {
     var { account, loading } = this.props;
     return (
       <Wrapper>
-        <Balance account={account} loading={loading} {...this.props} />
+        <Balance
+          title={"Receive"}
+          account={account}
+          loading={loading}
+          {...this.props}
+        />
         <ScrollView style={{ width: "100%" }}>
           {/*Wait for account to load*/}
           {account.latestAddress
@@ -112,7 +126,9 @@ class RecieveScreen extends Component {
                 {!called &&
                   account.addresses[account.addresses.length - 1] !==
                     account.latestAddress
-                  ? <Button onPress={() => this.newAddress()}>
+                  ? <Button
+                      onPress={() => this.props.newAddress(this.props.pwd)}
+                    >
                       <WhiteText>New Address</WhiteText>
                     </Button>
                   : <Button onPress={() => this.attach()}>
@@ -168,7 +184,7 @@ const CopyAddress = styled.TouchableOpacity`
     align-items: center;
     padding: 10px;
     margin: 20px 0px;
-    background-color: rgba(255,255,255,.4);
+    background-color: #eee;
     width: 80%;
 `;
 const WhiteText = styled.Text`

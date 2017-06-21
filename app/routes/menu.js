@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 import { ActionCreators } from "../actions";
 
 class MenuScreen extends Component {
-  static navigationOptions = {};
   render() {
     return (
       <Wrapper>
@@ -23,32 +22,32 @@ class MenuScreen extends Component {
         </MenuButton>
         <MenuButton
           onPress={() =>
-            this.props.navigator.push({
-              screen: "transactions"
+            this.props.navigator.handleDeepLink({
+              link: "transactions"
             })}
         >
           <MenuText>Transactions</MenuText>
         </MenuButton>
         <MenuButton
           onPress={() =>
-            this.props.navigator.push({
-              screen: "receive"
+            this.props.navigator.handleDeepLink({
+              link: "receive"
             })}
         >
           <MenuText>Receive</MenuText>
         </MenuButton>
         <MenuButton
           onPress={() =>
-            this.props.navigator.push({
-              screen: "send"
+            this.props.navigator.handleDeepLink({
+              link: "send"
             })}
         >
           <MenuText>Send</MenuText>
         </MenuButton>
         <MenuButton
           onPress={() =>
-            this.props.navigator.push({
-              screen: "settings"
+            this.props.navigator.handleDeepLink({
+              link: "settings"
             })}
         >
           <MenuText>Settings</MenuText>
@@ -59,12 +58,7 @@ class MenuScreen extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
-  return {
-    account: state.iota.account,
-    pwd: state.iota.pwd,
-    loading: state.iota.loading
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -82,17 +76,18 @@ const Wrapper = styled.View`
 `;
 
 const MenuButton = styled.TouchableOpacity`
-    height: 7%;
     width:100%;
-    background: #2d353e;
+    background: white;
     display:flex;
-    align-items: center;
+    padding: 20px;
+    align-items: flex-start;
     justify-content: center;
     border-bottom-width: 1px;
-    border-bottom-color: #eee;
+    border-bottom-color: #2d353e;
 `;
 
 const MenuText = styled.Text`
-    color: white;
+    color: #2d353e;
+    font-size: 16px;
 
 `;

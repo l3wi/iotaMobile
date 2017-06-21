@@ -10,21 +10,46 @@ import Balance from "../components/balance";
 import Transactions from "../components/transactions";
 
 class TransactionsScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+  onNavigatorEvent(event) {
+    if (event.type == "DeepLink") {
+      this.props.navigator.resetTo({
+        screen: event.link,
+        animated: false
+      });
+      this.props.navigator.toggleDrawer({
+        side: "left",
+        to: "close"
+      });
+    }
+  }
+
   static navigatorStyle = {
     navBarHidden: true // make the nav bar hidden
   };
 
-  refresh = async () => {
+  componentWillMount() {
+    this.props.finishLoading();
+  }
+
+  refresh = () => {
     this.props.getAccount(this.props.pwd);
   };
   render() {
-    var { account, loading } = this.props;
     return (
       <Wrapper>
-        <Balance account={account} loading={loading} {...this.props} />
+        <Balance
+          title={"Transactions"}
+          account={this.props.account}
+          loading={this.props.loading}
+          {...this.props}
+        />
         <Transactions
-          account={account}
-          loading={loading}
+          account={this.props.account}
+          loading={this.props.loading}
           refresh={this.refresh}
           {...this.props}
         />

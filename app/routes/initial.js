@@ -35,29 +35,19 @@ class AuthScreen extends Component {
   }
 
   clearBox = () => {
-    DeleteBox("seed");
-    this.setState({ login: false });
+    this.props.deleteBox();
   };
 
   close = () => {
     this.setState({ modal: false });
   };
 
-  loading = message => {
-    if (!message) {
-      this.setState({ loading: false });
-    } else {
-      this.setState({ loading: message || "Loading" });
-    }
-  };
-
   render() {
-    const { box, login, modal } = this.props;
-    console.log(this.props);
+    const { box, loading, modal } = this.props;
     return (
       <Main style={{ position: "relative" }}>
         <Modal {...this.state} close={this.close} />
-        {!this.state.loading
+        {!loading
           ? <Wrapper>
               {!modal
                 ? <OpenModal onPress={() => this.setState({ modal: true })}>
@@ -69,18 +59,13 @@ class AuthScreen extends Component {
                 : null}
 
               {box
-                ? <LoginForm
-                    {...this.props}
-                    box={box}
-                    clear={this.clearBox}
-                    loading={this.loading}
-                  />
-                : <SeedSetup {...this.props} loading={this.loading} />}
+                ? <LoginForm {...this.props} box={box} clear={this.clearBox} />
+                : <SeedSetup {...this.props} />}
             </Wrapper>
           : <Wrapper loading>
               <Logo source={require("../assets/iota.png")} />
               <AppText>
-                {this.state.loading}
+                {loading}
               </AppText>
             </Wrapper>}
       </Main>
