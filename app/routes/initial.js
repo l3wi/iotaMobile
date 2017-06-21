@@ -6,13 +6,18 @@ import {
   TouchableOpacity
 } from "react-native";
 import styled from "styled-components/native";
+
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../actions";
+
 import LoginForm from "../components/login";
 import SeedSetup from "../components/seedSetup";
 import Modal from "../components/initalModal";
 
 import { RetrieveBox, DeleteBox } from "../libs/crypto";
 
-export default class InitialScreen extends Component {
+class AuthScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,10 +30,8 @@ export default class InitialScreen extends Component {
     header: null
   };
 
-  componentDidMount() {
-    RetrieveBox("seed").then(box => {
-      this.setState({ loading: false, box: box, login: true });
-    });
+  componentWillMount() {
+    this.props.checkBox();
   }
 
   clearBox = () => {
@@ -49,7 +52,8 @@ export default class InitialScreen extends Component {
   };
 
   render() {
-    const { box, login, modal } = this.state;
+    const { box, login, modal } = this.props;
+    console.log(this.props);
     return (
       <Main style={{ position: "relative" }}>
         <Modal {...this.state} close={this.close} />
@@ -64,7 +68,7 @@ export default class InitialScreen extends Component {
                   </OpenModal>
                 : null}
 
-              {login
+              {box
                 ? <LoginForm
                     {...this.props}
                     box={box}
@@ -83,6 +87,21 @@ export default class InitialScreen extends Component {
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return {
+    box: state.crypto.box,
+    loading: state.iota.loading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);
+
 var { height, width } = Dimensions.get("window");
 
 const Main = styled.View`

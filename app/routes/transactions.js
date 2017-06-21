@@ -5,7 +5,6 @@ import { AppRegistry, StyleSheet, Text, View, ScrollView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreators } from "../actions";
-import Iota, { Valid } from "../libs/iota";
 
 import Balance from "../components/balance";
 import Transactions from "../components/transactions";
@@ -16,13 +15,6 @@ class TransactionsScreen extends Component {
   };
 
   refresh = async () => {
-    // var account = await Iota.getAccount(clearSeed);
-    // if (!account) {
-    //   this.props.loading();
-    //   return alert("Couldn't fetch wallet");
-    // }
-    // this.setState({ account });
-    // Push to new page
     this.props.getAccount(this.props.pwd);
   };
   render() {

@@ -10,6 +10,11 @@ import {
   ScrollView,
   TouchableOpacity
 } from "react-native";
+
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../actions";
+
 import qr from "yaqrcode";
 import Iota from "../libs/iota";
 import Balance from "../components/balance";
@@ -19,7 +24,7 @@ copy = address => {
   alert("Address has been copied to clip board");
 };
 
-export default class RecieveScreen extends Component {
+class RecieveScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,7 +59,8 @@ export default class RecieveScreen extends Component {
 
   static navigationOptions = {};
   render() {
-    var { account, called, loading } = this.state;
+    var { called } = this.state;
+    var { account, loading } = this.props;
     return (
       <Wrapper>
         <Balance account={account} loading={loading} {...this.props} />
@@ -122,6 +128,22 @@ export default class RecieveScreen extends Component {
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return {
+    account: state.iota.account,
+    pwd: state.iota.pwd,
+    loading: state.iota.loading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecieveScreen);
+
 const Wrapper = styled.View`
     height: 100%;
     width:100%;

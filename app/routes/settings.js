@@ -7,13 +7,18 @@ import {
   AlertIOS
 } from "react-native";
 import styled from "styled-components/native";
+
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../actions";
+
 import { OpenBox, DeleteBox, hashPwd } from "../libs/crypto";
 import { changeRemoteNode, getNode } from "../libs/iota";
 import { getRemember, setRemember } from "../libs/remember";
 import Balance from "../components/balance";
 import { NavigationActions } from "react-navigation";
 
-export default class InitialScreen extends Component {
+class InitialScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,14 +64,13 @@ export default class InitialScreen extends Component {
 
   // Shows seed
   showSeed = async pwd => {
-    console.log(this.props.screenProps.state);
     const seed = await OpenBox("seed", hashPwd(pwd));
     if (!seed) return Alert.alert("Error", "Incorrect Password");
     Alert.alert("Wallet Seed:", seed);
   };
 
   render() {
-    var { account, loading } = this.props.screenProps.state;
+    var { account, loading } = this.props;
     var { remoteNode, rememberMe } = this.state;
     return (
       <Wrapper>
@@ -144,6 +148,22 @@ export default class InitialScreen extends Component {
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return {
+    account: state.iota.account,
+    pwd: state.iota.pwd,
+    loading: state.iota.loading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InitialScreen);
+
 const Wrapper = styled.View`
     height: 100%;
     width:100%;

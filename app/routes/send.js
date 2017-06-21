@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import styled from "styled-components/native";
 import { AppRegistry, StyleSheet, Text, View, ScrollView } from "react-native";
 
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../actions";
+
 import Balance from "../components/balance";
 import Send from "../components/send";
 
-export default class SendScreen extends Component {
+class SendScreen extends Component {
   static navigationOptions = {};
   render() {
     console.log(this.props);
-    var { account, loading } = this.props.screenProps.state;
+    var { account, loading } = this.props;
     return (
       <Wrapper>
         <Balance account={account} loading={loading} {...this.props} />
@@ -21,6 +25,21 @@ export default class SendScreen extends Component {
     );
   }
 }
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return {
+    account: state.iota.account,
+    pwd: state.iota.pwd,
+    loading: state.iota.loading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SendScreen);
+
 const Wrapper = styled.View`
     height: 100%;
     width:100%;
