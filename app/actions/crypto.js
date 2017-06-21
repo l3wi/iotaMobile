@@ -1,15 +1,21 @@
-import * as types from "./types";
+import * as types from './types'
+import { RetrieveBox, DeleteBox, OpenBox, hashPwd } from '../libs/crypto'
 
-export function fetchRecipes(ingredients) {
+export const checkBox = () => {
   return (dispatch, getState) => {
-    // async
-    dispatch(setSearchedRecipes({ recipes: resp }));
-  };
+    RetrieveBox('seed').then(box => {
+      if (box) {
+        return dispatch(boxFlag(true))
+      } else {
+        return dispatch(boxFlag(false))
+      }
+    })
+  }
 }
 
-export function setSearchedRecipes({ recipes }) {
+export function boxFlag (box) {
   return {
-    type: types.SET_SEARCHED_RECIPES,
-    recipes
-  };
+    type: types.BOX_FLAG,
+    box
+  }
 }

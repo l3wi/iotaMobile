@@ -1,16 +1,14 @@
-import createReducer from "../libs/createReducer";
-import * as types from "../actions/types";
+import createReducer from '../libs/createReducer'
+import * as types from '../actions/types'
 
-export const searchedRecipes = createReducer(
+export const crypto = createReducer(
   {},
   {
-    [types.SET_SEARCHED_RECIPES](state, action) {
-      let newState = {};
-      action.recipes.forEach(recipe => {
-        let id = recipe.href;
-        newState[id] = Object.assign({}, recipe, { id });
-      });
-      return newState;
+    [types.BOX_FLAG] (state, action) {
+      let newState = state
+      newState.box = action.box
+      console.log(newState)
+      return newState
     }
   }
-);
+)
