@@ -8,7 +8,6 @@ import {
   TextInput,
   Image
 } from "react-native";
-import { Navigation } from "react-native-navigation";
 
 import Iota, { Valid } from "../../libs/iota";
 import { OpenBox, SaveBox, DeleteBox, hashPwd } from "../../libs/crypto";
@@ -27,8 +26,6 @@ class LoginForm extends React.Component {
     const passHash = hashPwd(password);
     this.props.startLoading("Getting Node");
     // Decrypt Seed
-    // Navigation.showModal({ screen: "loading" });
-    const clearSeed = this.setState({ pass: "" });
     if (!await OpenBox("seed", passHash)) {
       this.props.finishLoading();
       return alert("Incorrect Password");
