@@ -17,7 +17,7 @@ import { formatAmount, getDate } from "../../libs/utils";
 
 import Transaction from "./modal";
 
-export default class LoginForm extends React.Component {
+export default class TransactionComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
