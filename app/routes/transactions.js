@@ -31,9 +31,7 @@ class TransactionsScreen extends Component {
     navBarHidden: true // make the nav bar hidden
   };
 
-  componentWillMount() {
-    this.props.finishLoading();
-  }
+  componentWillMount() {}
 
   refresh = () => {
     this.props.getAccount(this.props.pwd);
