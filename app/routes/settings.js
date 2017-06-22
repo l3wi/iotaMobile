@@ -50,23 +50,8 @@ class InitialScreen extends Component {
   // Clears the application
   clear = () => {
     DeleteBox("seed");
-    Alert.alert("Seed was cleared", "Please close the app.");
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: "Initial"
-        })
-      ]
-    });
-    this.props.navigation.dispatch(resetAction);
-  };
-
-  // Shows seed
-  showSeed = async pwd => {
-    const seed = await OpenBox("seed", hashPwd(pwd));
-    if (!seed) return Alert.alert("Error", "Incorrect Password");
-    Alert.alert("Wallet Seed:", seed);
+    this.props.navigator.resetTo({ screen: "auth" });
+    Alert.alert("Seed was cleared");
   };
 
   render() {
@@ -127,7 +112,7 @@ class InitialScreen extends Component {
                   AlertIOS.prompt(
                     "Enter a password",
                     null,
-                    text => this.showSeed(text),
+                    text => this.props.showSeed(text),
                     "secure-text"
                   );
                 }}
