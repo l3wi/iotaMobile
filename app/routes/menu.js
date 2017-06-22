@@ -17,9 +17,9 @@ class MenuScreen extends Component {
   render() {
     return (
       <Wrapper>
-        <MenuButton>
-          <MenuText>IOTA Wallet</MenuText>
-        </MenuButton>
+        <MenuHeader>
+          <HeadingText>IOTA Wallet</HeadingText>
+        </MenuHeader>
         <MenuButton
           onPress={() =>
             this.props.navigator.handleDeepLink({
@@ -71,23 +71,34 @@ const Wrapper = styled.View`
     height: 100%;
     width:100%;
     display:flex;
+    background: #eee;
     align-items: center;
     justify-content: flex-start;
 `;
 
 const MenuHeader = styled.View`
+   width:100%;
+    display:flex;
+    padding: 20px;
+    padding-top: 40px;
+    align-items: flex-start;
+    justify-content: center;
+  background: #2d353e;
+`;
 
+const HeadingText = styled.Text`
+    color: white;
+    font-size: 20px;
 `;
 
 const MenuButton = styled.TouchableOpacity`
     width:100%;
-    background: white;
     display:flex;
     padding: 20px;
     align-items: flex-start;
     justify-content: center;
-    border-bottom-width: 1px;
-    border-bottom-color: #2d353e;
+    margin-bottom: 5px;
+    background: white;
 `;
 
 const MenuText = styled.Text`
