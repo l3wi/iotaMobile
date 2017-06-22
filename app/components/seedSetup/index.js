@@ -45,27 +45,21 @@ class SetupForm extends React.Component {
       return;
     }
 
-    this.props.loading("Encrypting Seed");
-    // Setup Bool for this
-    const node = await Iota.node();
+    this.props.startLoading("Encrypting Seed");
 
     const passHash = hashPwd(password);
+    // Initialise the Seed Keystore
     await InitialiseSeed(seed, passHash);
-    const clearSeed = await OpenBox("seed", passHash);
-    this.props.loading("Getting Wallet");
-    var account = await Iota.getAccount(clearSeed);
-    if (!account) {
-      this.props.loading();
-      return alert("Couldn't fetch wallet");
+    this.props.startLoading("Getting Wallet");
+    // Sanity Check the password store
+    if (!await OpenBox("seed", passHash)) {
+      this.props.finishLoading();
+      return alert("Incorrect Password");
     }
-    // this.setState({ account });
-    // Push to new page
-    this.props.setAccount(account);
-    this.props.setPwd(passHash);
 
-    this.props.navigator.resetTo({
-      screen: "transactions"
-    });
+    // Push to new page
+    this.props.setPwd(passHash);
+    this.props.getAccount(passHash, this.props.navigator);
   };
 
   render() {
