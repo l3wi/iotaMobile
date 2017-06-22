@@ -1,6 +1,6 @@
 import * as types from "./types";
-import IOTA from "iota.lib.js";
-import { AsyncStorage } from "react-native";
+import { iota } from "../libs/iota";
+import { AsyncStorage, Alert } from "react-native";
 import {
   OpenBox,
   SaveBox,
@@ -10,18 +10,33 @@ import {
   uintToS
 } from "../libs/crypto";
 
-var defaultNode = "http://node.iotawallet.info:14265/";
+// Initialises the node
+export const setupNode = nodeFromStore => {
+  return async (dispatch, getState) => {
+    if (nodeFromStore) {
+      dispatch(changeNode(nodeFromStore));
+    } else {
+      dispatch(changeNode("http://node.iotawallet.info:14265/"));
+    }
+  };
+};
 
-var iota = new IOTA({
-  provider: defaultNode
-});
+// Allows you to change the node
+export const changeNode = remote => {
+  return async (dispatch, getState) => {
+    iota.changeNode({ provider: remote });
+    dispatch(saveRemoteNode(remote));
+  };
+};
 
+// Get the node info for display
 export const getNode = pwd => {
   return async (dispatch, getState) => {
     dispatch(startLoading("Getting Node"));
     await iota.api.getNodeInfo(function(error, success) {
       if (error) {
-        return alert(error);
+        Alert.alert(error);
+        return dispatch(finishLoading());
       } else {
         dispatch(setNodeInfo(success));
         return dispatch(finishLoading());
@@ -37,7 +52,7 @@ export const getAccount = (pwd, navigator) => {
       await iota.utils.toTrytes(await OpenBox("seed", pwd)),
       function(error, success) {
         if (error) {
-          alert(error);
+          Alert.alert(error);
           return dispatch(finishLoading());
         } else {
           dispatch(setAccount(success));
@@ -60,7 +75,8 @@ export const newAddress = pwd => {
       success
     ) {
       if (error) {
-        alert(error);
+        Alert.alert(error);
+        dispatch(finishLoading());
       } else {
         dispatch(setAddress(success));
         dispatch(finishLoading());
@@ -99,6 +115,13 @@ export const reattachTransaction = (depth, minMag, hash) => {
   };
 };
 
+export function hydrate(data) {
+  return {
+    type: types.HYDRATE,
+    data
+  };
+}
+
 export function startLoading(data) {
   return {
     type: types.LOADING,
@@ -109,6 +132,13 @@ export function startLoading(data) {
 export function finishLoading() {
   return {
     type: types.LOADING
+  };
+}
+
+export function saveRemoteNode(node) {
+  return {
+    type: types.SET_REMOTE,
+    node
   };
 }
 
