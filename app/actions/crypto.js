@@ -1,4 +1,5 @@
 import * as types from './types'
+import { Alert } from 'react-native'
 import { RetrieveBox, DeleteBox, OpenBox, hashPwd } from '../libs/crypto'
 
 export const checkBox = () => {
@@ -10,6 +11,20 @@ export const checkBox = () => {
         return dispatch(boxFlag(false))
       }
     })
+  }
+}
+
+export const showSeed = pwd => {
+  return async (dispatch, getState) => {
+    var seed = await OpenBox('seed', hashPwd(pwd))
+    if (!seed) return Alert.alert('Error', 'Incorrect Password')
+    Alert.alert('Wallet Seed:', seed)
+  }
+}
+
+export const deleteSeed = () => {
+  return (dispatch, getState) => {
+    DeleteBox('seed')
   }
 }
 
