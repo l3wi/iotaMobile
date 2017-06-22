@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components/native";
-import { changeRemoteNode, getNode } from "../../libs/iota";
 import {
   ScrollView,
   Dimensions,
@@ -22,17 +21,8 @@ export default class InitialModal extends React.Component {
   }
 
   componentDidMount() {
-    this.findNode();
+    this.setState({ url: this.props.nodeUrl });
   }
-
-  findNode = async () => {
-    const result = await getNode();
-    if (!result) {
-      this.setState({ url: "http://node.iotawallet.info:14265/" });
-    } else {
-      this.setState({ url: result });
-    }
-  };
 
   render() {
     return (
