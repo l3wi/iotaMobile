@@ -9,6 +9,11 @@ export const iota = createReducer(
       newState.node = action.node;
       return { ...newState };
     },
+    [types.SET_REMOTE](state, action) {
+      let newState = state;
+      newState.nodeUrl = action.node;
+      return { ...newState };
+    },
     [types.SET_ACCOUNT](state, action) {
       let newState = state;
       newState.account = action.account;
@@ -30,6 +35,15 @@ export const iota = createReducer(
         newState.loading = action.data;
       } else {
         newState.loading = false;
+      }
+      return { ...newState };
+    },
+    [types.HYDRATE](state, action) {
+      let newState = state;
+      if (action.data) {
+        newState.hydrate = true;
+      } else {
+        newState.hydrate = false;
       }
       return { ...newState };
     }
