@@ -9,7 +9,6 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import Iota, { Valid } from "../../libs/iota";
 import { formatAmount } from "../../libs/utils";
 
 export default class Balance extends React.Component {
