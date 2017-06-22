@@ -22,7 +22,7 @@ class AuthScreen extends Component {
     super(props);
     this.state = {
       loading: true,
-      box: false,
+      login: true,
       modal: false
     };
   }
@@ -32,9 +32,11 @@ class AuthScreen extends Component {
 
   componentWillMount() {
     this.props.checkBox();
+    this.props.setupNode(this.props.nodeUrl);
   }
 
   clearBox = () => {
+    this.setState({ login: false });
     this.props.deleteBox();
   };
 
@@ -43,11 +45,12 @@ class AuthScreen extends Component {
   };
 
   render() {
-    const { box, loading, modal } = this.props;
+    const { login, modal } = this.state;
+    const { box, loading, node, nodeUrl, hydrate } = this.props;
     return (
       <Main style={{ position: "relative" }}>
-        <Modal {...this.state} close={this.close} />
-        {!loading
+        <Modal {...this.state} nodeUrl={nodeUrl} close={this.close} />
+        {!loading && hydrate
           ? <Wrapper>
               {!modal
                 ? <OpenModal onPress={() => this.setState({ modal: true })}>
@@ -58,7 +61,7 @@ class AuthScreen extends Component {
                   </OpenModal>
                 : null}
 
-              {box
+              {login
                 ? <LoginForm {...this.props} box={box} clear={this.clearBox} />
                 : <SeedSetup {...this.props} />}
             </Wrapper>
@@ -74,9 +77,11 @@ class AuthScreen extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return {
     box: state.crypto.box,
+    node: state.iota.node,
+    hydrate: state.iota.hydrate,
+    nodeUrl: state.iota.nodeUrl,
     loading: state.iota.loading
   };
 }
