@@ -12,7 +12,6 @@ import {
   Image,
   RefreshControl
 } from "react-native";
-import Iota, { Valid } from "../../libs/iota";
 import { formatAmount, getDate } from "../../libs/utils";
 
 import Transaction from "./modal";
@@ -69,7 +68,6 @@ export default class TransactionComponent extends React.Component {
 
   render() {
     var { item, account, loading, refreshing } = this.state;
-
     return (
       <Wrapper>
         {account.transfers[0]
@@ -90,6 +88,11 @@ export default class TransactionComponent extends React.Component {
                 You'll need to go to Recieve and generate an address then
                 attach it to the tangle.
               </Words>
+
+              <Button onPress={() => this.props.getAccount(this.props.pwd)}>
+                <WhiteText>Refresh Account</WhiteText>
+              </Button>
+
             </PaddedBox>}
 
         <Transaction
@@ -102,6 +105,16 @@ export default class TransactionComponent extends React.Component {
     );
   }
 }
+
+const Button = styled.TouchableOpacity`
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    background-color: #2d353e;
+`;
+const WhiteText = styled.Text`
+  color: white;
+`;
 
 const PaddedBox = styled.View`
  height: 300px;
