@@ -10,7 +10,7 @@ export const SET_PWD = "SET_PWD";
 export const LOADING = "LOADING";
 
 // Crypto
-export const BOX_FLAG = "BOX_FLAG";
-export const RETRIEVE_BOX = "RETRIEVE_BOX";
-export const DELETE_BOX = "DELETE_BOX";
-export const OPEN_BOX = "OPEN_BOX";
+export const BOX_FLAG = 'BOX_FLAG'
+// export const RETRIEVE_BOX = 'RETRIEVE_BOX'
+// export const DELETE_BOX = 'DELETE_BOX'
+// export const OPEN_BOX = 'OPEN_BOX'

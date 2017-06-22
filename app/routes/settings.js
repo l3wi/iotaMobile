@@ -69,13 +69,6 @@ class InitialScreen extends Component {
     });
   };
 
-  // Shows seed
-  showSeed = async pwd => {
-    const seed = await OpenBox("seed", hashPwd(pwd));
-    if (!seed) return Alert.alert("Error", "Incorrect Password");
-    Alert.alert("Wallet Seed:", seed);
-  };
-
   render() {
     var { account, loading } = this.props;
     var { remoteNode, rememberMe } = this.state;
@@ -139,7 +132,7 @@ class InitialScreen extends Component {
                   AlertIOS.prompt(
                     "Enter a password",
                     null,
-                    text => this.showSeed(text),
+                    text => this.props.showSeed(text),
                     "secure-text"
                   );
                 }}
