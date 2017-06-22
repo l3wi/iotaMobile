@@ -2,15 +2,14 @@
 import nacl from "tweetnacl";
 // Standford Javascript Crypto Lib (Used for secure PRNG & SHA256 in React Native)
 import sjcl from "sjcl";
-// Simple wrapper for iota.lib.js
-import Iota, { Valid } from "./iota";
+import { iota } from "./iota";
 // Basic Encoding Shims
 import { TextEncoder, TextDecoder } from "text-encoding";
 // RN Keychain module
 import * as Keychain from "react-native-keychain";
 
 export const InitialiseSeed = async (seed, password) => {
-  if (!Valid.isTrytes(seed)) return [false, "Please enter valid seed."];
+  if (!iota.valid.isTrytes(seed)) return [false, "Please enter valid seed."];
   return await GenBox(seed, password);
 };
 
