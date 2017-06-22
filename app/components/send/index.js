@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { Select, Option } from "react-native-chooser";
 import { converter } from "../../libs/utils";
-import { iota, Valid } from "../../libs/iota";
+import { iota } from "../../actions/iota";
 
 export default class LoginForm extends React.Component {
   constructor(props) {

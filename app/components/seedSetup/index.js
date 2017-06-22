@@ -12,7 +12,6 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 
-import Iota from "../../libs/iota";
 import { InitialiseSeed, OpenBox, randSeed, hashPwd } from "../../libs/crypto";
 import { NavigationActions } from "react-navigation";
 
