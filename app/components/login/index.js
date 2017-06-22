@@ -9,7 +9,6 @@ import {
   Image
 } from "react-native";
 
-import Iota, { Valid } from "../../libs/iota";
 import { OpenBox, SaveBox, DeleteBox, hashPwd } from "../../libs/crypto";
 
 import { bindActionCreators } from "redux";
@@ -24,22 +23,22 @@ class LoginForm extends React.Component {
 
   getAccount = async password => {
     const passHash = hashPwd(password);
-    this.props.startLoading("Getting Node");
     // Decrypt Seed
     if (!await OpenBox("seed", passHash)) {
       this.props.finishLoading();
       return alert("Incorrect Password");
     }
+    // Start loading
+    this.props.startLoading("Getting Wallet");
     // Store password
     this.props.setPwd(passHash);
     // Get account
-    this.props.startLoading("Getting Wallet");
-    this.props.getAccount(passHash, this.props.navigator);
+    this.props.getAccount(passHash);
 
     // // Push to new nav stateAccount
-    // this.props.navigator.resetTo({
-    //   screen: "transactions"
-    // });
+    this.props.navigator.resetTo({
+      screen: "transactions"
+    });
   };
 
   render() {
