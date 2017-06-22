@@ -53,18 +53,6 @@ export default class TransactionComponent extends React.Component {
     console.log("Pull to Refresh Actioned");
   };
 
-  renderZero = () => {
-    return (
-      <PaddedBox>
-        <EmptyHeader>Looks like this is your first time!</EmptyHeader>
-        <Words>
-          You'll need to go to Recieve and generate an address then
-          attach it to the tangle.
-        </Words>
-      </PaddedBox>
-    );
-  };
-
   _renderItem = ({ item, index }) => {
     var newItem = item;
     newItem[0].sent = this.state.account.addresses.some(
@@ -84,18 +72,26 @@ export default class TransactionComponent extends React.Component {
 
     return (
       <Wrapper>
-        <FlatList
-          data={account.transfers.sort(
-            (a, b) => b[0].timestamp - a[0].timestamp
-          )}
-          refreshing={false}
-          onRefresh={() => this._onRefresh()}
-          initialNumToRender={5}
-          ListEmptyComponent={this.renderZero}
-          removeClippedSubviews={true}
-          keyExtractor={(item, index) => index}
-          renderItem={this._renderItem}
-        />
+        {account.transfers[0]
+          ? <FlatList
+              data={account.transfers.sort(
+                (a, b) => b[0].timestamp - a[0].timestamp
+              )}
+              refreshing={false}
+              onRefresh={() => this._onRefresh()}
+              initialNumToRender={5}
+              removeClippedSubviews={true}
+              keyExtractor={(item, index) => index}
+              renderItem={this._renderItem}
+            />
+          : <PaddedBox>
+              <EmptyHeader>Looks like this is your first time!</EmptyHeader>
+              <Words>
+                You'll need to go to Recieve and generate an address then
+                attach it to the tangle.
+              </Words>
+            </PaddedBox>}
+
         <Transaction
           item={item}
           modalVisible={this.state.modalVisible}
@@ -106,6 +102,27 @@ export default class TransactionComponent extends React.Component {
     );
   }
 }
+
+const PaddedBox = styled.View`
+ height: 300px;
+    width:100%;
+    padding: 50px;
+    display:flex;
+    align-items: center;
+    justify-content: flex-start;
+`;
+
+const EmptyHeader = styled.Text`
+  font-size: 18px;
+    text-align: center;
+
+  margin-bottom: 20px;
+`;
+
+const Words = styled.Text`
+  text-align: center;
+  margin-bottom: 20px;
+`;
 
 class ListItem extends React.PureComponent {
   render() {
@@ -177,25 +194,4 @@ const Header = styled.Text`
 
 const Unit = styled.Text`
     font-size: 26px;
-`;
-
-const PaddedBox = styled.View`
- height: 300px;
-    width:100%;
-    padding: 50px;
-    display:flex;
-    align-items: center;
-    justify-content: flex-start;
-`;
-
-const EmptyHeader = styled.Text`
-  font-size: 18px;
-    text-align: center;
-
-  margin-bottom: 20px;
-`;
-
-const Words = styled.Text`
-  text-align: center;
-  margin-bottom: 20px;
 `;

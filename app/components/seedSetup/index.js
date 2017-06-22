@@ -44,22 +44,37 @@ class SetupForm extends React.Component {
       this.setState({ first: "", second: "" });
       return;
     }
-
-    this.props.startLoading("Encrypting Seed");
+    this.props.startLoading("Getting Node");
+    this.props.getNode();
 
     const passHash = hashPwd(password);
-    // Initialise the Seed Keystore
+    this.props.startLoading("Encrypting Seed");
     await InitialiseSeed(seed, passHash);
-    this.props.startLoading("Getting Wallet");
-    // Sanity Check the password store
-    if (!await OpenBox("seed", passHash)) {
-      this.props.finishLoading();
-      return alert("Incorrect Password");
-    }
-
-    // Push to new page
+    // Store password
     this.props.setPwd(passHash);
+    // Get account
+    this.props.startLoading("Getting Wallet");
     this.props.getAccount(passHash, this.props.navigator);
+  };
+
+  confirm = () => {
+    Alert.alert(
+      "IMPORTANT: \n Read this carefully",
+      `By pressing 'Agree' you understand and agree to the following: \n \n This seed you have entered is ONLY stored on your phone and is never transmitted. As such, if you phone is lost or destroyed the seed can NOT be recovered. \n \n It is your responsibility to store the seed in a safe place. \n \n The developers of this application are not liable for any losses incurred through the use of this application. \n \n To understand the security measures of this application, please REVIEW the code on GitHub.`,
+      [
+        {
+          text: "Agree",
+          onPress: () => this.setup(this.state.seed, this.state.first)
+        },
+
+        {
+          text: "Cancel",
+          onPress: () => console.log("User Canceled"),
+          style: "destructive"
+        }
+      ],
+      { cancelable: false }
+    );
   };
 
   render() {
@@ -123,33 +138,12 @@ class SetupForm extends React.Component {
                   placeholder={"Confirm Password"}
                   placeholderTextColor={"white"}
                   secureTextEntry={true}
-                  onSubmitEditing={() =>
-                    this.setup(this.state.seed, this.state.first)}
+                  onSubmitEditing={() => this.confirm()}
                   onChangeText={second => this.setState({ second })}
                 />
               </BottomBorder>
             </Row>
-            <Button
-              onPress={() =>
-                Alert.alert(
-                  "IMPORTANT: \n Read this carefully",
-                  `By pressing 'Agree' you understand and agree to the following: \n \n This seed you have entered is ONLY stored on your phone and is never transmitted. As such, if you phone is lost or destroyed the seed can NOT be recovered. \n \n It is your responsibility to store the seed in a safe place. \n \n The developers of this application are not liable for any losses incurred through the use of this application. \n \n To understand the security measures of this application, please REVIEW the code on GitHub.`,
-                  [
-                    {
-                      text: "Agree",
-                      onPress: () =>
-                        this.setup(this.state.seed, this.state.first)
-                    },
-
-                    {
-                      text: "Cancel",
-                      onPress: () => console.log("User Canceled"),
-                      style: "destructive"
-                    }
-                  ],
-                  { cancelable: false }
-                )}
-            >
+            <Button onPress={() => this.confirm()}>
               <AppText>Setup wallet</AppText>
             </Button>
           </EmptyCol>

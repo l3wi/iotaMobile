@@ -28,6 +28,16 @@ export var iota = new IOTA({
   }
 })();
 
+export const getNode = async () => {
+  var node = defaultNode;
+  await AsyncStorage.getItem("node", (err, result) => {
+    const remotenode = JSON.parse(result);
+    if (node) {
+      node = remotenode;
+    }
+  });
+  return node;
+};
 export const changeRemoteNode = async url => {
   console.log("Setting remote node to: " + url);
   iota = new IOTA({
@@ -41,133 +51,9 @@ export const changeRemoteNode = async url => {
   alert("Node Changed");
 };
 
-export const getNode = async () => {
-  var node = defaultNode;
-  await AsyncStorage.getItem("node", (err, result) => {
-    const remotenode = JSON.parse(result);
-    if (node) {
-      node = remotenode;
-    }
-  });
-  return node;
-};
-
-export default class iotaWrapper {
-  static node = () => {
-    var p = new Promise((res, rej) => {
-      iota.api.getNodeInfo(function(error, success) {
-        if (error) {
-          alert(error);
-          rej(error);
-        } else {
-          console.log(success);
-          res(success);
-        }
-      });
-    });
-    return p;
-  };
-
-  static getAccount = seed => {
-    console.log("Getting Account");
-    var p = new Promise((res, rej) => {
-      iota.api.getAccountData(iotaWrapper.toTrytes(seed), function(
-        error,
-        success
-      ) {
-        if (error) {
-          alert(error);
-          rej(error);
-        } else {
-          console.log(success);
-          res(success);
-        }
-      });
-    });
-    return p;
-  };
-
-  static getTransfers = seed => {
-    console.log("Getting Transfers");
-    var p = new Promise((res, rej) => {
-      iota.api.getTransfers(iotaWrapper.toTrytes(seed), function(
-        error,
-        success
-      ) {
-        if (error) {
-          alert(error);
-          rej(error);
-        } else {
-          console.log(success);
-          res(success);
-        }
-      });
-    });
-    return p;
-  };
-  static newAddress = seed => {
-    console.log("Generating New Address");
-    var p = new Promise((res, rej) => {
-      iota.api.getNewAddress(
-        iotaWrapper.toTrytes(seed),
-        { checksum: true },
-        function(error, success) {
-          if (error) {
-            alert(error);
-            rej(error);
-          } else {
-            console.log(success);
-            res(success);
-          }
-        }
-      );
-    });
-
-    return p;
-  };
-
-  static send = (seed, depth, minMag, transfers) => {
-    console.log("Sending Transaction");
-    var p = new Promise((res, rej) => {
-      iota.api.sendTransfer(
-        iotaWrapper.toTrytes(seed),
-        depth,
-        minMag,
-        transfers,
-        function(error, success) {
-          if (error) {
-            alert(error);
-            rej(error);
-          } else {
-            res(success);
-          }
-        }
-      );
-    });
-    return p;
-  };
-
-  static replay = (depth, minMag, hash) => {
-    console.log("Replaying Transaction");
-    var p = new Promise((res, rej) => {
-      iota.api.replayBundle(depth, minMag, hash, function(error, success) {
-        if (error) {
-          alert(error);
-          rej(error);
-        } else {
-          res(success);
-        }
-      });
-    });
-    return p;
-  };
-
+export class iotaWrapper {
   static toTrytes = data => {
     return iota.utils.toTrytes(data);
-  };
-
-  static categorizeTransfers = (transfers, addresses) => {
-    return iota.utils.categorizeTransfers(transfers, addresses);
   };
 
   static addChecksum = address => {

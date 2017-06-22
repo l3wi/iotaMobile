@@ -75,6 +75,10 @@ const Wrapper = styled.View`
     justify-content: flex-start;
 `;
 
+const MenuHeader = styled.View`
+
+`;
+
 const MenuButton = styled.TouchableOpacity`
     width:100%;
     background: white;

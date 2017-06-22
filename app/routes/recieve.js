@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { ActionCreators } from "../actions";
 
 import qr from "yaqrcode";
-import Iota from "../libs/iota";
+import { iota } from "../libs/iota";
 import Balance from "../components/balance";
 
 copy = address => {
@@ -61,7 +61,7 @@ class RecieveScreen extends Component {
           this.props.account.addresses.length - 1
         ],
         value: 0,
-        tag: Iota.toTrytes("iOSWALLET")
+        tag: iota.utils.toTrytes("iOSWALLET")
       }
     ]);
   };
@@ -88,13 +88,13 @@ class RecieveScreen extends Component {
                       <CopyAddress
                         onPress={() =>
                           copy(
-                            Iota.addChecksum(
+                            iota.utils.addChecksum(
                               account.addresses[account.addresses.length - 1]
                             )
                           )}
                       >
                         <Address>
-                          {Iota.addChecksum(
+                          {iota.utils.addChecksum(
                             account.addresses[account.addresses.length - 1]
                           )}
                         </Address>
@@ -103,7 +103,7 @@ class RecieveScreen extends Component {
                         ? <QR
                             source={{
                               uri: qr(
-                                Iota.addChecksum(
+                                iota.utils.addChecksum(
                                   account.addresses[
                                     account.addresses.length - 1
                                   ]

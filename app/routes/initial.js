@@ -26,8 +26,8 @@ class AuthScreen extends Component {
       modal: false
     };
   }
-  static navigationOptions = {
-    header: null
+  static navigatorStyle = {
+    navBarHidden: true // make the nav bar hidden
   };
 
   componentWillMount() {

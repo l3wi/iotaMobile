@@ -16,14 +16,6 @@ var iota = new IOTA({
   provider: defaultNode
 });
 
-iota.api.getNodeInfo(function(error, success) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log(success);
-  }
-});
-
 export const getNode = pwd => {
   return async (dispatch, getState) => {
     dispatch(startLoading("Getting Node"));
@@ -45,7 +37,8 @@ export const getAccount = (pwd, navigator) => {
       await iota.utils.toTrytes(await OpenBox("seed", pwd)),
       function(error, success) {
         if (error) {
-          return alert(error);
+          alert(error);
+          return dispatch(finishLoading());
         } else {
           dispatch(setAccount(success));
           if (navigator) {

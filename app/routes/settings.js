@@ -63,10 +63,10 @@ class InitialScreen extends Component {
   // Clears the application
   clear = () => {
     DeleteBox("seed");
-    Alert.alert("Seed was cleared");
     this.props.navigator.resetTo({
       screen: "auth"
     });
+    Alert.alert("Seed was cleared");
   };
 
   render() {
