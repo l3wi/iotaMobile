@@ -13,7 +13,6 @@ import { connect } from "react-redux";
 import { ActionCreators } from "../actions";
 
 import { OpenBox, DeleteBox, hashPwd } from "../libs/crypto";
-import { changeRemoteNode, getNode } from "../libs/iota";
 import { getRemember, setRemember } from "../libs/remember";
 import Balance from "../components/balance";
 import { NavigationActions } from "react-navigation";
@@ -45,14 +44,10 @@ class InitialScreen extends Component {
     navBarHidden: true // make the nav bar hidden
   };
 
-  componentWillMount() {
-    this.findNode();
-    this.findRemember();
-  }
+  componentWillMount() {}
   // Gets node to display in the page (Could be paassed down)
   findNode = async () => {
-    const node = await getNode();
-    this.setState({ remoteNode: node });
+    this.props.getNode();
   };
 
   findRemember = async () => {
@@ -70,8 +65,8 @@ class InitialScreen extends Component {
   };
 
   render() {
-    var { account, loading } = this.props;
-    var { remoteNode, rememberMe } = this.state;
+    var { account, loading, remoteNode } = this.props;
+    var { rememberMe } = this.state;
     return (
       <Wrapper>
         <Balance
@@ -116,7 +111,7 @@ class InitialScreen extends Component {
                   AlertIOS.prompt(
                     "Enter node url",
                     null,
-                    text => changeRemoteNode(text) && this.findNode(),
+                    text => this.props.changeNode(text),
                     "plain-text",
                     "http://",
                     "url"
@@ -159,6 +154,7 @@ function mapStateToProps(state, ownProps) {
   return {
     account: state.iota.account,
     pwd: state.iota.pwd,
+    remoteNode: state.iota.nodeUrl,
     loading: state.iota.loading
   };
 }
