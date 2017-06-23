@@ -49,29 +49,27 @@ export const getNode = pwd => {
 export const getAccount = (pwd, navigator) => {
   return async (dispatch, getState) => {
     dispatch(startLoading("Getting Wallet"));
-    await iota.api.getAccountData(
-      await iota.utils.toTrytes(await OpenBox("seed", pwd)),
-      function(error, success) {
-        if (error) {
-          Alert.alert(error);
-          return dispatch(finishLoading());
-        } else {
-          dispatch(setAccount(success));
-          if (navigator) {
-            navigator.resetTo({ screen: "transactions" });
-          }
-          return dispatch(finishLoading());
+    await iota.api.getAccountData(await OpenBox("seed", pwd), function(
+      error,
+      success
+    ) {
+      if (error) {
+        Alert.alert(error);
+        return dispatch(finishLoading());
+      } else {
+        dispatch(setAccount(success));
+        if (navigator) {
+          navigator.resetTo({ screen: "transactions" });
         }
+        return dispatch(finishLoading());
       }
-    );
+    });
   };
 };
 export const newAddress = pwd => {
   return async (dispatch, getState) => {
     dispatch(startLoading("Genterating New Address"));
-
-    var clearSeed = await OpenBox("seed", pwd);
-    iota.api.getNewAddress(iota.utils.toTrytes(clearSeed), function(
+    iota.api.getNewAddress(await OpenBox("seed", pwd), function(
       error,
       success
     ) {
@@ -89,9 +87,8 @@ export const newAddress = pwd => {
 export const sendTransaction = (pwd, depth, minMag, transfers) => {
   return async (dispatch, getState) => {
     dispatch(startLoading("Sending to Tangle"));
-    var clearSeed = await OpenBox("seed", pwd);
     iota.api.sendTransfer(
-      iota.utils.toTrytes(clearSeed),
+      await OpenBox("seed", pwd),
       depth,
       minMag,
       transfers,
