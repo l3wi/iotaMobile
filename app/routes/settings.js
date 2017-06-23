@@ -80,16 +80,16 @@ class InitialScreen extends Component {
           contentContainerStyle={{ justifyContent: "space-between" }}
         >
           <EmptyCol>
-            <Row between>
+            {/*<Row between>
               <Text>Remember me timeout: </Text>
               <Text>{rememberMe} Min</Text>
-            </Row>
+            </Row>*/}
 
             <Row between>
               <Text>Remote Node: </Text>
               <Text>{remoteNode}</Text>
             </Row>
-            <Row>
+            {/*<Row>
               <Button
                 onPress={() => {
                   AlertIOS.prompt(
@@ -104,7 +104,7 @@ class InitialScreen extends Component {
               >
                 <WhiteText>Set Remember Me Timeout</WhiteText>
               </Button>
-            </Row>
+            </Row>*/}
             <Row>
               <Button
                 onPress={() => {
