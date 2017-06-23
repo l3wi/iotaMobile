@@ -44,7 +44,6 @@ class SetupForm extends React.Component {
       return;
     }
     this.props.startLoading("Getting Node");
-    this.props.getNode();
 
     const passHash = hashPwd(password);
     this.props.startLoading("Encrypting Seed");
