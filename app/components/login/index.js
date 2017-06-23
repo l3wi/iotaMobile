@@ -8,50 +8,37 @@ import {
   TextInput,
   Image
 } from "react-native";
-import Iota, { Valid } from "../../libs/iota";
-import { OpenBox, SaveBox, DeleteBox, hashPwd } from "../../libs/crypto";
-import { NavigationActions } from "react-navigation";
 
-export default class LoginForm extends React.Component {
+import { OpenBox, SaveBox, DeleteBox, hashPwd } from "../../libs/crypto";
+
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../../actions";
+
+class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = { pass: "" };
   }
 
-  nextRoute = (account, pass, node) => {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: "Main",
-          params: { account: account, pwd: pass, node: node }
-        })
-      ]
-    });
-    this.props.navigation.dispatch(resetAction);
-  };
-
   getAccount = async password => {
     const passHash = hashPwd(password);
-    this.props.loading("Getting Node");
-    const node = await Iota.node();
     // Decrypt Seed
-    const clearSeed = await OpenBox("seed", passHash);
-    this.setState({ pass: "" });
-    if (!clearSeed) {
-      this.props.loading();
+    if (!await OpenBox("seed", passHash)) {
+      this.props.finishLoading();
       return alert("Incorrect Password");
     }
+    // Start loading
+    this.props.startLoading("Getting Wallet");
+    // Store password
+    this.props.setPwd(passHash);
     // Get account
-    this.props.loading("Getting Wallet");
-    const account = await Iota.getAccount(clearSeed);
-    if (!account) {
-      this.props.loading();
-      return alert("Couldn't fetch wallet");
-    }
-    // this.setState({ account });
-    // Push to new page
-    this.nextRoute(account, passHash, node);
+    this.props.getAccount(passHash);
+
+    // // Push to new nav stateAccount
+    this.props.navigator.resetTo({
+      screen: "transactions"
+    });
   };
 
   render() {
@@ -144,3 +131,12 @@ const Button = styled.TouchableOpacity`
     margin: 20px 0;
     background-color: rgba(255,255,255,.3);
 `;
+function mapStateToProps(state, ownProps) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

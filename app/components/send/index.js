@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { Select, Option } from "react-native-chooser";
 import { converter } from "../../libs/utils";
-import Iota, { Valid } from "../../libs/iota";
+import { iota } from "../../actions/iota";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -48,17 +48,17 @@ export default class LoginForm extends React.Component {
       return;
     }
 
-    console.log(value);
+    console.log(parseInt(value, 10));
     const transfer = [
       {
         address: address,
-        value: value,
-        message: Iota.toTrytes(this.state.message),
-        tag: Iota.toTrytes("iOSWALLET")
+        value: parseInt(value, 10),
+        message: iota.utils.toTrytes(this.state.message),
+        tag: iota.utils.toTrytes("iOSWALLET")
       }
     ];
+    this.props.sendTransaction(this.props.pwd, 9, 15, transfer);
     this.setState({ address: "", amount: "0", unit: "i", message: "" });
-    this.props.screenProps.send(9, 15, transfer);
   };
 
   render() {

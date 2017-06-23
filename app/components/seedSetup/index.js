@@ -12,28 +12,18 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 
-import Iota from "../../libs/iota";
 import { InitialiseSeed, OpenBox, randSeed, hashPwd } from "../../libs/crypto";
 import { NavigationActions } from "react-navigation";
 
-export default class LoginForm extends React.Component {
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../../actions";
+
+class SetupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = { seed: "", first: "", second: "" };
   }
-
-  nextRoute = (account, pass, node) => {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: "Main",
-          params: { account: account, pwd: pass, node: node }
-        })
-      ]
-    });
-    this.props.navigation.dispatch(resetAction);
-  };
 
   setup = async (seed, password) => {
     // Check for Seed
@@ -53,23 +43,37 @@ export default class LoginForm extends React.Component {
       this.setState({ first: "", second: "" });
       return;
     }
-
-    this.props.loading("Encrypting Seed");
-    // Setup Bool for this
-    const node = await Iota.node();
+    this.props.startLoading("Getting Node");
+    this.props.getNode();
 
     const passHash = hashPwd(password);
+    this.props.startLoading("Encrypting Seed");
     await InitialiseSeed(seed, passHash);
-    const clearSeed = await OpenBox("seed", passHash);
-    this.props.loading("Getting Wallet");
-    const account = await Iota.getAccount(clearSeed);
-    if (!account) {
-      this.props.loading();
-      return alert("Couldn't fetch wallet");
-    }
-    this.setState({ seed: "", first: "", second: "" });
-    // Push to new page
-    this.nextRoute(account, passHash, node);
+    // Store password
+    this.props.setPwd(passHash);
+    // Get account
+    this.props.startLoading("Getting Wallet");
+    this.props.getAccount(passHash, this.props.navigator);
+  };
+
+  confirm = () => {
+    Alert.alert(
+      "IMPORTANT: \n Read this carefully",
+      `By pressing 'Agree' you understand and agree to the following: \n \n This seed you have entered is ONLY stored on your phone and is never transmitted. As such, if you phone is lost or destroyed the seed can NOT be recovered. \n \n It is your responsibility to store the seed in a safe place. \n \n The developers of this application are not liable for any losses incurred through the use of this application. \n \n To understand the security measures of this application, please REVIEW the code on GitHub.`,
+      [
+        {
+          text: "Agree",
+          onPress: () => this.setup(this.state.seed, this.state.first)
+        },
+
+        {
+          text: "Cancel",
+          onPress: () => console.log("User Canceled"),
+          style: "destructive"
+        }
+      ],
+      { cancelable: false }
+    );
   };
 
   render() {
@@ -133,33 +137,12 @@ export default class LoginForm extends React.Component {
                   placeholder={"Confirm Password"}
                   placeholderTextColor={"white"}
                   secureTextEntry={true}
-                  onSubmitEditing={() =>
-                    this.setup(this.state.seed, this.state.first)}
+                  onSubmitEditing={() => this.confirm()}
                   onChangeText={second => this.setState({ second })}
                 />
               </BottomBorder>
             </Row>
-            <Button
-              onPress={() =>
-                Alert.alert(
-                  "IMPORTANT: \n Read this carefully",
-                  `By pressing 'Agree' you understand and agree to the following: \n \n This seed you have entered is ONLY stored on your phone and is never transmitted. As such, if you phone is lost or destroyed the seed can NOT be recovered. \n \n It is your responsibility to store the seed in a safe place. \n \n The developers of this application are not liable for any losses incurred through the use of this application. \n \n To understand the security measures of this application, please REVIEW the code on GitHub.`,
-                  [
-                    {
-                      text: "Agree",
-                      onPress: () =>
-                        this.setup(this.state.seed, this.state.first)
-                    },
-
-                    {
-                      text: "Cancel",
-                      onPress: () => console.log("User Canceled"),
-                      style: "destructive"
-                    }
-                  ],
-                  { cancelable: false }
-                )}
-            >
+            <Button onPress={() => this.confirm()}>
               <AppText>Setup wallet</AppText>
             </Button>
           </EmptyCol>
@@ -223,3 +206,12 @@ const Button = styled.TouchableOpacity`
     background-color: rgba(255,255,255,.3);
     width: ${props => (props.full ? "100%" : "auto")};
 `;
+function mapStateToProps(state, ownProps) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SetupForm);

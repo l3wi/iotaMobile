@@ -77,7 +77,7 @@ export default class Main extends Component {
   // Func that get called to null write the pwd
   nullify = nextAppState => {
     console.log("App changed to: ", nextAppState);
-    if (nextAppState === "active" && ExpiredRemember()) {
+    if (nextAppState === "active" && !ExpiredRemember()) {
       // Writing it 'null'
       this.setState({ pwd: stringToU8("000000000000000000000000") });
       // Removing it's refs do the GC can clean it
@@ -95,88 +95,6 @@ export default class Main extends Component {
       console.log("Key Cleaned & Rerouted to login");
     } else if (nextAppState === "inactive") {
       exitApp();
-    }
-  };
-
-  // Get Account
-  getAccount = async () => {
-    this.setState({ loading: { title: "Updating Wallet" } }, async () => {
-      this.forceUpdate();
-      Alert.alert(
-        "Note",
-        "The wallet is running a hashing function. It may be slow during this process. \n \n Please be patient"
-      );
-      const account = await Iota.getAccount(
-        await OpenBox("seed", this.state.pwd)
-      );
-      if (!account) return alert("Couldn't fetch wallet");
-      this.setState({ account: account, loading: false });
-      this.forceUpdate();
-    });
-  };
-  // Generate new addreress
-  newAddress = async () => {
-    if (this.state.pwd) {
-      this.setState({ loading: { title: "Generating Address" } }, async () => {
-        this.forceUpdate();
-
-        const addy = await Iota.newAddress(
-          await OpenBox("seed", this.state.pwd)
-        );
-        if (
-          this.state.account.addresses[
-            this.state.account.addresses.length - 1
-          ] !== this.state.account.latestAddress
-        ) {
-          const newAccount = this.state.account;
-          newAccount.addresses.push(Iota.removeChecksum(addy));
-          this.setState({ account: newAccount, loading: false });
-          this.forceUpdate();
-        }
-      });
-    }
-    /// Prompt for password entry if no hash in memory.
-  };
-
-  attachToTangle = async () => {
-    this.setState({ loading: { title: "Attaching Wallet" } }, async () => {
-      this.forceUpdate();
-
-      console.log("Attaching address to tanlge");
-      const result = await this.send(6, 15, [
-        {
-          address: this.state.account.addresses[
-            this.state.account.addresses.length - 1
-          ],
-          value: 0,
-          tag: Iota.toTrytes("iOSWALLET")
-        }
-      ]);
-      this.getAccount();
-      return;
-    });
-  };
-
-  send = async (depth, minMag, transfers) => {
-    if (this.state.pwd) {
-      this.setState({ loading: { title: "Sending to Tangle" } }, async () => {
-        this.forceUpdate();
-        Alert.alert(
-          "Note",
-          "The wallet is running a hashing function. It may be slow during this process. \n \n Please be patient"
-        );
-        const result = await Iota.send(
-          await OpenBox("seed", this.state.pwd),
-          depth,
-          minMag,
-          transfers,
-          this.state.account.inputs
-        );
-        this.setState({ loading: false });
-        this.forceUpdate();
-      });
-    } else {
-      alert("Please relogin to the app");
     }
   };
 

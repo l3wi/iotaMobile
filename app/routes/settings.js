@@ -7,34 +7,47 @@ import {
   AlertIOS
 } from "react-native";
 import styled from "styled-components/native";
+
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../actions";
+
 import { OpenBox, DeleteBox, hashPwd } from "../libs/crypto";
-import { changeRemoteNode, getNode } from "../libs/iota";
 import { getRemember, setRemember } from "../libs/remember";
 import Balance from "../components/balance";
 import { NavigationActions } from "react-navigation";
 
-export default class InitialScreen extends Component {
+class InitialScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: true,
-      box: false,
-      rememberMe: null,
-      remoteNode: ""
-    };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
-  static navigationOptions = {
-    header: null
+  onNavigatorEvent(event) {
+    if (event.type == "DeepLink") {
+      this.props.navigator.resetTo({
+        screen: event.link,
+        animated: false
+      });
+      this.props.navigator.toggleDrawer({
+        side: "left",
+        to: "close"
+      });
+    }
+  }
+  state = {
+    loading: true,
+    box: false,
+    rememberMe: null,
+    remoteNode: ""
+  };
+  static navigatorStyle = {
+    navBarHidden: true // make the nav bar hidden
   };
 
-  componentWillMount() {
-    this.findNode();
-    this.findRemember();
-  }
+  componentWillMount() {}
   // Gets node to display in the page (Could be paassed down)
   findNode = async () => {
-    const node = await getNode();
-    this.setState({ remoteNode: node });
+    this.props.getNode();
   };
 
   findRemember = async () => {
@@ -45,32 +58,23 @@ export default class InitialScreen extends Component {
   // Clears the application
   clear = () => {
     DeleteBox("seed");
-    Alert.alert("Seed was cleared", "Please close the app.");
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: "Initial"
-        })
-      ]
+    this.props.navigator.resetTo({
+      screen: "auth"
     });
-    this.props.navigation.dispatch(resetAction);
-  };
-
-  // Shows seed
-  showSeed = async pwd => {
-    console.log(this.props.screenProps.state);
-    const seed = await OpenBox("seed", hashPwd(pwd));
-    if (!seed) return Alert.alert("Error", "Incorrect Password");
-    Alert.alert("Wallet Seed:", seed);
+    Alert.alert("Seed was cleared");
   };
 
   render() {
-    var { account, loading } = this.props.screenProps.state;
-    var { remoteNode, rememberMe } = this.state;
+    var { account, loading, remoteNode } = this.props;
+    var { rememberMe } = this.state;
     return (
       <Wrapper>
-        <Balance account={account} loading={loading} {...this.props} />
+        <Balance
+          title={"Settings"}
+          account={account}
+          loading={loading}
+          {...this.props}
+        />
         <ScrollView
           style={{ width: "100%", height: "80%" }}
           contentContainerStyle={{ justifyContent: "space-between" }}
@@ -107,7 +111,7 @@ export default class InitialScreen extends Component {
                   AlertIOS.prompt(
                     "Enter node url",
                     null,
-                    text => changeRemoteNode(text) && this.findNode(),
+                    text => this.props.changeNode(text),
                     "plain-text",
                     "http://",
                     "url"
@@ -123,7 +127,7 @@ export default class InitialScreen extends Component {
                   AlertIOS.prompt(
                     "Enter a password",
                     null,
-                    text => this.showSeed(text),
+                    text => this.props.showSeed(text),
                     "secure-text"
                   );
                 }}
@@ -144,6 +148,23 @@ export default class InitialScreen extends Component {
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return {
+    account: state.iota.account,
+    pwd: state.iota.pwd,
+    remoteNode: state.iota.nodeUrl,
+    loading: state.iota.loading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InitialScreen);
+
 const Wrapper = styled.View`
     height: 100%;
     width:100%;
