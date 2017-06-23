@@ -22,10 +22,11 @@ export const setupNode = nodeFromStore => {
 };
 
 // Allows you to change the node
-export const changeNode = remote => {
+export const changeNode = (remote, user) => {
   return async (dispatch, getState) => {
     iota.changeNode({ provider: remote });
     dispatch(saveRemoteNode(remote));
+    if (user) Alert.alert("Node Changed");
   };
 };
 
