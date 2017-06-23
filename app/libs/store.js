@@ -28,11 +28,13 @@ const initialState = {
 
 const middleWare = [thunkMiddleware, loggerMiddleware];
 
-const createStoreWithMiddleware = applyMiddleware(...middleWare)(createStore);
-
 export const configureStore = initialState => {
   return new Promise((resolve, reject) => {
-    const store = autoRehydrate()(createStoreWithMiddleware)(reducers);
+    const store = createStore(
+      reducers,
+      initialState,
+      compose(autoRehydrate(), applyMiddleware(...middleWare))
+    );
     persistStore(store, { storage: AsyncStorage }, () => resolve(store));
   });
 };
