@@ -58,7 +58,8 @@ export default class InitialModal extends React.Component {
                 autoCorrect={false}
                 keyboardType={"url"}
                 placeholderTextColor={"black"}
-                onSubmitEditing={() => changeRemoteNode(this.state.url)}
+                onSubmitEditing={() =>
+                  this.props.changeNode(this.state.url, true)}
                 onChangeText={url => this.setState({ url })}
               />
             </BottomBorder>

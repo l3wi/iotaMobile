@@ -49,7 +49,12 @@ class AuthScreen extends Component {
     const { box, loading, node, nodeUrl, hydrate } = this.props;
     return (
       <Main style={{ position: "relative" }}>
-        <Modal {...this.state} nodeUrl={nodeUrl} close={this.close} />
+        <Modal
+          {...this.state}
+          nodeUrl={nodeUrl}
+          changeNode={this.props.changeNode}
+          close={this.close}
+        />
         {!loading && hydrate
           ? <Wrapper>
               {!modal
