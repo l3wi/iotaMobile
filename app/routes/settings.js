@@ -97,7 +97,7 @@ class InitialScreen extends Component {
                   );
                 }}
               >
-                <WhiteText>Set Remember Me Timeout</WhiteText>
+                <WhiteText>Change remember me</WhiteText>
               </Button>
             </Row>
             <Row>
