@@ -127,11 +127,16 @@ class RecieveScreen extends Component {
                   account.addresses[account.addresses.length - 1] !==
                     account.latestAddress
                   ? <Button
-                      onPress={() => this.props.newAddress(this.props.pwd)}
+                      loading={loading}
+                      onPress={() =>
+                        !loading ? this.props.newAddress(this.props.pwd) : null}
                     >
                       <WhiteText>New Address</WhiteText>
                     </Button>
-                  : <Button onPress={() => this.attach()}>
+                  : <Button
+                      loading={loading}
+                      onPress={() => (!loading ? this.attach() : null)}
+                    >
                       <WhiteText>Attach to tangle</WhiteText>
                     </Button>}
 
@@ -176,7 +181,7 @@ const Button = styled.TouchableOpacity`
     align-items: center;
     padding: 10px;
     margin: 20px 0px 0 0 ;
-    background-color: #2d353e;
+    background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
     width: 80%;
 `;
 

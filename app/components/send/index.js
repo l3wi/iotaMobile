@@ -62,6 +62,7 @@ export default class LoginForm extends React.Component {
   };
 
   render() {
+    var { loading } = this.props;
     return (
       <Wrapper>
         <Padding />
@@ -127,13 +128,16 @@ export default class LoginForm extends React.Component {
         </Row>
         <Row>
           <FullButton
+            loading={loading}
             onPress={() =>
-              this.create(
-                this.state.address,
-                this.state.amount,
-                this.state.unit,
-                this.state.message
-              )}
+              !loading
+                ? this.create(
+                    this.state.address,
+                    this.state.amount,
+                    this.state.unit,
+                    this.state.message
+                  )
+                : null}
           >
             <ButtonText>
               Send Transaction
@@ -193,7 +197,7 @@ const FullButton = styled.TouchableOpacity`
     flex: 1;
     padding: 10px;
     margin: 10px 0;
-    background-color: #2d353e;
+    background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
     flex-direction: row;   
     justify-content: center;
 `;

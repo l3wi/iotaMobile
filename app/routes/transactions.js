@@ -34,7 +34,9 @@ class TransactionsScreen extends Component {
   componentWillMount() {}
 
   refresh = () => {
-    this.props.getAccount(this.props.pwd);
+    if (!this.props.loading) {
+      this.props.getAccount(this.props.pwd);
+    }
   };
   render() {
     return (
