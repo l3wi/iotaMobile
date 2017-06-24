@@ -88,7 +88,7 @@ class SetupForm extends React.Component {
               onPress={() =>
                 Alert.alert(
                   "IMPORTANT: \n Store this seed securely",
-                  "Ensure this seed is copied correctly. Any typo will result in the loss of access to your wallet. \n \n" +
+                  "Double check, any typo will result in the loss of access to your wallet. \n \n" +
                     randSeed(81)
                 )}
             >
@@ -131,7 +131,7 @@ class SetupForm extends React.Component {
                 <TInput
                   value={this.state.second}
                   autoCorrect={false}
-                  placeholder={"Confirm Password"}
+                  placeholder={"Repeat Password"}
                   placeholderTextColor={"white"}
                   secureTextEntry={true}
                   onSubmitEditing={() => this.confirm()}
@@ -151,7 +151,7 @@ class SetupForm extends React.Component {
 
 const Row = styled.View`
     display: flex;
-    flex-direction: row;   
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     padding: 20px 0;
@@ -162,7 +162,7 @@ const Col = styled.View`
     paddingBottom: 40px;
     height: 90%;
     width:80%;
-    flex-direction: column;   
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
 `;
@@ -182,7 +182,7 @@ const TInput = styled.TextInput`
     color: white;
     text-align: center;
     border-bottom-width: 3px;
-    border-bottom-color: white;    
+    border-bottom-color: white;
 `;
 
 const AppText = styled.Text`

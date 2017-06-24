@@ -27,14 +27,14 @@ export const changeNode = (remote, user) => {
   return async (dispatch, getState) => {
     iota.changeNode({ provider: remote });
     dispatch(saveRemoteNode(remote));
-    if (user) Alert.alert("Node Changed");
+    if (user) Alert.alert("Node Changed to" + remote);
   };
 };
 
 // Get the node info for display
 export const getNode = pwd => {
   return async (dispatch, getState) => {
-    dispatch(startLoading("Getting Node"));
+    dispatch(startLoading("Connecting to Node"));
     await iota.api.getNodeInfo(function(error, success) {
       if (error) {
         Alert.alert(error);
@@ -49,7 +49,7 @@ export const getNode = pwd => {
 
 export const getAccount = (pwd, navigator) => {
   return async (dispatch, getState) => {
-    dispatch(startLoading("Getting Wallet"));
+    dispatch(startLoading("Getting your Wallet"));
     await iota.api.getAccountData(await OpenBox("seed", pwd), function(
       error,
       success
@@ -69,7 +69,7 @@ export const getAccount = (pwd, navigator) => {
 };
 export const newAddress = pwd => {
   return async (dispatch, getState) => {
-    dispatch(startLoading("Genterating New Address"));
+    dispatch(startLoading("Generating a new Address"));
     iota.api.getNewAddress(await OpenBox("seed", pwd), function(
       error,
       success
@@ -87,7 +87,7 @@ export const newAddress = pwd => {
 
 export const sendTransaction = (pwd, depth, minMag, transfers) => {
   return async (dispatch, getState) => {
-    dispatch(startLoading("Sending to Tangle"));
+    dispatch(startLoading("Attaching to Tangle"));
     iota.api.sendTransfer(
       await OpenBox("seed", pwd),
       depth,

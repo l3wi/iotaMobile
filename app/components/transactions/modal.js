@@ -14,7 +14,7 @@ import {
 export default class TransactionModal extends React.Component {
   copy = address => {
     Clipboard.setString(address);
-    alert("Copied to clip board");
+    alert("Copied to the clipboard");
   };
   render() {
     var { item, modalVisible } = this.props;

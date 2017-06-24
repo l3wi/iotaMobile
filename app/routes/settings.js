@@ -88,7 +88,7 @@ class InitialScreen extends Component {
               <Button
                 onPress={() => {
                   AlertIOS.prompt(
-                    "Enter timeout in minutes:",
+                    "Logout timer in minutes e.g. 25 :",
                     null,
                     text => this.props.setRemember(text),
                     "plain-text",
@@ -104,11 +104,11 @@ class InitialScreen extends Component {
               <Button
                 onPress={() => {
                   AlertIOS.prompt(
-                    "Enter node url",
+                    "Enter custom node url e.g. http://node.iotawallet.info:14265 :",
                     null,
                     text => this.props.changeNode(text),
                     "plain-text",
-                    "http://",
+                    "",
                     "url"
                   );
                 }}
@@ -120,7 +120,7 @@ class InitialScreen extends Component {
               <Button
                 onPress={() => {
                   AlertIOS.prompt(
-                    "Enter a password",
+                    "Enter your password to get access to your Seed",
                     null,
                     text => this.props.showSeed(text),
                     "secure-text"
@@ -175,7 +175,7 @@ const EmptyCol = styled.View`
 `;
 const Row = styled.View`
     display: flex;
-    flex-direction: row;   
+    flex-direction: row;
     justify-content: ${props => (props.between ? "space-between" : "center")};
     align-items: center;
     margin: 20px 20px ;
@@ -192,7 +192,7 @@ const TInput = styled.TextInput`
     color: #2d353e;
     text-align: center;
     border-bottom-width: 3px;
-    border-bottom-color: #2d353e;    
+    border-bottom-color: #2d353e;
 `;
 const AppText = styled.Text`
   padding: 30px 0px;
