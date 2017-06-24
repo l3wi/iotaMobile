@@ -57,16 +57,11 @@ class InitialScreen extends Component {
 
   // Clears the application
   clear = () => {
-    DeleteBox("seed");
-    this.props.navigator.resetTo({
-      screen: "auth"
-    });
-    Alert.alert("Seed was cleared");
+    this.props.clearApp(this.props.navigator);
   };
 
   render() {
-    var { account, loading, remoteNode } = this.props;
-    var { rememberMe } = this.state;
+    var { account, loading, remoteNode, rememberMe } = this.props;
     return (
       <Wrapper>
         <Balance
@@ -80,22 +75,22 @@ class InitialScreen extends Component {
           contentContainerStyle={{ justifyContent: "space-between" }}
         >
           <EmptyCol>
-            {/*<Row between>
+            <Row between>
               <Text>Remember me timeout: </Text>
               <Text>{rememberMe} Min</Text>
-            </Row>*/}
+            </Row>
 
             <Row between>
               <Text>Remote Node: </Text>
               <Text>{remoteNode}</Text>
             </Row>
-            {/*<Row>
+            <Row>
               <Button
                 onPress={() => {
                   AlertIOS.prompt(
                     "Enter timeout in minutes:",
                     null,
-                    text => setRemember(text) && this.findRemember(),
+                    text => this.props.setRemember(text),
                     "plain-text",
                     "",
                     "number-pad"
@@ -104,7 +99,7 @@ class InitialScreen extends Component {
               >
                 <WhiteText>Set Remember Me Timeout</WhiteText>
               </Button>
-            </Row>*/}
+            </Row>
             <Row>
               <Button
                 onPress={() => {
@@ -153,7 +148,8 @@ function mapStateToProps(state, ownProps) {
   console.log(state);
   return {
     account: state.iota.account,
-    pwd: state.iota.pwd,
+    pwd: state.crypto.pwd,
+    rememberMe: state.crypto.remember,
     remoteNode: state.iota.nodeUrl,
     loading: state.iota.loading
   };
