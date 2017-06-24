@@ -43,7 +43,6 @@ class SetupForm extends React.Component {
       this.setState({ first: "", second: "" });
       return;
     }
-    this.props.startLoading("Getting Node");
 
     const passHash = hashPwd(password);
     this.props.startLoading("Encrypting Seed");
@@ -51,7 +50,6 @@ class SetupForm extends React.Component {
     // Store password
     this.props.setPwd(passHash);
     // Get account
-    this.props.startLoading("Getting Wallet");
     this.props.getAccount(passHash, this.props.navigator);
   };
 
