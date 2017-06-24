@@ -73,7 +73,7 @@ class RecieveScreen extends Component {
     return (
       <Wrapper>
         <Balance
-          title={"Generate your address here"}
+          title={"Receive Page"}
           account={account}
           loading={loading}
           {...this.props}

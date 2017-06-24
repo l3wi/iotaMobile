@@ -65,7 +65,7 @@ class InitialScreen extends Component {
     return (
       <Wrapper>
         <Balance
-          title={"Settings"}
+          title={"Settings Page"}
           account={account}
           loading={loading}
           {...this.props}
@@ -76,12 +76,12 @@ class InitialScreen extends Component {
         >
           <EmptyCol>
             <Row between>
-              <Text>Remember me timeout: </Text>
+              <Text>Time to automatic logout: </Text>
               <Text>{rememberMe} Min</Text>
             </Row>
 
             <Row between>
-              <Text>Remote Node: </Text>
+              <Text>Remote-Node: </Text>
               <Text>{remoteNode}</Text>
             </Row>
             <Row>
@@ -97,7 +97,7 @@ class InitialScreen extends Component {
                   );
                 }}
               >
-                <WhiteText>Change remember me</WhiteText>
+                <WhiteText>Change Session Timeout</WhiteText>
               </Button>
             </Row>
             <Row>
@@ -113,7 +113,7 @@ class InitialScreen extends Component {
                   );
                 }}
               >
-                <WhiteText>Change remote node</WhiteText>
+                <WhiteText>Change Remote-Node</WhiteText>
               </Button>
             </Row>
             <Row>
@@ -127,7 +127,7 @@ class InitialScreen extends Component {
                   );
                 }}
               >
-                <WhiteText>Show Seed</WhiteText>
+                <WhiteText>Display your current Seed</WhiteText>
               </Button>
             </Row>
           </EmptyCol>
@@ -135,7 +135,7 @@ class InitialScreen extends Component {
           <Spacer />
           <Row>
             <Button onPress={() => this.clear()}>
-              <WhiteText>Delete Seed & Reset Wallet</WhiteText>
+              <WhiteText>Delete Seed & Reset Wallet ?</WhiteText>
             </Button>
           </Row>
         </ScrollView>

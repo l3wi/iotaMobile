@@ -69,7 +69,7 @@ export const getAccount = (pwd, navigator) => {
 };
 export const newAddress = pwd => {
   return async (dispatch, getState) => {
-    dispatch(startLoading("Generating a new Address ..."));
+    dispatch(startLoading("Generating new Address ..."));
     iota.api.getNewAddress(await OpenBox("seed", pwd), function(
       error,
       success
