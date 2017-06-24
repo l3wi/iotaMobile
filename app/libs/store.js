@@ -18,23 +18,24 @@ const initialState = {
     loading: false,
     account: {},
     node: {},
-    nodeUrl: "http://node.iotawallet.info:14265",
-    rememberMe: 60000
+    nodeUrl: "http://node.iotawallet.info:14265"
   },
   crypto: {
-    box: false
+    box: false,
+    remember: "1"
   }
 };
 
 const middleWare = [thunkMiddleware, loggerMiddleware];
 
-export const configureStore = initialState => {
+export const store = createStore(
+  reducers,
+  initialState,
+  compose(autoRehydrate(), applyMiddleware(...middleWare))
+);
+
+export const configureStore = () => {
   return new Promise((resolve, reject) => {
-    const store = createStore(
-      reducers,
-      initialState,
-      compose(autoRehydrate(), applyMiddleware(...middleWare))
-    );
     persistStore(store, { storage: AsyncStorage }, () => resolve(store));
   });
 };

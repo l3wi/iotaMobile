@@ -3,9 +3,10 @@ import { Provider } from "react-redux";
 
 import { registerScreens } from "./loadRoutes";
 import { configureStore } from "./libs/store";
-// screen related book keeping
+import { initialiseRemember } from "./libs/remember";
 
-const init = async () => {
+export const init = async () => {
+  initialiseRemember();
   const store = await configureStore();
 
   registerScreens(store, Provider);

@@ -1,44 +1,48 @@
 import differenceInMilliseconds from "date-fns/difference_in_milliseconds";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, AppState } from "react-native";
+
+// Dispatch Clear Pass func
+import { store } from "./store";
+import { clearPwd } from "../actions/crypto";
+import { finishLoading } from "../actions/iota";
+
+import { init } from "../entry";
 
 var exit;
 
-export const ExpiredRemember = async () => {
-  try {
-    await AsyncStorage.getItem("remember", (err, result) => {
-      const rememberMe = JSON.parse(result);
-      if (
-        differenceInMilliseconds(Date.now(), exit) < rememberMe &&
-        rememberMe !== null
-      ) {
-        console.log("Session within Remember Me");
-        return false;
-      } else {
-        console.log("Session Expired");
-        return true;
-      }
-    });
-  } catch (error) {
-    // Error saving data
+export const initialiseRemember = () => {
+  AppState.addEventListener("change", nullify);
+};
+
+const nullify = nextAppState => {
+  console.log("App changed to: ", nextAppState);
+  if (nextAppState === "active") {
+    ExpiredRemember();
+  } else if (nextAppState === "inactive") {
+    exitApp();
+  }
+};
+
+// Checks to see if Remember me is expired
+const ExpiredRemember = async () => {
+  // Get state
+  var state = await store.getState();
+  // Check
+  if (
+    differenceInMilliseconds(Date.now(), exit) <
+      state.crypto.remember * 60000 &&
+    state.crypto.remember !== null
+  ) {
+    console.log("Session within Remember Me");
+  } else {
+    // Writing it 'null'
+    store.dispatch(clearPwd());
+    store.dispatch(finishLoading());
+    init();
+    console.log("Key Cleaned & Rerouted to login");
   }
 };
 
 export const exitApp = () => {
   exit = Date.now();
-};
-
-export const setRemember = async time => {
-  try {
-    await AsyncStorage.setItem("remember", JSON.stringify(time * 60000));
-  } catch (error) {
-    // Error saving data
-  }
-};
-export const getRemember = async () => {
-  var time = "";
-  await AsyncStorage.getItem("remember", (err, result) => {
-    console.log("Remember set at: " + JSON.parse(result) / 60000 + " min");
-    time = JSON.parse(result) / 60000;
-  });
-  return time;
 };
