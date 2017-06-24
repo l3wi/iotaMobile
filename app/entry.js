@@ -5,11 +5,15 @@ import { registerScreens } from "./loadRoutes";
 import { configureStore } from "./libs/store";
 import { initialiseRemember } from "./libs/remember";
 
+import { store } from "./libs/store";
+import { finishLoading } from "./actions/iota";
+
 export const init = async () => {
   initialiseRemember();
-  const store = await configureStore();
+  const newStore = await configureStore();
+  store.dispatch(finishLoading());
 
-  registerScreens(store, Provider);
+  registerScreens(newStore, Provider);
 
   Navigation.startSingleScreenApp({
     screen: {
