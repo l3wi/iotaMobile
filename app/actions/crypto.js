@@ -1,6 +1,12 @@
 import * as types from "./types";
 import { Alert } from "react-native";
-import { RetrieveBox, DeleteBox, OpenBox, hashPwd } from "../libs/crypto";
+import {
+  RetrieveBox,
+  DeleteBox,
+  OpenBox,
+  hashPwd,
+  stringToU8
+} from "../libs/crypto";
 
 //// Async
 export const checkBox = () => {
@@ -23,6 +29,25 @@ export const showSeed = pwd => {
   };
 };
 
+export const clearPwd = () => {
+  return (dispatch, getState) => {
+    dispatch(setPwd(stringToU8("000000000000000000000000")));
+  };
+};
+
+export function setPwd(pwd) {
+  return {
+    type: types.SET_PWD,
+    pwd
+  };
+}
+
+export function setRemember(remember) {
+  return {
+    type: types.SET_REMEMBER,
+    remember
+  };
+}
 export const deleteBox = () => {
   return (dispatch, getState) => {
     DeleteBox("seed");
