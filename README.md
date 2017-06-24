@@ -17,6 +17,10 @@ Security of the seed while the app is in active use will be handled by the audit
 - [react-native-keychain](https://github.com/oblador/react-native-keychain) - A native wrapper for iOS's Keychain & Android's SharedPreferences
 - [Styled Components](https://github.com/styled-components/styled-components) - A styling library so the app doesn't look crap.
 
+### Security
+
+For more info on security go [here](https://github.com/l3wi/iotaMobile/wiki/Security)
+
 ### Features - V0.1
 
 As specificed in the bounty it will have the following functions:
@@ -71,4 +75,4 @@ react-native run-ios  					// Launch emulator and start bundler
 
 ### License
 
-The app will be kept private for it's initial development. When it is ready for auditing it will be shared with the independent developers for inspection. If the review succeeds then the repo will be made public with the GPL-v3 license.
+MIT 2017 - Lewis Freiberg

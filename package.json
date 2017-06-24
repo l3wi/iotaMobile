@@ -1,7 +1,8 @@
 {
   "name": "mobileWallet",
   "version": "0.0.1",
-  "private": true,
+  "license": "MIT",
+  "private": false,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
