@@ -1,5 +1,6 @@
 import * as types from "./types";
 import { iota } from "../libs/iota";
+import { purgeStoredState } from "redux-persist";
 import { AsyncStorage, Alert } from "react-native";
 import {
   OpenBox,
@@ -113,6 +114,23 @@ export const reattachTransaction = (depth, minMag, hash) => {
   };
 };
 
+export const clearApp = navigator => {
+  return async (dispatch, getState) => {
+    purgeStoredState({ storage: AsyncStorage }, [])
+      .then(() => {
+        console.log("purge of someReducer completed");
+        DeleteBox("seed");
+        navigator.resetTo({
+          screen: "auth"
+        });
+        Alert.alert("Seed & Local data was destroyed");
+      })
+      .catch(() => {
+        console.log("purge of someReducer failed");
+      });
+  };
+};
+
 export function hydrate(data) {
   return {
     type: types.HYDRATE,
@@ -157,11 +175,5 @@ export function setAddress(address) {
   return {
     type: types.SET_ADDRESS,
     address
-  };
-}
-export function setPwd(pwd) {
-  return {
-    type: types.SET_PWD,
-    pwd
   };
 }
