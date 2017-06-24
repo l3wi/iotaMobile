@@ -19,11 +19,6 @@ export const iota = createReducer(
       newState.account = action.account;
       return { ...newState };
     },
-    [types.SET_PWD](state, action) {
-      let newState = state;
-      newState.pwd = action.pwd;
-      return { ...newState };
-    },
     [types.SET_ADDRESS](state, action) {
       let newState = state;
       newState.account.addresses.push(action.address);

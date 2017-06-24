@@ -154,7 +154,7 @@ function mapStateToProps(state, ownProps) {
   console.log(state);
   return {
     account: state.iota.account,
-    pwd: state.iota.pwd,
+    pwd: state.crypto.pwd,
     loading: state.iota.loading
   };
 }
