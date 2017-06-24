@@ -8,11 +8,12 @@ import {
   TextInput,
   Image,
   Picker,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { Select, Option } from "react-native-chooser";
 import { converter } from "../../libs/utils";
-import Iota, { Valid } from "../../libs/iota";
+import { iota } from "../../libs/iota";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -28,31 +29,40 @@ export default class LoginForm extends React.Component {
   create = (address, amount, unit, message) => {
     // Thanks dom :)
     if (!address) {
-      alert("Address is required");
+      Alert.alert("Error", "Address is required");
       return;
     } else if (address.length == 81) {
-      alert("Missing address checksum");
+      Alert.alert("Error", "Missing address checksum");
       return;
     } else if (address.length != 90) {
-      alert("Incorrect address length");
+      Alert.alert("Error", "Incorrect address length");
+      return;
+    } else if (isNaN(amount)) {
+      Alert.alert("Error", "Please enter a valid number");
       return;
     }
 
-    const value = parseInt(converter(amount, unit));
-    console.log(value);
+    const value = converter(amount, unit);
+    if (value % 1 != 0) {
+      Alert.alert("Error", "You can't send fractions of an IOTA");
+      return;
+    }
+
+    console.log(parseInt(value, 10));
     const transfer = [
       {
         address: address,
-        value: value,
-        message: Iota.toTrytes(this.state.message),
-        tag: Iota.toTrytes("iOSWALLET")
+        value: parseInt(value, 10),
+        message: iota.utils.toTrytes(this.state.message),
+        tag: iota.utils.toTrytes("iOSWALLET")
       }
     ];
+    this.props.sendTransaction(this.props.pwd, 9, 15, transfer);
     this.setState({ address: "", amount: "0", unit: "i", message: "" });
-    this.props.screenProps.send(9, 15, transfer);
   };
 
   render() {
+    var { loading } = this.props;
     return (
       <Wrapper>
         <Padding />
@@ -118,13 +128,16 @@ export default class LoginForm extends React.Component {
         </Row>
         <Row>
           <FullButton
+            loading={loading}
             onPress={() =>
-              this.create(
-                this.state.address,
-                this.state.amount,
-                this.state.unit,
-                this.state.message
-              )}
+              !loading
+                ? this.create(
+                    this.state.address,
+                    this.state.amount,
+                    this.state.unit,
+                    this.state.message
+                  )
+                : null}
           >
             <ButtonText>
               Send Transaction
@@ -184,7 +197,7 @@ const FullButton = styled.TouchableOpacity`
     flex: 1;
     padding: 10px;
     margin: 10px 0;
-    background-color: #2d353e;
+    background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
     flex-direction: row;   
     justify-content: center;
 `;

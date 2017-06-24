@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components/native";
-import { changeRemoteNode } from "../../libs/iota";
 import {
   ScrollView,
   Dimensions,
@@ -22,18 +21,8 @@ export default class InitialModal extends React.Component {
   }
 
   componentDidMount() {
-    this.getNode();
+    this.setState({ url: this.props.nodeUrl });
   }
-
-  getNode = async () => {
-    await AsyncStorage.getItem("node", (err, result) => {
-      if (!result) {
-        this.setState({ url: "http://node.iotawallet.info:14265/" });
-      } else {
-        this.setState({ url: JSON.parse(result) });
-      }
-    });
-  };
 
   render() {
     return (
@@ -69,7 +58,8 @@ export default class InitialModal extends React.Component {
                 autoCorrect={false}
                 keyboardType={"url"}
                 placeholderTextColor={"black"}
-                onSubmitEditing={() => changeRemoteNode(this.state.url)}
+                onSubmitEditing={() =>
+                  this.props.changeNode(this.state.url, true)}
                 onChangeText={url => this.setState({ url })}
               />
             </BottomBorder>

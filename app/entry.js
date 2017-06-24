@@ -1,31 +1,32 @@
-import React, { Component } from "react";
-import styled from "styled-components/native";
-import { AppRegistry, StyleSheet, Text, View, StatusBar } from "react-native";
-import { StackNavigator } from "react-navigation";
+import { Navigation } from "react-native-navigation";
+import { Provider } from "react-redux";
 
-// Import Screens
-import MainScreen from "./main";
-import InitialScreen from "./routes/initial";
+import { registerScreens } from "./loadRoutes";
+import { configureStore } from "./libs/store";
+import { initialiseRemember } from "./libs/remember";
 
-export default class Entry extends Component {
-  render() {
-    return (
-      <Wrapper>
-        <StatusBar backgroundColor="blue" barStyle="light-content" />
-        <SimpleApp />
-      </Wrapper>
-    );
-  }
-}
+import { store } from "./libs/store";
+import { finishLoading } from "./actions/iota";
 
-const SimpleApp = StackNavigator(
-  {
-    Initial: { screen: InitialScreen },
-    Main: { screen: MainScreen }
-  },
-  { headerMode: "none" }
-);
-const Wrapper = styled.View`
-    height: 100%;
-    width:100%;
-`;
+export const init = async () => {
+  initialiseRemember();
+  const newStore = await configureStore();
+  store.dispatch(finishLoading());
+
+  registerScreens(newStore, Provider);
+
+  Navigation.startSingleScreenApp({
+    screen: {
+      screen: "auth",
+      navigatorStyle: { navBarHidden: true }
+    },
+    drawer: {
+      left: {
+        screen: "menu"
+      },
+      disableOpenGesture: false
+    }
+  });
+};
+
+init();

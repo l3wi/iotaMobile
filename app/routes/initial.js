@@ -6,54 +6,56 @@ import {
   TouchableOpacity
 } from "react-native";
 import styled from "styled-components/native";
+
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { ActionCreators } from "../actions";
+
 import LoginForm from "../components/login";
 import SeedSetup from "../components/seedSetup";
 import Modal from "../components/initalModal";
 
 import { RetrieveBox, DeleteBox } from "../libs/crypto";
 
-export default class InitialScreen extends Component {
+class AuthScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      box: false,
+      login: true,
       modal: false
     };
   }
-  static navigationOptions = {
-    header: null
+  static navigatorStyle = {
+    navBarHidden: true // make the nav bar hidden
   };
 
-  componentDidMount() {
-    RetrieveBox("seed").then(box => {
-      this.setState({ loading: false, box: box, login: true });
-    });
+  componentWillMount() {
+    this.props.checkBox();
+    this.props.setupNode(this.props.nodeUrl);
   }
 
   clearBox = () => {
-    DeleteBox("seed");
     this.setState({ login: false });
+    this.props.deleteBox();
   };
 
   close = () => {
     this.setState({ modal: false });
   };
 
-  loading = message => {
-    if (!message) {
-      this.setState({ loading: false });
-    } else {
-      this.setState({ loading: message || "Loading" });
-    }
-  };
-
   render() {
-    const { box, login, modal } = this.state;
+    const { login, modal } = this.state;
+    const { box, loading, node, nodeUrl, hydrate } = this.props;
     return (
       <Main style={{ position: "relative" }}>
-        <Modal {...this.state} close={this.close} />
-        {!this.state.loading
+        <Modal
+          {...this.state}
+          nodeUrl={nodeUrl}
+          changeNode={this.props.changeNode}
+          close={this.close}
+        />
+        {!loading && hydrate
           ? <Wrapper>
               {!modal
                 ? <OpenModal onPress={() => this.setState({ modal: true })}>
@@ -65,24 +67,36 @@ export default class InitialScreen extends Component {
                 : null}
 
               {login
-                ? <LoginForm
-                    {...this.props}
-                    box={box}
-                    clear={this.clearBox}
-                    loading={this.loading}
-                  />
-                : <SeedSetup {...this.props} loading={this.loading} />}
+                ? <LoginForm {...this.props} box={box} clear={this.clearBox} />
+                : <SeedSetup {...this.props} />}
             </Wrapper>
           : <Wrapper loading>
               <Logo source={require("../assets/iota.png")} />
               <AppText>
-                {this.state.loading}
+                {loading}
               </AppText>
             </Wrapper>}
       </Main>
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  return {
+    box: state.crypto.box,
+    node: state.iota.node,
+    hydrate: state.iota.hydrate,
+    nodeUrl: state.iota.nodeUrl,
+    loading: state.iota.loading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);
+
 var { height, width } = Dimensions.get("window");
 
 const Main = styled.View`

@@ -7,9 +7,9 @@ import { connect } from "react-redux";
 import { ActionCreators } from "../actions";
 
 import Balance from "../components/balance";
-import Send from "../components/send";
+import Transactions from "../components/transactions";
 
-class SendScreen extends Component {
+class TransactionsScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -26,28 +26,45 @@ class SendScreen extends Component {
       });
     }
   }
+
   static navigatorStyle = {
     navBarHidden: true // make the nav bar hidden
   };
+
+  componentWillMount() {}
+
+  refresh = () => {
+    if (!this.props.loading) {
+      this.props.getAccount(this.props.pwd);
+    }
+  };
   render() {
-    console.log(this.props);
-    var { account, loading } = this.props;
     return (
       <Wrapper>
         <Balance
-          title={"Send Page"}
-          account={account}
-          loading={loading}
+          title={"Last Transactions"}
+          account={this.props.account}
+          loading={this.props.loading}
           {...this.props}
         />
-        <ScrollView style={{ width: "100%" }}>
-          <Send {...this.props} />
-
-        </ScrollView>
+        <Transactions
+          account={this.props.account}
+          loading={this.props.loading}
+          refresh={this.refresh}
+          {...this.props}
+        />
       </Wrapper>
     );
   }
 }
+const Wrapper = styled.View`
+    height: 100%;
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: flex-start;
+`;
+
 function mapStateToProps(state, ownProps) {
   console.log(state);
   return {
@@ -61,12 +78,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendScreen);
-
-const Wrapper = styled.View`
-    height: 100%;
-    width:100%;
-    display:flex;
-    align-items: center;
-    justify-content: flex-start;
-`;
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsScreen);

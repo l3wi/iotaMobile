@@ -9,17 +9,14 @@ import {
   TouchableOpacity,
   Modal,
   Clipboard,
-  Image
+  Image,
+  RefreshControl
 } from "react-native";
-import Iota, { Valid } from "../../libs/iota";
 import { formatAmount, getDate } from "../../libs/utils";
 
-copy = address => {
-  Clipboard.setString(address);
-  alert("Copied to clip board");
-};
+import Transaction from "./modal";
 
-export default class LoginForm extends React.Component {
+export default class TransactionComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,169 +27,166 @@ export default class LoginForm extends React.Component {
     };
   }
   componentWillReceiveProps(props) {
-    this.setState({ loading: false, account: props.account });
+    const loading = props.loading ? true : false;
+    this.setState({ loading: loading, account: props.account });
   }
 
-  componentDidMount() {
-    this.setState({ account: this.props.account, loading: false });
+  componentWillMount() {
+    this.setState({
+      account: this.props.account,
+      loading: false
+    });
   }
 
-  setModalVisible(item) {
-    this.setState({ item: item, modalVisible: !this.state.modalVisible });
-  }
+  setModalVisible = item => {
+    if (item[0]) {
+      this.setState({ item: item, modalVisible: true });
+    } else {
+      this.setState({ item: [], modalVisible: false });
+    }
+  };
+
+  _onRefresh = () => {
+    // this.setState({ loading: true });
+    this.props.refresh();
+    console.log("Pull to Refresh Actioned");
+  };
+
+  _renderItem = ({ item, index }) => {
+    var newItem = item;
+    newItem[0].sent = this.state.account.addresses.some(
+      addy => addy === item[0].address
+    );
+    return (
+      <ListItem
+        key={index}
+        item={newItem}
+        setModalVisible={this.setModalVisible}
+      />
+    );
+  };
 
   render() {
-    var { item, account, loading } = this.state;
+    var { item, account, loading, refreshing } = this.state;
     return (
       <Wrapper>
-        <FlatList
-          data={
-            !account
-              ? []
-              : account.transfers.sort(
-                  (a, b) => b[0].timestamp - a[0].timestamp
-                )
-          }
-          keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) =>
-            <Item
-              key={index}
-              width={width}
-              onPress={() => this.setModalVisible(item)}
-            >
-              <Row>
-                <Header {...item[0]}>
-                  {formatAmount(item[0].value, "bal")}
-                  {" "}
-                  <Unit>{formatAmount(item[0].value, "unit")}</Unit>
-                </Header>
-                {account.addresses.some(addy => addy === item[0].address)
-                  ? <Row center>
-                      <Text>Recieved</Text>
+        {account.transfers[0]
+          ? <FlatList
+              data={account.transfers.sort(
+                (a, b) => b[0].timestamp - a[0].timestamp
+              )}
+              refreshing={false}
+              onRefresh={() => this._onRefresh()}
+              initialNumToRender={5}
+              removeClippedSubviews={true}
+              keyExtractor={(item, index) => index}
+              renderItem={this._renderItem}
+            />
+          : <PaddedBox>
+              <EmptyHeader>Looks like this is your first time!</EmptyHeader>
+              <Words>
+                You'll need to go to Recieve and generate an address then
+                attach it to the tangle.
+              </Words>
 
-                      <Image
-                        source={require("../../assets/recieved.png")}
-                        style={{ width: 30, height: 30, marginLeft: 10 }}
-                      />
-                    </Row>
-                  : <Row center>
-                      <Text>Sent</Text>
+              <Button onPress={() => this.props.getAccount(this.props.pwd)}>
+                <WhiteText>Refresh Account</WhiteText>
+              </Button>
 
-                      <Image
-                        source={require("../../assets/icons8-logout_rounded_filled.png")}
-                        style={{ width: 30, height: 30, marginLeft: 10 }}
-                      />
-                    </Row>}
+            </PaddedBox>}
 
-              </Row>
-              <Row>
-                <Text>
-                  {item[0].persistence ? "Confirmed" : "Pending"}
-                </Text>
-                <Text>
-                  {getDate(item[0].timestamp)}
-                </Text>
-              </Row>
-            </Item>}
+        <Transaction
+          item={item}
+          modalVisible={this.state.modalVisible}
+          setModalVisible={this.setModalVisible}
+          {...this.props}
         />
-        <Modal
-          animationType={"fade"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            alert("Modal has been closed.");
-          }}
-        >
-          {item
-            ? <ModalBack>
-                <Close
-                  onPress={() => {
-                    this.setModalVisible(!this.state.modalVisible);
-                  }}
-                >
-                  <Image
-                    source={require("../../assets/close.png")}
-                    style={{ height: 30, width: 30 }}
-                  />
-                </Close>
-                <ModalBody>
-
-                  <Text>Bundle:</Text>
-                  {item[0]
-                    ? <TouchableOpacity onPress={() => copy(item[0].bundle)}>
-                        <Text>{item[0].bundle.substring(0, 20)}...</Text>
-                      </TouchableOpacity>
-                    : null}
-
-                  <Text>Hash:</Text>
-                  {item.map((item, index) =>
-                    <TouchableOpacity
-                      key={index}
-                      onPress={() => copy(item.hash)}
-                    >
-                      <Text>{item.hash.substring(0, 20)}...</Text>
-                    </TouchableOpacity>
-                  )}
-
-                  {!item.persistence
-                    ? <Button
-                        onPress={() => {
-                          this.props.screenProps.replay(item[0].hash);
-                        }}
-                      >
-                        <Word>Replay Transaction</Word>
-                      </Button>
-                    : null}
-
-                </ModalBody>
-              </ModalBack>
-            : null}
-
-        </Modal>
-
       </Wrapper>
     );
   }
 }
-const { height, width } = Dimensions.get("window");
-
-const ModalBody = styled.View`
-  padding: 20px;
-  width: 70%;
-  background: white;
-`;
-
-const Close = styled.TouchableOpacity`
-    position: absolute;
-    top: 40px;
-    right: 40px;
-`;
 
 const Button = styled.TouchableOpacity`
-    flex-direction: row;
-    justify-content: center;
+    align-items: center;
+    width: 100%;
     padding: 10px;
-    margin: 10px 0;
     background-color: #2d353e;
 `;
-const Word = styled.Text`
+const WhiteText = styled.Text`
   color: white;
 `;
 
-const ModalBack = styled.View`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.70);
+const PaddedBox = styled.View`
+ height: 300px;
+    width:100%;
+    padding: 50px;
+    display:flex;
+    align-items: center;
+    justify-content: flex-start;
 `;
+
+const EmptyHeader = styled.Text`
+  font-size: 18px;
+    text-align: center;
+
+  margin-bottom: 20px;
+`;
+
+const Words = styled.Text`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+class ListItem extends React.PureComponent {
+  render() {
+    return (
+      <Item onPress={() => this.props.setModalVisible(this.props.item)}>
+        <Row>
+          <Header {...this.props.item[0]}>
+            {formatAmount(this.props.item[0].value, "bal")}
+            {" "}
+            <Unit>{formatAmount(this.props.item[0].value, "unit")}</Unit>
+          </Header>
+          {this.props.item[0].sent
+            ? <Row center>
+                <Text>Recieved</Text>
+
+                <Image
+                  source={require("../../assets/recieved.png")}
+                  style={{ width: 30, height: 30, marginLeft: 10 }}
+                />
+              </Row>
+            : <Row center>
+                <Text>Sent</Text>
+
+                <Image
+                  source={require("../../assets/icons8-logout_rounded_filled.png")}
+                  style={{ width: 30, height: 30, marginLeft: 10 }}
+                />
+              </Row>}
+
+        </Row>
+        <Row>
+          <Text>
+            {this.props.item[0].persistence ? "Confirmed" : "Pending"}
+          </Text>
+          <Text>
+            {getDate(this.props.item[0].timestamp)}
+          </Text>
+        </Row>
+      </Item>
+    );
+  }
+}
+
+const { height, width } = Dimensions.get("window");
 
 const Wrapper = styled.View`
   flex: 1;
+  background: #eee;
 `;
 const Item = styled.TouchableOpacity`
-    width: ${props => props.width + "px"};
+    width: ${width + "px"};
     padding: 5% 10%;
     margin-bottom: 5px;
     background: white;

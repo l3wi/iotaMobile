@@ -9,7 +9,6 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import Iota, { Valid } from "../../libs/iota";
 import { formatAmount } from "../../libs/utils";
 
 export default class Balance extends React.Component {
@@ -23,51 +22,49 @@ export default class Balance extends React.Component {
     };
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({
-      account: this.props.account,
-      loading: this.props.loading,
-      node: this.props.node
-    });
-  }
+  // componentWillReceiveProps(props) {
+  //   this.setState({
+  //     account: this.props.account,
+  //     loading: this.props.loading,
+  //     node: this.props.node
+  //   });
+  // }
 
-  componentDidMount() {
-    this.setState({
-      account: this.props.account,
-      loading: this.props.loading,
-      node: this.props.node,
-      int: true
-    });
-  }
+  // componentDidMount() {
+  //   this.setState({
+  //     account: this.props.account,
+  //     loading: this.props.loading,
+  //     node: this.props.node,
+  //     int: true
+  //   });
+  // }
 
   render() {
-    var { key, routeName } = this.props.navigation.state;
-    var { account, loading, node, int } = this.state;
-    console.log(loading);
-
+    var { account, loading, node, title } = this.props;
     return (
       <Wrapper loading={loading}>
         <MenuButtom
-          onPress={() => this.props.navigation.navigate("DrawerOpen")}
+          onPress={() =>
+            this.props.navigator.toggleDrawer({
+              side: "left"
+            })}
         >
           <Image
             style={{ width: 25, height: 25 }}
             source={require("../../assets/icons8-menu.png")}
           />
         </MenuButtom>
-        <Page>{routeName}</Page>
+        <Page>{title}</Page>
         {loading
           ? <Milestone>
-              {loading.title}
+              {loading}
             </Milestone>
           : null}
         <View />
-        {int
-          ? <Row>
-              <Heading>{formatAmount(account.balance, "bal")}</Heading>
-              <SubHeading> {formatAmount(account.balance, "unit")}</SubHeading>
-            </Row>
-          : null}
+        <Row>
+          <Heading>{formatAmount(account.balance, "bal")}</Heading>
+          <SubHeading> {formatAmount(account.balance, "unit")}</SubHeading>
+        </Row>
       </Wrapper>
     );
   }
@@ -79,7 +76,7 @@ const Wrapper = styled.View`
     justify-content: space-between;
     width:100%;
     height: 20%;
-    background-color: ${props => (props.loading ? "#4c4184" : "#2d353e")};
+    background-color: ${props => (props.loading ? "#04a997" : "#2d353e")};
     align-items: center;
     padding: 10px 40px;
 `;
@@ -98,8 +95,9 @@ const Milestone = styled.Text`
 
 const MenuButtom = styled.TouchableOpacity`
   position: absolute;
-  top: 40px;
-  left: 30px;
+  padding: 20px;
+  top: 20px;
+  left: 10px;
 `;
 
 const TInput = styled.TextInput`

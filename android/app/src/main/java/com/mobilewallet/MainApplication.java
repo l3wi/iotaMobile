@@ -3,6 +3,7 @@ package com.mobilewallet;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.fabricio.vergal.RNWorkers.RNWorkersPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.oblador.keychain.KeychainPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNWorkersPackage(),
             new RandomBytesPackage(),
             new KeychainPackage()
       );
