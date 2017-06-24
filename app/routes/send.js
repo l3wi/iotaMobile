@@ -35,7 +35,7 @@ class SendScreen extends Component {
     return (
       <Wrapper>
         <Balance
-          title={"Send"}
+          title={"Send Iota to an address"}
           account={account}
           loading={loading}
           {...this.props}

@@ -73,7 +73,7 @@ class RecieveScreen extends Component {
     return (
       <Wrapper>
         <Balance
-          title={"Receive"}
+          title={"Generate your address here"}
           account={account}
           loading={loading}
           {...this.props}
@@ -119,7 +119,7 @@ class RecieveScreen extends Component {
 
                 {!account.addresses[0]
                   ? <Text style={{ marginTop: 20 }}>
-                      Click below to generate your first address
+                      Click below to generate your first Address
                     </Text>
                   : null}
 
@@ -131,13 +131,13 @@ class RecieveScreen extends Component {
                       onPress={() =>
                         !loading ? this.props.newAddress(this.props.pwd) : null}
                     >
-                      <WhiteText>New Address</WhiteText>
+                      <WhiteText>Generate new Address</WhiteText>
                     </Button>
                   : <Button
                       loading={loading}
                       onPress={() => (!loading ? this.attach() : null)}
                     >
-                      <WhiteText>Attach to tangle</WhiteText>
+                      <WhiteText>Attach to Tangle</WhiteText>
                     </Button>}
 
               </Col>

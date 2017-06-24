@@ -26,7 +26,7 @@ class MenuScreen extends Component {
               link: "transactions"
             })}
         >
-          <MenuText>Transactions</MenuText>
+          <MenuText>Transactionlist</MenuText>
         </MenuButton>
         <MenuButton
           onPress={() =>

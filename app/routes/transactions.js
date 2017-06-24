@@ -42,7 +42,7 @@ class TransactionsScreen extends Component {
     return (
       <Wrapper>
         <Balance
-          title={"Transactions"}
+          title={"Your past transactions"}
           account={this.props.account}
           loading={this.props.loading}
           {...this.props}
