@@ -183,7 +183,7 @@ const { height, width } = Dimensions.get("window");
 
 const Wrapper = styled.View`
   flex: 1;
-  background: #eee;
+  background: white;
 `;
 const Item = styled.TouchableOpacity`
     width: ${width + "px"};
