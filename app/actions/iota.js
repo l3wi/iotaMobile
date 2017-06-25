@@ -114,8 +114,9 @@ export const reattachTransaction = (depth, minMag, hash) => {
   };
 };
 
-export const clearApp = navigator => {
+export const resetAsync = navigator => {
   return async (dispatch, getState) => {
+    dispatch(clearIota());
     purgeStoredState({ storage: AsyncStorage }, [])
       .then(() => {
         console.log("purge of someReducer completed");
@@ -130,6 +131,13 @@ export const clearApp = navigator => {
       });
   };
 };
+
+export function clearIota(data) {
+  return {
+    type: types.CLEAR_IOTA,
+    data
+  };
+}
 
 export function hydrate(data) {
   return {

@@ -41,6 +41,14 @@ export const iota = createReducer(
         newState.hydrate = false;
       }
       return { ...newState };
+    },
+    [types.CLEAR_IOTA](state, action) {
+      return {
+        loading: false,
+        account: { balance: 0, transfers: [] },
+        node: {},
+        nodeUrl: "http://node.iotawallet.info:14265"
+      };
     }
   }
 );

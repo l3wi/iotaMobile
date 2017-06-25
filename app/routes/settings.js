@@ -57,7 +57,7 @@ class InitialScreen extends Component {
 
   // Clears the application
   clear = () => {
-    this.props.clearApp(this.props.navigator);
+    this.props.resetAsync(this.props.navigator);
   };
 
   render() {
@@ -134,8 +134,27 @@ class InitialScreen extends Component {
 
           <Spacer />
           <Row>
-            <Button onPress={() => this.clear()}>
-              <WhiteText>Delete Seed & Reset Wallet ?</WhiteText>
+            <Button
+              onPress={() =>
+                Alert.alert(
+                  "Reset Wallet",
+                  "You are about to delete your SEED and clear the wallet. Are you sure you want to do this?",
+                  [
+                    {
+                      text: "Cancel",
+                      onPress: () => console.log("User Canceled")
+                    },
+
+                    {
+                      text: "Clear Seed",
+                      onPress: () => this.clear(),
+                      style: "destructive"
+                    }
+                  ],
+                  { cancelable: false }
+                )}
+            >
+              <WhiteText>Delete Seed & Reset Wallet</WhiteText>
             </Button>
           </Row>
         </ScrollView>

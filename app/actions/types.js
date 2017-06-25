@@ -5,6 +5,7 @@ export const SET_NODE = "SET_NODE";
 export const SET_REMOTE = "SET_REMOTE";
 export const SEND = "SEND";
 export const REPLAY = "REPLAY";
+export const CLEAR_IOTA = "CLEAR_IOTA";
 
 // UTILS
 export const LOADING = "LOADING";
