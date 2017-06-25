@@ -16,7 +16,7 @@ const loggerMiddleware = createLogger({
 const initialState = {
   iota: {
     loading: false,
-    account: {},
+    account: { balance: 0, transfers: [] },
     node: {},
     nodeUrl: "http://node.iotawallet.info:14265"
   },
