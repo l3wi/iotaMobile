@@ -10,6 +10,7 @@ import styled from "styled-components/native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreators } from "../actions";
+import KeepAwake from "react-native-keep-awake";
 
 import LoginForm from "../components/login";
 import SeedSetup from "../components/seedSetup";
@@ -71,6 +72,7 @@ class AuthScreen extends Component {
                 : <SeedSetup {...this.props} />}
             </Wrapper>
           : <Wrapper loading>
+              <KeepAwake />
               <Logo source={require("../assets/iota.png")} />
               <AppText>
                 {loading}

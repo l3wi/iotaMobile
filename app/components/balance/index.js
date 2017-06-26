@@ -10,6 +10,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { formatAmount } from "../../libs/utils";
+import KeepAwake from "react-native-keep-awake";
 
 export default class Balance extends React.Component {
   constructor(props) {
@@ -54,6 +55,7 @@ export default class Balance extends React.Component {
             source={require("../../assets/icons8-menu.png")}
           />
         </MenuButtom>
+        {loading && <KeepAwake />}
         <Page>{title}</Page>
         {loading
           ? <Milestone>
