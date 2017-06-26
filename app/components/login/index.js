@@ -33,7 +33,7 @@ class LoginForm extends React.Component {
     // Store password
     this.props.setPwd(passHash);
     // Get account
-    this.props.getAccount(passHash);
+    this.props.getTransfers(this.props.account.addresses);
 
     // // Push to new nav stateAccount
     this.props.navigator.resetTo({

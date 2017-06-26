@@ -47,7 +47,7 @@ class AuthScreen extends Component {
 
   render() {
     const { login, modal } = this.state;
-    const { box, loading, node, nodeUrl, hydrate } = this.props;
+    const { box, loading, node, nodeUrl, hydrate, account } = this.props;
     return (
       <Main style={{ position: "relative" }}>
         <Modal
@@ -68,7 +68,12 @@ class AuthScreen extends Component {
                 : null}
 
               {login
-                ? <LoginForm {...this.props} box={box} clear={this.clearBox} />
+                ? <LoginForm
+                    {...this.props}
+                    box={box}
+                    account={account}
+                    clear={this.clearBox}
+                  />
                 : <SeedSetup {...this.props} />}
             </Wrapper>
           : <Wrapper loading>
@@ -86,6 +91,7 @@ class AuthScreen extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     box: state.crypto.box,
+    account: state.iota.account,
     node: state.iota.node,
     hydrate: state.iota.hydrate,
     nodeUrl: state.iota.nodeUrl,

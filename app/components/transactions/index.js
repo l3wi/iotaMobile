@@ -48,7 +48,7 @@ export default class TransactionComponent extends React.Component {
 
   _onRefresh = () => {
     // this.setState({ loading: true });
-    this.props.refresh();
+    this.props.getTransfers(this.props.account.addresses);
     console.log("Pull to Refresh Actioned");
   };
 
@@ -89,7 +89,10 @@ export default class TransactionComponent extends React.Component {
                 attach it to the tangle.
               </Words>
 
-              <Button onPress={() => this.props.getAccount(this.props.pwd)}>
+              <Button
+                onPress={() =>
+                  this.props.getTransfers(this.props.account.addresses)}
+              >
                 <WhiteText>Refresh Account</WhiteText>
               </Button>
 
