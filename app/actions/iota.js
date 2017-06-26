@@ -67,6 +67,37 @@ export const getAccount = (pwd, navigator) => {
     });
   };
 };
+
+export const getTransfers = (addresses, navigator) => {
+  return async (dispatch, getState) => {
+    var data = {
+      transfers: [],
+      balance: 0,
+      inputs: []
+    };
+    dispatch(startLoading("Updating transactions"));
+    iota.api._bundlesFromAddresses(addresses, true, function(error, bundles) {
+      data.transfers = bundles;
+      iota.api.getBalances(addresses, 100, function(error, balances) {
+        balances.balances.forEach(function(balance, index) {
+          var balance = parseInt(balance);
+          data.balance += balance;
+          if (balance > 0) {
+            var newInput = {
+              address: data.addresses[index],
+              keyIndex: index,
+              balance: balance
+            };
+            data.inputs.push(newInput);
+          }
+        });
+        dispatch(updateState(data));
+        dispatch(finishLoading());
+      });
+    });
+  };
+};
+
 export const newAddress = pwd => {
   return async (dispatch, getState) => {
     dispatch(startLoading("Generating new Address"));
@@ -170,6 +201,13 @@ export function setNodeInfo(node) {
   return {
     type: types.SET_NODE,
     node
+  };
+}
+
+export function updateState(data) {
+  return {
+    type: types.UPDATE_TRANSFERS,
+    data
   };
 }
 export function setAccount(account) {
