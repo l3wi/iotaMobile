@@ -48,9 +48,9 @@ class RecieveScreen extends Component {
     navBarHidden: true // make the nav bar hidden
   };
 
-  newAddress = () => {
+  newAddress = pwd => {
     this.setState({ called: true });
-    this.props.screenProps.newAddress();
+    this.props.newAddress(pwd);
   };
 
   attach = () => {
@@ -123,13 +123,11 @@ class RecieveScreen extends Component {
                     </Text>
                   : null}
 
-                {!called &&
-                  account.addresses[account.addresses.length - 1] !==
-                    account.latestAddress
+                {!called
                   ? <Button
                       loading={loading}
                       onPress={() =>
-                        !loading ? this.props.newAddress(this.props.pwd) : null}
+                        !loading ? this.newAddress(this.props.pwd) : null}
                     >
                       <WhiteText>Generate new Address</WhiteText>
                     </Button>
