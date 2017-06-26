@@ -1,4 +1,8 @@
 rootProject.name = 'mobileWallet'
+include ':react-native-navigation'
+project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app')
+include ':react-native-keep-awake'
+project(':react-native-keep-awake').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-keep-awake/android')
 include ':rn-workers'
 project(':rn-workers').projectDir = new File(rootProject.projectDir, '../node_modules/rn-workers/android')
 include ':react-native-randombytes'

@@ -3,6 +3,8 @@ package com.mobilewallet;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativenavigation.NavigationReactPackage;
+import com.corbt.keepawake.KCKeepAwakePackage;
 import com.fabricio.vergal.RNWorkers.RNWorkersPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.oblador.keychain.KeychainPackage;
@@ -26,6 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new NavigationReactPackage(),
+            new KCKeepAwakePackage(),
             new RNWorkersPackage(),
             new RandomBytesPackage(),
             new KeychainPackage()

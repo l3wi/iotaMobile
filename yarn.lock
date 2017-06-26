@@ -3200,6 +3200,10 @@ react-native-drawer-layout@1.3.1:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
+react-native-keep-awake@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-2.0.4.tgz#da58b3161f1360163445c53e8c1cf411068f9a75"
+
 react-native-keychain@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-1.2.0.tgz#57aad19b7b08fb7e12173763de1c9da1949ab704"

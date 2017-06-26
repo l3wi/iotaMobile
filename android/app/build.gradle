@@ -126,6 +126,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-navigation')
+    compile project(':react-native-keep-awake')
     compile project(':rn-workers')
     compile project(':react-native-randombytes')
     compile project(':react-native-keychain')
