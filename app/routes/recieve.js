@@ -36,7 +36,7 @@ class RecieveScreen extends Component {
     if (event.type == "DeepLink") {
       this.props.navigator.resetTo({
         screen: event.link,
-        animated: false
+        animated: true
       });
       this.props.navigator.toggleDrawer({
         side: "left",
@@ -83,7 +83,7 @@ class RecieveScreen extends Component {
           {account.latestAddress
             ? <Col>
                 {/*If you dont have any addresses show attach button*/}
-                {account.addresses[account.addresses.length - 1]
+                {account.addresses[0]
                   ? <Col>
                       <CopyAddress
                         onPress={() =>
@@ -115,13 +115,9 @@ class RecieveScreen extends Component {
                         : null}
 
                     </Col>
-                  : null}
-
-                {!account.addresses[0]
-                  ? <Text style={{ marginTop: 20 }}>
+                  : <Text style={{ marginTop: 20 }}>
                       Click below to generate your first Address
-                    </Text>
-                  : null}
+                    </Text>}
 
                 {!called
                   ? <Button
