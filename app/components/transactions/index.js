@@ -188,7 +188,8 @@ const Wrapper = styled.View`
 const Item = styled.TouchableOpacity`
     width: ${width + "px"};
     padding: 5% 10%;
-    margin-bottom: 5px;
+    border-bottom-width: 5px;
+    border-bottom-color: #eee;
     background: white;
 `;
 
