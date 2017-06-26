@@ -18,7 +18,7 @@ class SendScreen extends Component {
     if (event.type == "DeepLink") {
       this.props.navigator.resetTo({
         screen: event.link,
-        animated: false
+        animated: true
       });
       this.props.navigator.toggleDrawer({
         side: "left",
