@@ -80,62 +80,58 @@ class RecieveScreen extends Component {
         />
         <ScrollView style={{ width: "100%" }}>
           {/*Wait for account to load*/}
-          {account.latestAddress
-            ? <Col>
-                {/*If you dont have any addresses show attach button*/}
-                {account.addresses[0]
-                  ? <Col>
-                      <CopyAddress
-                        onPress={() =>
-                          copy(
+          <Col>
+            {/*If you dont have any addresses show attach button*/}
+            {account.addresses[0]
+              ? <Col>
+                  <CopyAddress
+                    onPress={() =>
+                      copy(
+                        iota.utils.addChecksum(
+                          account.addresses[account.addresses.length - 1]
+                        )
+                      )}
+                  >
+                    <Address>
+                      {iota.utils.addChecksum(
+                        account.addresses[account.addresses.length - 1]
+                      )}
+                    </Address>
+                  </CopyAddress>
+                  {account.addresses[account.addresses.length - 1]
+                    ? <QR
+                        source={{
+                          uri: qr(
                             iota.utils.addChecksum(
                               account.addresses[account.addresses.length - 1]
                             )
-                          )}
-                      >
-                        <Address>
-                          {iota.utils.addChecksum(
-                            account.addresses[account.addresses.length - 1]
-                          )}
-                        </Address>
-                      </CopyAddress>
-                      {account.addresses[account.addresses.length - 1]
-                        ? <QR
-                            source={{
-                              uri: qr(
-                                iota.utils.addChecksum(
-                                  account.addresses[
-                                    account.addresses.length - 1
-                                  ]
-                                )
-                              ),
-                              scale: 4
-                            }}
-                          />
-                        : null}
+                          ),
+                          scale: 4
+                        }}
+                      />
+                    : null}
 
-                    </Col>
-                  : <Text style={{ marginTop: 20 }}>
-                      Click below to generate your first Address
-                    </Text>}
+                </Col>
+              : <Text style={{ marginTop: 20 }}>
+                  Click below to generate your first Address
+                </Text>}
 
-                {!called
-                  ? <Button
-                      loading={loading}
-                      onPress={() =>
-                        !loading ? this.newAddress(this.props.pwd) : null}
-                    >
-                      <WhiteText>Generate new Address</WhiteText>
-                    </Button>
-                  : <Button
-                      loading={loading}
-                      onPress={() => (!loading ? this.attach() : null)}
-                    >
-                      <WhiteText>Attach to Tangle</WhiteText>
-                    </Button>}
+            {!called
+              ? <Button
+                  loading={loading}
+                  onPress={() =>
+                    !loading ? this.newAddress(this.props.pwd) : null}
+                >
+                  <WhiteText>Generate new Address</WhiteText>
+                </Button>
+              : <Button
+                  loading={loading}
+                  onPress={() => (!loading ? this.attach() : null)}
+                >
+                  <WhiteText>Attach to Tangle</WhiteText>
+                </Button>}
 
-              </Col>
-            : null}
+          </Col>
 
         </ScrollView>
 
