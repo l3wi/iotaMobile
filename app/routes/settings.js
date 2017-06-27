@@ -104,11 +104,11 @@ class InitialScreen extends Component {
               <Button
                 onPress={() => {
                   AlertIOS.prompt(
-                    "Enter custom node url e.g. http://node.iotawallet.info:14265 :",
-                    null,
+                    "Enter custom node URL",
+                    "Please enter host address with port. \n \n e.g. http://node.iotawallet.info:14265",
                     text => this.props.changeNode(text),
                     "plain-text",
-                    "",
+                    "http://",
                     "url"
                   );
                 }}
