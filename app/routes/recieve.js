@@ -8,7 +8,8 @@ import {
   Image,
   Clipboard,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 
 import { bindActionCreators } from "redux";
@@ -21,7 +22,7 @@ import Balance from "../components/balance";
 
 copy = address => {
   Clipboard.setString(address);
-  alert("Address has been copied to clip board");
+  Alert.alert("Success", "Address has been copied to clip board");
 };
 
 class RecieveScreen extends Component {
