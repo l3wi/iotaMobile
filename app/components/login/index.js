@@ -32,13 +32,12 @@ class LoginForm extends React.Component {
     this.props.startLoading("Getting Wallet");
     // Store password
     this.props.setPwd(passHash);
-    // Get account
-    this.props.getTransfers(this.props.account.addresses);
-
     // // Push to new nav stateAccount
     this.props.navigator.resetTo({
       screen: "transactions"
     });
+    // Get account
+    this.props.getTransfers(this.props.account.addresses);
   };
 
   render() {

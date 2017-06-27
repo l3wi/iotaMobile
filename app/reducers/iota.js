@@ -52,7 +52,7 @@ export const iota = createReducer(
     [types.CLEAR_IOTA](state, action) {
       return {
         loading: false,
-        account: { balance: 0, transfers: [] },
+        account: { balance: 0, transfers: [], addresses: [] },
         node: {},
         nodeUrl: "http://node.iotawallet.info:14265"
       };

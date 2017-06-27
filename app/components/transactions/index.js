@@ -89,6 +89,11 @@ export default class TransactionComponent extends React.Component {
                 attach it to the tangle.
               </Words>
 
+              <Words>
+                Please note: once you have transactions you pull to refresh the
+                transactions.
+              </Words>
+
               <Button
                 onPress={() =>
                   this.props.getTransfers(this.props.account.addresses)}

@@ -1,7 +1,7 @@
-import * as types from './types'
-import { iota } from '../libs/iota'
-import { purgeStoredState } from 'redux-persist'
-import { AsyncStorage, Alert } from 'react-native'
+import * as types from "./types";
+import { iota } from "../libs/iota";
+import { purgeStoredState } from "redux-persist";
+import { AsyncStorage, Alert } from "react-native";
 import {
   OpenBox,
   SaveBox,
@@ -9,27 +9,27 @@ import {
   hashPwd,
   stringToU8,
   uintToS
-} from '../libs/crypto'
+} from "../libs/crypto";
 
 // Initialises the node
 export const setupNode = nodeFromStore => {
   return async (dispatch, getState) => {
     if (nodeFromStore) {
-      dispatch(changeNode(nodeFromStore))
+      dispatch(changeNode(nodeFromStore));
     } else {
-      dispatch(changeNode('http://node.iotawallet.info:14265/'))
+      dispatch(changeNode("http://node.iotawallet.info:14265/"));
     }
-  }
-}
+  };
+};
 
 // Allows you to change the node
 export const changeNode = (remote, user) => {
   return async (dispatch, getState) => {
-    iota.changeNode({ provider: remote })
-    dispatch(saveRemoteNode(remote))
-    if (user) Alert.alert('Node Changed to' + remote)
-  }
-}
+    iota.changeNode({ provider: remote });
+    dispatch(saveRemoteNode(remote));
+    if (user) Alert.alert("Node Changed to" + remote);
+  };
+};
 
 // Get the node info for display
 export const getNode = pwd => {
@@ -37,15 +37,15 @@ export const getNode = pwd => {
     dispatch(startLoading('Connecting to Node'))
     await iota.api.getNodeInfo(function (error, success) {
       if (error) {
-        Alert.alert(error)
-        return dispatch(finishLoading())
+        Alert.alert(error);
+        return dispatch(finishLoading());
       } else {
-        dispatch(setNodeInfo(success))
-        return dispatch(finishLoading())
+        dispatch(setNodeInfo(success));
+        return dispatch(finishLoading());
       }
-    })
-  }
-}
+    });
+  };
+};
 
 export const getAccount = (pwd, navigator) => {
   return async (dispatch, getState) => {
@@ -55,21 +55,29 @@ export const getAccount = (pwd, navigator) => {
       success
     ) {
       if (error) {
-        Alert.alert(error)
-        return dispatch(finishLoading())
+        Alert.alert(error);
+        return dispatch(finishLoading());
       } else {
-        dispatch(setAccount(success))
+        dispatch(setAccount(success));
         if (navigator) {
-          navigator.resetTo({ screen: 'transactions' })
+          navigator.resetTo({ screen: "transactions" });
         }
-        return dispatch(finishLoading())
+        return dispatch(finishLoading());
       }
-    })
-  }
-}
+    });
+  };
+};
 
 export const getTransfers = (addresses, navigator) => {
   return async (dispatch, getState) => {
+    if (!addresses[0]) {
+      Alert.alert(
+        "Generate some Addresses",
+        "You need to generate some addresses in receive before getting transactions"
+      );
+      dispatch(finishLoading());
+      return;
+    }
     var data = {
       transfers: [],
       balance: 0,
@@ -99,13 +107,13 @@ export const getTransfers = (addresses, navigator) => {
           //   };
           //   data.inputs.push(newInput);
           // }
-        })
-        dispatch(updateState(data))
-        dispatch(finishLoading())
-      })
-    })
-  }
-}
+        });
+        dispatch(updateState(data));
+        dispatch(finishLoading());
+      });
+    });
+  };
+};
 
 export const newAddress = pwd => {
   return async (dispatch, getState) => {
@@ -115,120 +123,120 @@ export const newAddress = pwd => {
       success
     ) {
       if (error) {
-        Alert.alert(error)
-        dispatch(finishLoading())
+        Alert.alert(error);
+        dispatch(finishLoading());
       } else {
-        dispatch(setAddress(success))
-        dispatch(finishLoading())
+        dispatch(setAddress(success));
+        dispatch(finishLoading());
       }
-    })
-  }
-}
+    });
+  };
+};
 
 export const sendTransaction = (pwd, depth, minMag, transfers) => {
   return async (dispatch, getState) => {
-    dispatch(startLoading('Attaching to Tangle'))
+    dispatch(startLoading("Attaching to Tangle"));
     iota.api.sendTransfer(
-      await OpenBox('seed', pwd),
+      await OpenBox("seed", pwd),
       depth,
       minMag,
       transfers,
       function (error, success) {
         dispatch(finishLoading())
         if (error) {
-          alert(error)
+          alert(error);
         }
       }
-    )
-  }
-}
+    );
+  };
+};
 
 export const reattachTransaction = (depth, minMag, hash) => {
   return async (dispatch, getState) => {
     iota.api.replayBundle(depth, minMag, hash, function (error, success) {
       dispatch(finishLoading())
       if (error) {
-        alert(error)
+        alert(error);
       }
-    })
-  }
-}
+    });
+  };
+};
 
 export const resetAsync = navigator => {
   return async (dispatch, getState) => {
-    dispatch(clearIota())
+    dispatch(clearIota());
     purgeStoredState({ storage: AsyncStorage }, [])
       .then(() => {
-        console.log('purge of someReducer completed')
-        DeleteBox('seed')
+        console.log("purge of someReducer completed");
+        DeleteBox("seed");
         navigator.resetTo({
-          screen: 'auth'
-        })
-        Alert.alert('Seed & Local data was destroyed')
+          screen: "auth"
+        });
+        Alert.alert("Seed & Local data was destroyed");
       })
       .catch(() => {
-        console.log('purge of someReducer failed')
-      })
-  }
-}
+        console.log("purge of someReducer failed");
+      });
+  };
+};
 
 export function clearIota (data) {
   return {
     type: types.CLEAR_IOTA,
     data
-  }
+  };
 }
 
 export function hydrate (data) {
   return {
     type: types.HYDRATE,
     data
-  }
+  };
 }
 
 export function startLoading (data) {
   return {
     type: types.LOADING,
     data
-  }
+  };
 }
 
 export function finishLoading () {
   return {
     type: types.LOADING
-  }
+  };
 }
 
 export function saveRemoteNode (node) {
   return {
     type: types.SET_REMOTE,
     node
-  }
+  };
 }
 
 export function setNodeInfo (node) {
   return {
     type: types.SET_NODE,
     node
-  }
+  };
 }
 
 export function updateState (data) {
   return {
     type: types.UPDATE_TRANSFERS,
     data
-  }
+  };
 }
 export function setAccount (account) {
   return {
     type: types.SET_ACCOUNT,
     account
-  }
+  };
 }
 
 export function setAddress (address) {
   return {
     type: types.SET_ADDRESS,
     address
-  }
+  };
 }
