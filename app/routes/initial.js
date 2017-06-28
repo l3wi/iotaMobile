@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import {
-  Dimensions,
-  KeyboardAvoidingView,
-  Image,
-  TouchableOpacity
-} from "react-native";
+import { Dimensions, Image, TouchableOpacity } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 import styled from "styled-components/native";
 
 import { bindActionCreators } from "redux";
@@ -38,7 +35,7 @@ class AuthScreen extends Component {
 
   clearBox = () => {
     this.setState({ login: false });
-    this.props.deleteBox();
+    this.props.resetAsync();
   };
 
   close = () => {
@@ -49,41 +46,43 @@ class AuthScreen extends Component {
     const { login, modal } = this.state;
     const { box, loading, node, nodeUrl, hydrate, account } = this.props;
     return (
-      <Main style={{ position: "relative" }}>
-        <Modal
-          {...this.state}
-          nodeUrl={nodeUrl}
-          changeNode={this.props.changeNode}
-          close={this.close}
-        />
-        {!loading && hydrate
-          ? <Wrapper>
-              {!modal
-                ? <OpenModal onPress={() => this.setState({ modal: true })}>
-                    <Image
-                      source={require("../assets/icons8-settings.png")}
-                      style={{ height: 25, width: 25 }}
-                    />
-                  </OpenModal>
-                : null}
+      <KeyboardAwareScrollView>
+        <Main style={{ position: "relative" }}>
+          <Modal
+            {...this.state}
+            nodeUrl={nodeUrl}
+            changeNode={this.props.changeNode}
+            close={this.close}
+          />
+          {!loading && hydrate
+            ? <Wrapper>
+                {!modal
+                  ? <OpenModal onPress={() => this.setState({ modal: true })}>
+                      <Image
+                        source={require("../assets/icons8-settings.png")}
+                        style={{ height: 25, width: 25 }}
+                      />
+                    </OpenModal>
+                  : null}
 
-              {login
-                ? <LoginForm
-                    {...this.props}
-                    box={box}
-                    account={account}
-                    clear={this.clearBox}
-                  />
-                : <SeedSetup {...this.props} />}
-            </Wrapper>
-          : <Wrapper loading>
-              <KeepAwake />
-              <Logo source={require("../assets/iota.png")} />
-              <AppText>
-                {loading}
-              </AppText>
-            </Wrapper>}
-      </Main>
+                {login
+                  ? <LoginForm
+                      {...this.props}
+                      box={box}
+                      account={account}
+                      clear={this.clearBox}
+                    />
+                  : <SeedSetup {...this.props} />}
+              </Wrapper>
+            : <Wrapper loading>
+                <KeepAwake />
+                <Logo source={require("../assets/iota.png")} />
+                <AppText>
+                  {loading}
+                </AppText>
+              </Wrapper>}
+        </Main>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -108,7 +107,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);
 var { height, width } = Dimensions.get("window");
 
 const Main = styled.View`
-
+  height: ${height + "px"};
 `;
 const Wrapper = styled.View`
     height: 100%;

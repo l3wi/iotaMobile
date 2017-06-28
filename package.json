@@ -17,6 +17,7 @@
     "react-native-chooser": "^1.5.2",
     "react-native-crypto": "^2.0.2",
     "react-native-keep-awake": "^2.0.4",
+    "react-native-keyboard-aware-scroll-view": "^0.2.9",
     "react-native-keychain": "^1.2.0",
     "react-native-navigation": "^1.1.104",
     "react-native-randombytes": "^2.2.0",
