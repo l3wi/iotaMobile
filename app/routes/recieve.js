@@ -26,9 +26,6 @@ copy = address => {
 };
 
 class RecieveScreen extends Component {
-  state = {
-    called: false
-  };
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -37,6 +34,7 @@ class RecieveScreen extends Component {
     if (event.type == "DeepLink") {
       this.props.navigator.resetTo({
         screen: event.link,
+        animationType: "fade",
         animated: true
       });
       this.props.navigator.toggleDrawer({
@@ -49,13 +47,14 @@ class RecieveScreen extends Component {
     navBarHidden: true // make the nav bar hidden
   };
 
-  newAddress = pwd => {
+  newAddress = (pwd, index) => {
     this.setState({ called: true });
-    this.props.newAddress(pwd);
+    this.props.addressState(true);
+    this.props.newAddress(pwd, index);
   };
 
   attach = () => {
-    this.setState({ called: false });
+    this.props.addressState(false);
     this.props.sendTransaction(this.props.pwd, 6, 15, [
       {
         address: this.props.account.addresses[
@@ -69,8 +68,7 @@ class RecieveScreen extends Component {
 
   static navigationOptions = {};
   render() {
-    var { called } = this.state;
-    var { account, loading } = this.props;
+    var { account, loading, called } = this.props;
     return (
       <Wrapper>
         <Balance
@@ -121,7 +119,12 @@ class RecieveScreen extends Component {
               ? <Button
                   loading={loading}
                   onPress={() =>
-                    !loading ? this.newAddress(this.props.pwd) : null}
+                    !loading
+                      ? this.newAddress(
+                          this.props.pwd,
+                          this.props.account.addresses.length
+                        )
+                      : null}
                 >
                   <WhiteText>Generate new Address</WhiteText>
                 </Button>
@@ -145,6 +148,7 @@ function mapStateToProps(state, ownProps) {
   console.log(state);
   return {
     account: state.iota.account,
+    called: state.iota.addressStatus,
     pwd: state.crypto.pwd,
     loading: state.iota.loading
   };
