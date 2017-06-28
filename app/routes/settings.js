@@ -26,6 +26,7 @@ class InitialScreen extends Component {
     if (event.type == "DeepLink") {
       this.props.navigator.resetTo({
         screen: event.link,
+        animationType: "fade",
         animated: true
       });
       this.props.navigator.toggleDrawer({
