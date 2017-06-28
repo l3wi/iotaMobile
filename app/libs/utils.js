@@ -9,6 +9,7 @@ export const getDate = m => {
 export const formatAmount = (amount, ternary) => {
   var units = "i";
   var negative = "";
+
   if (amount < 0) {
     const amount = Math.abs(amount);
     var negative = "-";
@@ -16,16 +17,16 @@ export const formatAmount = (amount, ternary) => {
   var sanitisedAmount = 0;
   if (amount >= 1000000000000000) {
     units = "Pi";
-    sanitisedAmount = sigFigs(reducer(amount, units), 4);
+    sanitisedAmount = reducer(amount, units).toFixed(2);
   } else if (amount >= 1000000000000) {
     units = "Ti";
-    sanitisedAmount = sigFigs(reducer(amount, units), 4);
+    sanitisedAmount = reducer(amount, units).toFixed(2);
   } else if (amount >= 1000000000) {
     units = "Gi";
-    sanitisedAmount = sigFigs(reducer(amount, units), 4);
+    sanitisedAmount = reducer(amount, units).toFixed(2);
   } else if (amount >= 1000000) {
     units = "Mi";
-    sanitisedAmount = sigFigs(reducer(amount, units), 4);
+    sanitisedAmount = reducer(amount, units).toFixed(2);
   } else {
     units = "i";
     sanitisedAmount = amount;
