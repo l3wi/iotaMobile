@@ -31,6 +31,11 @@ export const iota = createReducer(
       newState.account.addresses.push(action.address);
       return { ...newState };
     },
+    [types.SET_ADDRESS_STATUS](state, action) {
+      let newState = state;
+      newState.addressStatus = action.bool;
+      return { ...newState };
+    },
     [types.LOADING](state, action) {
       let newState = state;
       if (action.data) {

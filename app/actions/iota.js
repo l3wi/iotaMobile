@@ -34,8 +34,8 @@ export const changeNode = (remote, user) => {
 // Get the node info for display
 export const getNode = pwd => {
   return async (dispatch, getState) => {
-    dispatch(startLoading('Connecting to Node'))
-    await iota.api.getNodeInfo(function (error, success) {
+    dispatch(startLoading("Connecting to Node"));
+    await iota.api.getNodeInfo(function(error, success) {
       if (error) {
         Alert.alert(error);
         return dispatch(finishLoading());
@@ -49,8 +49,8 @@ export const getNode = pwd => {
 
 export const getAccount = (pwd, navigator) => {
   return async (dispatch, getState) => {
-    dispatch(startLoading('Getting your Wallet'))
-    await iota.api.getAccountData(await OpenBox('seed', pwd), function (
+    dispatch(startLoading("Getting your Wallet"));
+    await iota.api.getAccountData(await OpenBox("seed", pwd), function(
       error,
       success
     ) {
@@ -82,21 +82,21 @@ export const getTransfers = (addresses, navigator) => {
       transfers: [],
       balance: 0,
       inputs: []
-    }
-    dispatch(startLoading('Updating transactions'))
-    iota.api._bundlesFromAddresses(addresses, true, function (error, bundles) {
-      data.transfers = bundles
-      console.log(addresses)
-      iota.api.getBalances(addresses, 100, function (error, balances) {
-        console.log(balances)
+    };
+    dispatch(startLoading("Updating transactions"));
+    iota.api._bundlesFromAddresses(addresses, true, function(error, bundles) {
+      data.transfers = bundles;
+      console.log(addresses);
+      iota.api.getBalances(addresses, 100, function(error, balances) {
+        console.log(balances);
         if (!balances) {
-          Alert.alert('Error', 'Could not get bundles')
-          dispatch(finishLoading())
-          return
+          Alert.alert("Error", "Could not get bundles");
+          dispatch(finishLoading());
+          return;
         }
-        balances.balances.forEach(function (balance, index) {
-          var balance = parseInt(balance, 10)
-          data.balance += balance
+        balances.balances.forEach(function(balance, index) {
+          var balance = parseInt(balance, 10);
+          data.balance += balance;
 
           // Uncomment if you want inouts
           // if (balance > 0) {
@@ -115,21 +115,22 @@ export const getTransfers = (addresses, navigator) => {
   };
 };
 
-export const newAddress = pwd => {
+export const newAddress = (pwd, index) => {
   return async (dispatch, getState) => {
-    dispatch(startLoading('Generating new Address'))
-    iota.api.getNewAddress(await OpenBox('seed', pwd), function (
-      error,
-      success
-    ) {
-      if (error) {
-        Alert.alert(error);
-        dispatch(finishLoading());
-      } else {
-        dispatch(setAddress(success));
-        dispatch(finishLoading());
+    dispatch(startLoading("Generating new Address"));
+    iota.api.getNewAddress(
+      await OpenBox("seed", pwd),
+      { index: index },
+      function(error, success) {
+        if (error) {
+          Alert.alert(error);
+          dispatch(finishLoading());
+        } else {
+          dispatch(setAddress(success));
+          dispatch(finishLoading());
+        }
       }
-    });
+    );
   };
 };
 
@@ -141,8 +142,8 @@ export const sendTransaction = (pwd, depth, minMag, transfers) => {
       depth,
       minMag,
       transfers,
-      function (error, success) {
-        dispatch(finishLoading())
+      function(error, success) {
+        dispatch(finishLoading());
         if (error) {
           alert(error);
         }
@@ -153,8 +154,8 @@ export const sendTransaction = (pwd, depth, minMag, transfers) => {
 
 export const reattachTransaction = (depth, minMag, hash) => {
   return async (dispatch, getState) => {
-    iota.api.replayBundle(depth, minMag, hash, function (error, success) {
-      dispatch(finishLoading())
+    iota.api.replayBundle(depth, minMag, hash, function(error, success) {
+      dispatch(finishLoading());
       if (error) {
         alert(error);
       }
@@ -180,61 +181,68 @@ export const resetAsync = navigator => {
   };
 };
 
-export function clearIota (data) {
+export function clearIota(data) {
   return {
     type: types.CLEAR_IOTA,
     data
   };
 }
 
-export function hydrate (data) {
+export function hydrate(data) {
   return {
     type: types.HYDRATE,
     data
   };
 }
 
-export function startLoading (data) {
+export function startLoading(data) {
   return {
     type: types.LOADING,
     data
   };
 }
 
-export function finishLoading () {
+export function finishLoading() {
   return {
     type: types.LOADING
   };
 }
 
-export function saveRemoteNode (node) {
+export function addressState(bool) {
+  return {
+    type: types.SET_ADDRESS_STATUS,
+    bool
+  };
+}
+
+export function saveRemoteNode(node) {
   return {
     type: types.SET_REMOTE,
     node
   };
 }
 
-export function setNodeInfo (node) {
+export function setNodeInfo(node) {
   return {
     type: types.SET_NODE,
     node
   };
 }
 
-export function updateState (data) {
+export function updateState(data) {
   return {
     type: types.UPDATE_TRANSFERS,
     data
   };
 }
-export function setAccount (account) {
+export function setAccount(account) {
   return {
     type: types.SET_ACCOUNT,
     account
   };
 }
 
-export function setAddress (address) {
+export function setAddress(address) {
   return {
     type: types.SET_ADDRESS,
     address

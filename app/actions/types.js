@@ -1,6 +1,7 @@
 // IOTA
 export const SET_ACCOUNT = "SET_ACCOUNT";
 export const SET_ADDRESS = "SET_ADDRESS";
+export const SET_ADDRESS_STATUS = "SET_ADDRESS_STATUS";
 export const SET_NODE = "SET_NODE";
 export const SET_REMOTE = "SET_REMOTE";
 export const UPDATE_TRANSFERS = "UPDATE_TRANSFERS";
