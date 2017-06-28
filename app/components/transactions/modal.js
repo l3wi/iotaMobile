@@ -52,8 +52,10 @@ export default class TransactionModal extends React.Component {
                 {!item.persistence
                   ? <Button
                       onPress={() => {
-                        this.props.screenProps.replay(
-                          item[item.length - 1].hash
+                        this.props.reattachTransaction(
+                          item[item.length - 1].hash,
+                          6,
+                          15
                         );
                       }}
                     >
@@ -72,6 +74,7 @@ export default class TransactionModal extends React.Component {
 
 const ModalBody = styled.View`
   padding: 20px;
+  min-width: 255px;
   width: 70%;
   background: white;
 `;

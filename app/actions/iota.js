@@ -152,9 +152,10 @@ export const sendTransaction = (pwd, depth, minMag, transfers) => {
   };
 };
 
-export const reattachTransaction = (depth, minMag, hash) => {
+export const reattachTransaction = (hash, depth, minMag) => {
   return async (dispatch, getState) => {
-    iota.api.replayBundle(depth, minMag, hash, function(error, success) {
+    dispatch(startLoading("Reattching Transaction"));
+    iota.api.replayBundle(hash, depth, minMag, function(error, success) {
       dispatch(finishLoading());
       if (error) {
         alert(error);
