@@ -77,12 +77,16 @@ const Wrapper = styled.View`
     flex-direction: row;   
     justify-content: space-between;
     width:100%;
+    min-height: 120px;
     height: 20%;
     background-color: ${props => (props.loading ? "#04a997" : "#2d353e")};
     align-items: center;
     padding: 10px 40px;
 `;
 const Row = styled.View`
+    position: absolute;
+    top: 20%;
+    right: 10%;
     display: flex;
     flex-direction: row;   
     justify-content: center;
@@ -91,7 +95,7 @@ const Row = styled.View`
 const Milestone = styled.Text`
   position: absolute;
   color: white;
-  bottom: 20px;
+  bottom: 6%;
   right: 30px;
 `;
 
@@ -114,8 +118,8 @@ const TInput = styled.TextInput`
 const Page = styled.Text`
     color: white;
     position: absolute;
-    left: 29px;
-    bottom: 20px;
+    left: 25px;
+    bottom: 6%;
     font-size: 18px;
 `;
 
