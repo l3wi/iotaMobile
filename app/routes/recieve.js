@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import styled from "styled-components/native";
 import {
-  AppRegistry,
-  StyleSheet,
   Text,
   View,
   Image,
   Clipboard,
   ScrollView,
   TouchableOpacity,
-  Alert
+  Alert,
+  Dimensions
 } from "react-native";
 
 import { bindActionCreators } from "redux";
@@ -160,6 +159,8 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecieveScreen);
 
+var { height, width } = Dimensions.get("window");
+
 const Wrapper = styled.View`
     height: 100%;
     width:100%;
@@ -175,7 +176,7 @@ const Col = styled.View`
 const Button = styled.TouchableOpacity`
     align-items: center;
     padding: 10px;
-    margin: 20px 0px 0 0 ;
+    margin: 20px 0px 20px 0 ;
     background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
     width: 80%;
 `;
@@ -195,6 +196,6 @@ const Address = styled.Text`
 `;
 
 const QR = styled.Image`
-  height: 320px;
-  width: 320px;
+  height: ${width - 40 + "px"};
+  width: ${width - 40 + "px"};
 `;
