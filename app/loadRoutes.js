@@ -7,6 +7,7 @@ import RecieveScreen from "./routes/recieve";
 import Settings from "./routes/settings";
 import InitialScreen from "./routes/initial";
 import MenuScreen from "./routes/menu";
+import QRScreen from "./routes/qrcode";
 
 // register all screens of the app (including internal ones)
 export function registerScreens(store, Provider) {
@@ -15,5 +16,6 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent("transactions", () => Transact, store, Provider);
   Navigation.registerComponent("receive", () => RecieveScreen, store, Provider);
   Navigation.registerComponent("send", () => SendScreen, store, Provider);
+  Navigation.registerComponent("qr", () => QRScreen, store, Provider);
   Navigation.registerComponent("settings", () => Settings, store, Provider);
 }

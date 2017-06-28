@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
+import { Navigation } from "react-native-navigation";
 import { Select, Option } from "react-native-chooser";
 import { converter } from "../../libs/utils";
 import { iota } from "../../libs/iota";
@@ -25,6 +26,27 @@ export default class LoginForm extends React.Component {
       message: ""
     };
   }
+
+  scan = () => {
+    Navigation.showModal({
+      screen: "qr", // unique ID registered with Navigation.registerScreen
+      passProps: { function: this.fillAddress, dismiss: this.dismissModal }, // simple serializable object that will pass as props to the modal (optional)
+      animationType: "slide-up" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+    });
+  };
+
+  dismissModal = () => {
+    Navigation.dismissAllModals({
+      animationType: "slide-down" // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    });
+  };
+
+  fillAddress = data => {
+    const code = JSON.parse(data.data);
+    this.setState({ address: code.address });
+    console.log(data);
+    this.dismissModal();
+  };
 
   create = (address, amount, unit, message) => {
     // Thanks dom :)
@@ -76,6 +98,12 @@ export default class LoginForm extends React.Component {
               onChangeText={address => this.setState({ address })}
             />
           </Long>
+          <ScanButton onPress={() => this.scan()}>
+            <Image
+              source={require("../../assets/icons8-qr_code_filled.png")}
+              style={{ width: 40, height: 40 }}
+            />
+          </ScanButton>
         </Row>
         <Row>
           <Short>
@@ -148,6 +176,12 @@ export default class LoginForm extends React.Component {
     );
   }
 }
+
+const ScanButton = styled.TouchableOpacity`
+    padding: 5px;
+    width: 50px;
+    height: 50px;
+`;
 
 const Wrapper = styled.View`
     display: flex;
