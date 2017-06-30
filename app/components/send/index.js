@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
-import { Navigation } from "react-native-navigation";
 import { Select, Option } from "react-native-chooser";
 import { converter } from "../../libs/utils";
 import { iota } from "../../libs/iota";
@@ -28,24 +27,16 @@ export default class LoginForm extends React.Component {
   }
 
   scan = () => {
-    Navigation.showModal({
+    this.props.navigator.showModal({
       screen: "qr", // unique ID registered with Navigation.registerScreen
-      passProps: { function: this.fillAddress, dismiss: this.dismissModal }, // simple serializable object that will pass as props to the modal (optional)
+      passProps: { function: this.fillAddress }, // simple serializable object that will pass as props to the modal (optional)
       animationType: "slide-up" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
     });
   };
 
-  dismissModal = () => {
-    Navigation.dismissAllModals({
-      animationType: "slide-down" // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-    });
-  };
-
   fillAddress = data => {
-    const code = JSON.parse(data.data);
-    this.setState({ address: code.address });
+    this.setState({ address: data });
     console.log(data);
-    this.dismissModal();
   };
 
   create = (address, amount, unit, message) => {
