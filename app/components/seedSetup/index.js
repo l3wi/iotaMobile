@@ -13,7 +13,6 @@ import {
 } from "react-native";
 
 import { InitialiseSeed, OpenBox, randSeed, hashPwd } from "../../libs/crypto";
-import { NavigationActions } from "react-navigation";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -73,6 +72,19 @@ class SetupForm extends React.Component {
     );
   };
 
+  scan = () => {
+    this.props.navigator.showModal({
+      screen: "qr", // unique ID registered with Navigation.registerScreen
+      passProps: { function: this.fillAddress, dismiss: this.dismissModal }, // simple serializable object that will pass as props to the modal (optional)
+      animationType: "slide-up" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+    });
+  };
+
+  fillAddress = data => {
+    this.setState({ seed: data });
+    console.log(data);
+  };
+
   render() {
     return (
       <Col>
@@ -107,9 +119,12 @@ class SetupForm extends React.Component {
                   onChangeText={seed => this.setState({ seed })}
                 />
               </BottomBorder>
-              {/*<Button onPress={() => console.log("Get Camera")}>
-              <ImageButton source={require("../../assets/scan.png")} />
-            </Button>*/}
+              <ScanButton onPress={() => this.scan()}>
+                <Image
+                  source={require("../../assets/icons8-qr_code.png")}
+                  style={{ width: 40, height: 40 }}
+                />
+              </ScanButton>
             </Row>
           </EmptyCol>
           <EmptyCol>
@@ -203,6 +218,13 @@ const Button = styled.TouchableOpacity`
     background-color: rgba(255,255,255,.3);
     width: ${props => (props.full ? "100%" : "auto")};
 `;
+
+const ScanButton = styled.TouchableOpacity`
+    padding: 5px;
+    width: 50px;
+    height: 50px;
+`;
+
 function mapStateToProps(state, ownProps) {
   return {};
 }
