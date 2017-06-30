@@ -22,16 +22,35 @@ class QRScreen extends Component {
   static navigatorStyle = {
     navBarHidden: true // make the nav bar hidden
   };
+
+  parseData = data => {
+    var address;
+    try {
+      address = JSON.parse(data.data).address;
+    } catch (e) {
+      address = data.data;
+    }
+    this.props.function(address);
+    this.props.navigator.dismissModal({
+      animationType: "slide-down" // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    });
+  };
+
   render() {
     return (
       <Wrapper>
-        <Close onPress={() => this.props.dismiss()}>
+        <Close
+          onPress={() =>
+            this.props.navigator.dismissModal({
+              animationType: "slide-down" // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+            })}
+        >
           <Image
             source={require("../assets/close.png")}
             style={{ height: 30, width: 30 }}
           />
         </Close>
-        <QRCodeScanner onRead={data => this.props.function(data)} />
+        <QRCodeScanner onRead={data => this.parseData(data)} />
         {/*<Camera
           style={{
             height: "100%",
