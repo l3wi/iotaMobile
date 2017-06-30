@@ -85,7 +85,7 @@ export default class TransactionComponent extends React.Component {
           : <PaddedBox>
               <EmptyHeader>Looks like this is your first time!</EmptyHeader>
               <Words>
-                You'll need to go to Recieve and generate an address then
+                You'll need to go to Receive and generate an address then
                 attach it to the tangle.
               </Words>
 
@@ -157,7 +157,7 @@ class ListItem extends React.PureComponent {
           </Header>
           {this.props.item[0].sent
             ? <Row center>
-                <Text>Recieved</Text>
+                <Text>Received</Text>
 
                 <Image
                   source={require("../../assets/recieved.png")}
