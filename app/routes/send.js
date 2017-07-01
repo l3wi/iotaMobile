@@ -28,6 +28,7 @@ class SendScreen extends Component {
     }
   }
   static navigatorStyle = {
+    screenBackgroundColor: "#2d353e",
     navBarHidden: true // make the nav bar hidden
   };
   render() {
@@ -67,6 +68,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(SendScreen);
 const Wrapper = styled.View`
     height: 100%;
     width:100%;
+    background-color: white;
     display:flex;
     align-items: center;
     justify-content: flex-start;

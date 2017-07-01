@@ -43,6 +43,7 @@ class RecieveScreen extends Component {
     }
   }
   static navigatorStyle = {
+    screenBackgroundColor: "#2d353e",
     navBarHidden: true // make the nav bar hidden
   };
 
@@ -76,7 +77,7 @@ class RecieveScreen extends Component {
           loading={loading}
           {...this.props}
         />
-        <ScrollView style={{ width: "100%" }}>
+        <ScrollView style={{ width: "100%", backgroundColor: "white" }}>
           {/*Wait for account to load*/}
           <Col>
             {/*If you dont have any addresses show attach button*/}

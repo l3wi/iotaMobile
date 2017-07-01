@@ -18,7 +18,7 @@ export const init = async () => {
   Navigation.startSingleScreenApp({
     screen: {
       screen: "auth",
-      navigatorStyle: { navBarHidden: true }
+      navigatorStyle: { navBarHidden: true, screenBackgroundColor: "#2d353e" }
     },
     drawer: {
       left: {

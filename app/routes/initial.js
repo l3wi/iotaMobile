@@ -25,6 +25,7 @@ class AuthScreen extends Component {
     };
   }
   static navigatorStyle = {
+    screenBackgroundColor: "#2d353e",
     navBarHidden: true // make the nav bar hidden
   };
 

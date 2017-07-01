@@ -42,6 +42,7 @@ class InitialScreen extends Component {
     remoteNode: ""
   };
   static navigatorStyle = {
+    screenBackgroundColor: "#2d353e",
     navBarHidden: true // make the nav bar hidden
   };
 
@@ -185,6 +186,7 @@ const Wrapper = styled.View`
     height: 100%;
     width:100%;
     display:flex;
+    backgroundColor: white;
     align-items: center;
     justify-content: flex-start;
 `;

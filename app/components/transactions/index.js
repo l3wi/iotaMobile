@@ -190,6 +190,7 @@ class ListItem extends React.PureComponent {
 const { height, width } = Dimensions.get("window");
 
 const Wrapper = styled.View`
+  width: 100%;
   flex: 1;
   background: white;
 `;
