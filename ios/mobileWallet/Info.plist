@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>112</string>
+	<string>116</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -33,8 +33,6 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Used for scanning QR codes.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Used when scanning QR codes</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to load images of QR codes</string>
 	<key>UIRequiredDeviceCapabilities</key>

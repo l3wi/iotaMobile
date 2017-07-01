@@ -7,7 +7,8 @@ import {
   View,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Vibration
 } from "react-native";
 import { Navigation } from "react-native-navigation";
 
@@ -23,6 +24,17 @@ class QRScreen extends Component {
     navBarHidden: true // make the nav bar hidden
   };
 
+  state = {
+    allowed: false
+  };
+
+  componentDidMount() {
+    Camera.checkVideoAuthorizationStatus().then(data => {
+      console.log(data);
+      this.setState({ allowed: data });
+    });
+  }
+
   parseData = data => {
     var address;
     try {
@@ -31,12 +43,14 @@ class QRScreen extends Component {
       address = data.data;
     }
     this.props.function(address);
+    Vibration.vibrate(100);
     this.props.navigator.dismissModal({
       animationType: "slide-down" // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
     });
   };
 
   render() {
+    var { allowed } = this.state;
     return (
       <Wrapper>
         <Close
@@ -50,17 +64,25 @@ class QRScreen extends Component {
             style={{ height: 30, width: 30 }}
           />
         </Close>
-        <QRCodeScanner onRead={data => this.parseData(data)} />
-        {/*<Camera
-          style={{
-            height: "100%",
-            width: "100%",
-            justifyContent: "flex-end",
-            alignItems: "center"
-          }}
-          aspect={Camera.constants.Aspect.fill}
-          onBarCodeRead={data => console.log(data)}
-        />*/}
+        {allowed
+          ? <Camera
+              style={{
+                height: "100%",
+                width: "100%",
+                justifyContent: "flex-end",
+                alignItems: "center"
+              }}
+              ref={cam => {
+                this.camera = cam;
+              }}
+              aspect={Camera.constants.Aspect.fill}
+              onBarCodeRead={data => this.parseData(data)}
+            />
+          : <ZeroState>
+              You seem to have disabled the camera! Go to settings and toggle
+              the camera permissions.
+            </ZeroState>}
+
       </Wrapper>
     );
   }
@@ -82,7 +104,7 @@ const Wrapper = styled.View`
     display:flex;
     background: #2d353e;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 `;
 
 const Close = styled.TouchableOpacity`
@@ -90,4 +112,11 @@ const Close = styled.TouchableOpacity`
     top: 40px;
     right: 40px;
     z-index: 10;
+`;
+
+const ZeroState = styled.Text`
+    color: white;
+    width: 80%;
+    text-align: center;
+    font-size: 20px;
 `;
