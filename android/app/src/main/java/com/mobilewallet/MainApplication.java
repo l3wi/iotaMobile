@@ -3,6 +3,7 @@ package com.mobilewallet;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.react.rnspinkit.RNSpinkitPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.reactnativenavigation.NavigationReactPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSpinkitPackage(),
             new RCTCameraPackage(),
             new NavigationReactPackage(),
             new KCKeepAwakePackage(),

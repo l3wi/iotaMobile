@@ -22,6 +22,7 @@
     "react-native-keychain": "^1.2.0",
     "react-native-navigation": "^1.1.104",
     "react-native-randombytes": "^2.2.0",
+    "react-native-spinkit": "^1.0.3",
     "react-redux": "^5.0.5",
     "readable-stream": "1.0.33",
     "redux": "^3.7.0",
