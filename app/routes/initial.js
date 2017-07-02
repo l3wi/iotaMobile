@@ -12,6 +12,7 @@ import KeepAwake from "react-native-keep-awake";
 import LoginForm from "../components/login";
 import SeedSetup from "../components/seedSetup";
 import Modal from "../components/initalModal";
+import Spinner from "react-native-spinkit";
 
 import { RetrieveBox, DeleteBox } from "../libs/crypto";
 
@@ -78,9 +79,12 @@ class AuthScreen extends Component {
             : <Wrapper loading>
                 <KeepAwake />
                 <Logo source={require("../assets/iota.png")} />
-                <AppText>
-                  {loading}
-                </AppText>
+                <Col>
+                  <AppText>
+                    {loading || "Loading"}
+                  </AppText>
+                  <Spinner type={"ThreeBounce"} color={"#FFFFFF"} size={80} />
+                </Col>
               </Wrapper>}
         </Main>
       </KeyboardAwareScrollView>
@@ -125,8 +129,15 @@ const Row = styled.View`
     justify-content: center;
     align-items: center;
 `;
+
+const Col = styled.View`
+    display: flex;
+    flex-direction: column;   
+    justify-content: center;
+    align-items: center;
+`;
 const AppText = styled.Text`
-  padding: 30px 0px;
+  padding: 10px 0px;
   font-size: 20px;
     color: white;
 `;

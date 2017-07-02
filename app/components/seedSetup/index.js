@@ -32,12 +32,12 @@ class SetupForm extends React.Component {
         "Please enter a seed that is 81 characters long & consists of the following characters: \n ABCDEFGHIJKLMNOPQRSTUVWXYZ9"
       );
 
-    if (this.state.first < 8) {
-      return Alert.alert(
-        "Invalid Pasword",
-        "Please enter a password over 8 characters long."
-      );
-    }
+    // if (this.state.first < 8) {
+    //   return Alert.alert(
+    //     "Invalid Pasword",
+    //     "Please enter a password over 8 characters long."
+    //   );
+    // }
     if (this.state.first !== this.state.second) {
       alert("Your passwords didn't match");
       this.setState({ first: "", second: "" });
