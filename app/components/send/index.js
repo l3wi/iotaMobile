@@ -42,34 +42,47 @@ export default class LoginForm extends React.Component {
   create = (address, amount, unit, message) => {
     // Thanks dom :)
     if (!address) {
-      Alert.alert("Error", "Address is required");
+      Alert.alert("Address Error", "Address is required");
       return;
     } else if (address.length == 81) {
-      Alert.alert("Error", "Missing address checksum");
+      Alert.alert("Address Error", "Missing address checksum");
       return;
     } else if (address.length != 90) {
-      Alert.alert("Error", "Incorrect address length");
+      Alert.alert("Address Error", "Incorrect address length");
       return;
     } else if (isNaN(amount)) {
-      Alert.alert("Error", "Please enter a valid number");
+      Alert.alert("Value Error", "Please enter a valid number");
+      return;
+    } else if (!iota.valid.isTrytes(this.state.message)) {
+      Alert.alert(
+        "Message Error",
+        "Please enter message with the following valid characters: \n ABCDEFGHIJKLMNOPQRSTUVWXYZ9"
+      );
       return;
     }
 
     const value = converter(amount, unit);
     if (value % 1 != 0) {
-      Alert.alert("Error", "You can't send fractions of an IOTA");
+      Alert.alert("Amount Error", "You can't send fractions of an IOTA");
       return;
     }
 
-    console.log(parseInt(value, 10));
     const transfer = [
       {
         address: address,
         value: parseInt(value, 10),
-        message: iota.utils.toTrytes(this.state.message),
+        message: this.state.message,
         tag: iota.utils.toTrytes("iOSWALLET")
       }
     ];
+    if (!iota.valid.isTransfersArray(transfer)) {
+      Alert.alert(
+        "Transfer Error",
+        "The transaction object appears to be invalid. \n Please try again."
+      );
+      return;
+    }
+
     this.props.sendTransaction(this.props.pwd, 9, 15, transfer);
     this.setState({ address: "", amount: "0", unit: "i", message: "" });
   };

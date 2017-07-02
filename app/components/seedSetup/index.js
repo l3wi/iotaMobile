@@ -13,7 +13,7 @@ import {
 } from "react-native";
 
 import { InitialiseSeed, OpenBox, randSeed, hashPwd } from "../../libs/crypto";
-
+import { iota } from "../../libs/iota";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreators } from "../../actions";
@@ -26,15 +26,16 @@ class SetupForm extends React.Component {
 
   setup = async (seed, password) => {
     // Check for Seed
-    if (seed === "")
+    if (!iota.valid.isTrytes(seed, 81))
       return Alert.alert(
-        "Seed can't be empty",
-        "Please enter a seed and try again"
+        "Seed Invalid",
+        "Please enter a seed that is 81 characters long & consists of the following characters: \n ABCDEFGHIJKLMNOPQRSTUVWXYZ9"
       );
-    if (this.state.first === "") {
+
+    if (this.state.first < 8) {
       return Alert.alert(
-        "Password can't be empty",
-        "Please enter a password and try again"
+        "Invalid Pasword",
+        "Please enter a password over 8 characters long."
       );
     }
     if (this.state.first !== this.state.second) {
