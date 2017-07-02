@@ -13,7 +13,6 @@ import {
 import { Navigation } from "react-native-navigation";
 
 import Camera from "react-native-camera";
-import QRCodeScanner from "react-native-qrcode-scanner";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";

@@ -6,7 +6,6 @@ import com.facebook.react.ReactApplication;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.reactnativenavigation.NavigationReactPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
-import com.fabricio.vergal.RNWorkers.RNWorkersPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.oblador.keychain.KeychainPackage;
 import com.facebook.react.ReactNativeHost;
@@ -32,7 +31,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RCTCameraPackage(),
             new NavigationReactPackage(),
             new KCKeepAwakePackage(),
-            new RNWorkersPackage(),
             new RandomBytesPackage(),
             new KeychainPackage()
       );
