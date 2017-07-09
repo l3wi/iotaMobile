@@ -3317,7 +3317,7 @@ react-native-navigation@^1.1.104:
   dependencies:
     lodash "4.x.x"
 
-react-native-qrcode-scanner@^0.0.12:
+react-native-qrcode-scanner@0.0.12:
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/react-native-qrcode-scanner/-/react-native-qrcode-scanner-0.0.12.tgz#f62f5aa87f91221e6d4ceb0eeffd880d1b0dac7f"
   dependencies:
