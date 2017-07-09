@@ -130,5 +130,5 @@ const Header = styled.Text`
 const AppText = styled.Text`
     padding: ${props => (props.body ? "10px 0" : "0px")}
     color: white;
-    text-align: center;
+    text-align: left;
 `;
