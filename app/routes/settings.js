@@ -97,7 +97,9 @@ class InitialScreen extends Component {
               )}
           >
             <Text>Time to automatic logout: </Text>
-            <Text>{rememberMe} Min</Text>
+            {rememberMe !== "0"
+              ? <Text>{rememberMe} Min</Text>
+              : <Text>Disabled</Text>}
           </ItemButton>
 
           <ItemButton
