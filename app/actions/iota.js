@@ -128,6 +128,7 @@ export const newAddress = (pwd, index, transaction) => {
           dispatch(finishLoading());
         } else {
           dispatch(setAddress(success));
+          transaction[0].address = success;
           dispatch(sendTransaction(pwd, 6, 15, transaction));
           dispatch(finishLoading());
         }
