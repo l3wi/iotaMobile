@@ -31,6 +31,10 @@ class AuthScreen extends Component {
   };
 
   componentWillMount() {
+    this.props.navigator.setDrawerEnabled({
+      side: "left", // the side of the drawer since you can have two, 'left' / 'right'
+      enabled: false // should the drawer be enabled or disabled (locked closed)
+    });
     this.props.checkBox();
     this.props.setupNode(this.props.nodeUrl);
   }
