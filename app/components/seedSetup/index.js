@@ -58,7 +58,11 @@ class SetupForm extends React.Component {
     if (step === 1) {
       return (
         <Col>
-          <StepOne step={this.setStep} seed={seed} />
+          <StepOne
+            navigator={this.props.navigator}
+            step={this.setStep}
+            seed={seed}
+          />
         </Col>
       );
     } else if (step === 2) {

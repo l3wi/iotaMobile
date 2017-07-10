@@ -46,7 +46,7 @@ export default class extends React.Component {
             placeholder={"Repeat Password"}
             placeholderTextColor={"white"}
             secureTextEntry={true}
-            onSubmitEditing={() => this.confirm()}
+            onSubmitEditing={() => this.props.step({ step: 3, first, second })}
             onChangeText={second => this.setState({ second })}
           />
         </Row>
