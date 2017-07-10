@@ -48,14 +48,9 @@ class RecieveScreen extends Component {
   };
 
   newAddress = (pwd, index) => {
-    this.setState({ called: true });
-    this.props.addressState(true);
-    this.props.newAddress(pwd, index);
-  };
-
-  attach = () => {
-    this.props.addressState(false);
-    this.props.sendTransaction(this.props.pwd, 6, 15, [
+    // this.setState({ called: true });
+    // this.props.addressState(true);
+    var transaction = [
       {
         address: this.props.account.addresses[
           this.props.account.addresses.length - 1
@@ -63,7 +58,8 @@ class RecieveScreen extends Component {
         value: 0,
         tag: iota.utils.toTrytes("iOSWALLET")
       }
-    ]);
+    ];
+    this.props.newAddress(pwd, index, transaction);
   };
 
   static navigationOptions = {};
@@ -115,25 +111,18 @@ class RecieveScreen extends Component {
                   Click below to generate your first Address
                 </Text>}
 
-            {!called
-              ? <Button
-                  loading={loading}
-                  onPress={() =>
-                    !loading
-                      ? this.newAddress(
-                          this.props.pwd,
-                          this.props.account.addresses.length
-                        )
-                      : null}
-                >
-                  <WhiteText>Generate new Address</WhiteText>
-                </Button>
-              : <Button
-                  loading={loading}
-                  onPress={() => (!loading ? this.attach() : null)}
-                >
-                  <WhiteText>Attach to Tangle</WhiteText>
-                </Button>}
+            <Button
+              loading={loading}
+              onPress={() =>
+                !loading
+                  ? this.newAddress(
+                      this.props.pwd,
+                      this.props.account.addresses.length
+                    )
+                  : null}
+            >
+              <WhiteText>New Address</WhiteText>
+            </Button>
 
           </Col>
 
@@ -187,7 +176,7 @@ const CopyAddress = styled.TouchableOpacity`
     padding: 10px;
     margin: 20px 0px;
     background-color: #eee;
-    width: 80%;
+    width: ${width - 60 + "px"};
 `;
 const WhiteText = styled.Text`
   color: white;
@@ -197,6 +186,6 @@ const Address = styled.Text`
 `;
 
 const QR = styled.Image`
-  height: ${width - 40 + "px"};
-  width: ${width - 40 + "px"};
+  height: ${width - 60 + "px"};
+  width: ${width - 60 + "px"};
 `;

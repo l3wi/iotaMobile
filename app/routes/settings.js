@@ -15,6 +15,8 @@ import { ActionCreators } from "../actions";
 import { OpenBox, DeleteBox, hashPwd } from "../libs/crypto";
 import { getRemember, setRemember } from "../libs/remember";
 import Balance from "../components/balance";
+import ItemButton from "../components/listButton";
+import { NavigationActions } from "react-navigation";
 
 class InitialScreen extends Component {
   constructor(props) {
@@ -61,6 +63,10 @@ class InitialScreen extends Component {
     this.props.resetAsync(this.props.navigator);
   };
 
+  prompt = (header, body, func, type, prefill, keyboard) => {
+    AlertIOS.prompt(header, body, data => func(data), type, prefill, keyboard);
+  };
+
   render() {
     var { account, loading, remoteNode, rememberMe } = this.props;
     return (
@@ -73,91 +79,81 @@ class InitialScreen extends Component {
         />
         <ScrollView
           style={{ width: "100%", height: "80%" }}
-          contentContainerStyle={{ justifyContent: "space-between" }}
+          contentContainerStyle={{
+            justifyContent: "space-between",
+            backgroundColor: "#eee"
+          }}
         >
-          <EmptyCol>
-            <Row between>
-              <Text>Time to automatic logout: </Text>
-              <Text>{rememberMe} Min</Text>
-            </Row>
+          <ItemButton
+            between
+            func={() =>
+              this.prompt(
+                "Logout Timer",
+                "Set time in minutes e.g. 25",
+                this.props.setRemember,
+                "plain-text",
+                "",
+                "number-pad"
+              )}
+          >
+            <Text>Time to automatic logout: </Text>
+            {rememberMe !== "0"
+              ? <Text>{rememberMe} Min</Text>
+              : <Text>Disabled</Text>}
+          </ItemButton>
 
-            <Row between>
-              <Text>Remote-Node: </Text>
-              <Text>{remoteNode}</Text>
-            </Row>
-            <Row>
-              <Button
-                onPress={() => {
-                  AlertIOS.prompt(
-                    "Logout timer in minutes e.g. 25 :",
-                    null,
-                    text => this.props.setRemember(text),
-                    "plain-text",
-                    "",
-                    "number-pad"
-                  );
-                }}
-              >
-                <WhiteText>Change Session Timeout</WhiteText>
-              </Button>
-            </Row>
-            <Row>
-              <Button
-                onPress={() => {
-                  AlertIOS.prompt(
-                    "Enter custom node URL",
-                    "Please enter host address with port. \n \n e.g. http://node.iotawallet.info:14265",
-                    text => this.props.changeNode(text),
-                    "plain-text",
-                    "http://",
-                    "url"
-                  );
-                }}
-              >
-                <WhiteText>Change Remote-Node</WhiteText>
-              </Button>
-            </Row>
-            <Row>
-              <Button
-                onPress={() => {
-                  AlertIOS.prompt(
-                    "Enter your password to get access to your Seed",
-                    null,
-                    text => this.props.showSeed(text),
-                    "secure-text"
-                  );
-                }}
-              >
-                <WhiteText>Display your current Seed</WhiteText>
-              </Button>
-            </Row>
-          </EmptyCol>
+          <ItemButton
+            between
+            func={() =>
+              this.prompt(
+                "Enter custom node URL",
+                "Please enter host address with port. \n \n e.g. http://node.iotawallet.info:14265",
+                text => this.props.changeNode(text),
+                "plain-text",
+                "http://",
+                "url"
+              )}
+          >
+            <Text>Remote-Node: </Text>
+            <Text>{remoteNode}</Text>
+          </ItemButton>
 
-          <Spacer />
-          <Row>
-            <Button
-              onPress={() =>
-                Alert.alert(
-                  "Reset Wallet",
-                  "You are about to delete your SEED and clear the wallet. Are you sure you want to do this?",
-                  [
-                    {
-                      text: "Cancel",
-                      onPress: () => console.log("User Canceled")
-                    },
+          <ItemButton
+            between
+            func={() =>
+              this.prompt(
+                "Enter your password to get access to your Seed",
+                null,
+                text => this.props.showSeed(text),
+                "secure-text"
+              )}
+          >
+            <Text>Display your current Seed</Text>
+          </ItemButton>
+          <ItemButton
+            between
+            func={() =>
+              Alert.alert(
+                "Reset Wallet",
+                "You are about to delete your SEED and clear the wallet. \n \n Are you sure you want to do this?",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("User Canceled")
+                  },
 
-                    {
-                      text: "Clear Seed",
-                      onPress: () => this.clear(),
-                      style: "destructive"
-                    }
-                  ],
-                  { cancelable: false }
-                )}
-            >
-              <WhiteText>Delete Seed & Reset Wallet</WhiteText>
-            </Button>
-          </Row>
+                  {
+                    text: "Clear Seed",
+                    onPress: () => this.clear(),
+                    style: "destructive"
+                  }
+                ],
+                { cancelable: false }
+              )}
+          >
+            <Text>Delete Seed & Reset Wallet</Text>
+          </ItemButton>
+
         </ScrollView>
       </Wrapper>
     );
@@ -188,49 +184,4 @@ const Wrapper = styled.View`
     backgroundColor: white;
     align-items: center;
     justify-content: flex-start;
-`;
-const EmptyCol = styled.View`
-    flex:1;
-    flex-direction: column;
-    width: 100%;
-`;
-const Row = styled.View`
-    display: flex;
-    flex-direction: row;
-    justify-content: ${props => (props.between ? "space-between" : "center")};
-    align-items: center;
-    margin: 20px 20px ;
-`;
-
-const BottomBorder = styled.View`
-    flex: 1;
-    border-bottom-width: 3px;
-    border-bottom-color: #2d353e;
-    margin-right: 30px;
-`;
-const TInput = styled.TextInput`
-    height: 40px;
-    color: #2d353e;
-    text-align: center;
-    border-bottom-width: 3px;
-    border-bottom-color: #2d353e;
-`;
-const AppText = styled.Text`
-  padding: 30px 0px;
-  font-size: 20px;
-    color: white;
-`;
-const Button = styled.TouchableOpacity`
-    align-items: center;
-    padding: 10px;
-    background-color: #2d353e;
-    flex: ${props => (props.wide ? 1.8 : 1)};
-
-`;
-const WhiteText = styled.Text`
-  color: white;
-`;
-
-const Spacer = styled.View`
-  height: 50px;
 `;

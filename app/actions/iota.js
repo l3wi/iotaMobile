@@ -116,7 +116,7 @@ export const getTransfers = (addresses, navigator) => {
   };
 };
 
-export const newAddress = (pwd, index) => {
+export const newAddress = (pwd, index, transaction) => {
   return async (dispatch, getState) => {
     dispatch(startLoading("Generating new Address"));
     iota.api.getNewAddress(
@@ -128,6 +128,7 @@ export const newAddress = (pwd, index) => {
           dispatch(finishLoading());
         } else {
           dispatch(setAddress(success));
+          dispatch(sendTransaction(pwd, 6, 15, transaction));
           dispatch(finishLoading());
         }
       }
