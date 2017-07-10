@@ -59,7 +59,7 @@ export default class TransactionModal extends React.Component {
                         );
                       }}
                     >
-                      <Word>Replay Transaction</Word>
+                      <Word>Reattach Transaction</Word>
                     </Button>
                   : null}
 
