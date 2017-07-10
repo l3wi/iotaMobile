@@ -16,7 +16,6 @@ import { OpenBox, DeleteBox, hashPwd } from "../libs/crypto";
 import { getRemember, setRemember } from "../libs/remember";
 import Balance from "../components/balance";
 import ItemButton from "../components/listButton";
-import { NavigationActions } from "react-navigation";
 
 class InitialScreen extends Component {
   constructor(props) {
