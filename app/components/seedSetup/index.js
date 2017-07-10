@@ -49,26 +49,6 @@ class SetupForm extends React.Component {
     this.props.getAccount(passHash, this.props.navigator);
   };
 
-  // confirm = () => {
-  //   Alert.alert(
-  //     "IMPORTANT: \n Read this carefully",
-  //     `By pressing 'Agree' you understand and agree to the following: \n \n This seed you have entered is ONLY stored on your phone. If you phone is lost or destroyed the seed can NOT be recovered. \n \n It is your responsibility to store the seed in a safe place. \n \n The developers of this application are not liable for any losses incurred through the use of this application. \n \n To understand the security measures of this application, please REVIEW the code on GitHub.`,
-  //     [
-  //       {
-  //         text: "Agree",
-  //         onPress: () => this.setup(this.state.seed, this.state.first)
-  //       },
-
-  //       {
-  //         text: "Cancel",
-  //         onPress: () => console.log("User Canceled"),
-  //         style: "destructive"
-  //       }
-  //     ],
-  //     { cancelable: false }
-  //   );
-  // };
-
   setStep = data => {
     this.setState({ ...data });
   };
