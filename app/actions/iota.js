@@ -84,17 +84,18 @@ export const getTransfers = (addresses, navigator) => {
       inputs: []
     };
     dispatch(startLoading("Updating transactions"));
-    iota.api._bundlesFromAddresses(addresses, true, function(error, bundles) {
+    console.log(addresses);
+    iota.api._bundlesFromAddresses(addresses, true, (error, bundles) => {
       data.transfers = bundles;
-      console.log(addresses);
-      iota.api.getBalances(addresses, 100, function(error, balances) {
+      console.log(bundles);
+      iota.api.getBalances(addresses, 100, (error, balances) => {
         console.log(balances);
         if (!balances) {
           Alert.alert("Error", "Could not get bundles");
           dispatch(finishLoading());
           return;
         }
-        balances.balances.forEach(function(balance, index) {
+        balances.balances.forEach((balance, index) => {
           var balance = parseInt(balance, 10);
           data.balance += balance;
 
@@ -120,7 +121,7 @@ export const newAddress = (pwd, index) => {
     dispatch(startLoading("Generating new Address"));
     iota.api.getNewAddress(
       await OpenBox("seed", pwd),
-      { index: index },
+      { index: index - 1 },
       function(error, success) {
         if (error) {
           Alert.alert(error);
