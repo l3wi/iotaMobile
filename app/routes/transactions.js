@@ -33,7 +33,12 @@ class TransactionsScreen extends Component {
     navBarHidden: true // make the nav bar hidden
   };
 
-  componentWillMount() {}
+  componentWillMount() {
+    this.props.navigator.setDrawerEnabled({
+      side: "left", // the side of the drawer since you can have two, 'left' / 'right'
+      enabled: true // should the drawer be enabled or disabled (locked closed)
+    });
+  }
 
   refresh = () => {
     if (!this.props.loading) {
