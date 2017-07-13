@@ -20,7 +20,7 @@
     "react-native-keep-awake": "^2.0.4",
     "react-native-keyboard-aware-scroll-view": "^0.2.9",
     "react-native-keychain": "^1.2.0",
-    "react-native-navigation": "^1.1.104",
+    "react-native-navigation": "^1.1.134",
     "react-native-randombytes": "^2.2.0",
     "react-native-spinkit": "^1.0.3",
     "react-redux": "^5.0.5",
@@ -41,11 +41,11 @@
   },
   "devDependencies": {
     "babel-jest": "20.0.3",
-    "babel-preset-react-native": "1.9.2",
-    "eslint": "^3.19.0",
+    "babel-preset-react-native": "2.1.0",
+    "eslint": "^4.2.0",
     "eslint-config-barebones": "^0.1.3",
-    "eslint-config-prettier": "^2.0.0",
-    "prettier": "^1.3.1",
+    "eslint-config-prettier": "^2.3.0",
+    "prettier": "^1.5.2",
     "rn-nodeify": "mvayngrib/rn-nodeify"
   },
   "jest": {
