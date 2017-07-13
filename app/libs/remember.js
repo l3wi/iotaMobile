@@ -17,7 +17,7 @@ export const initialiseRemember = () => {
 const nullify = nextAppState => {
   console.log("App changed to: ", nextAppState);
   if (nextAppState === "active") {
-    ExpiredRemember();
+    // ExpiredRemember();
   } else if (nextAppState === "inactive") {
     exitApp();
   }
@@ -30,7 +30,7 @@ const ExpiredRemember = async () => {
   // Check
   if (
     differenceInMilliseconds(Date.now(), exit) <
-      state.crypto.remember * 60000 &&
+      state.crypto.remember * 60000 + 1 &&
     state.crypto.remember !== null
   ) {
     console.log("Session within Remember Me");
