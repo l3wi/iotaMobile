@@ -15,6 +15,8 @@ import { Select, Option } from "react-native-chooser";
 import { converter } from "../../libs/utils";
 import { iota } from "../../libs/iota";
 
+import Input from "../input";
+
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -93,15 +95,14 @@ export default class LoginForm extends React.Component {
       <Wrapper>
         <Padding />
         <Row>
-          <Long>
-            <TInput
-              value={this.state.address}
-              placeholder={"Paste Address"}
-              autoCorrect={false}
-              placeholderTextColor={"#2d353e"}
-              onChangeText={address => this.setState({ address })}
-            />
-          </Long>
+          <Input
+            dark
+            value={this.state.address}
+            placeholder={"Paste Address"}
+            autoCorrect={false}
+            placeholderTextColor={"#2d353e"}
+            onChangeText={address => this.setState({ address })}
+          />
           <ScanButton onPress={() => this.scan()}>
             <Image
               source={require("../../assets/icons8-qr_code_filled.png")}
@@ -110,16 +111,15 @@ export default class LoginForm extends React.Component {
           </ScanButton>
         </Row>
         <Row>
-          <Short>
-            <TInput
-              value={this.state.amount}
-              placeholder={"Enter Amount"}
-              autoCorrect={false}
-              keyboardType={"numeric"}
-              placeholderTextColor={"#2d353e"}
-              onChangeText={amount => this.setState({ amount })}
-            />
-          </Short>
+          <Input
+            dark
+            value={this.state.amount}
+            placeholder={"Enter Amount"}
+            autoCorrect={false}
+            keyboardType={"numeric"}
+            placeholderTextColor={"#2d353e"}
+            onChangeText={amount => this.setState({ amount })}
+          />
           <Select
             onSelect={data => this.setState({ unit: data })}
             defaultText="i"
@@ -148,15 +148,14 @@ export default class LoginForm extends React.Component {
           </Select>
         </Row>
         <Row>
-          <Long>
-            <TInput
-              value={this.state.message}
-              placeholder={"Enter Message"}
-              autoCorrect={false}
-              placeholderTextColor={"#2d353e"}
-              onChangeText={message => this.setState({ message })}
-            />
-          </Long>
+          <Input
+            dark
+            value={this.state.message}
+            placeholder={"Enter Message"}
+            autoCorrect={false}
+            placeholderTextColor={"#2d353e"}
+            onChangeText={message => this.setState({ message })}
+          />
         </Row>
         <Row>
           <FullButton
@@ -182,6 +181,7 @@ export default class LoginForm extends React.Component {
 }
 
 const ScanButton = styled.TouchableOpacity`
+    margin-left: 10px;
     padding: 5px;
     width: 50px;
     height: 50px;
@@ -203,27 +203,6 @@ const Row = styled.View`
     display: flex;
     flex-direction: row;   
     justify-content: center;
-`;
-
-const Long = styled.View`
-    flex: 1;
-    border-bottom-width: 3px;
-    margin-bottom: 10px;
-    border-bottom-color: #2d353e;
-`;
-const Short = styled.View`
-    flex: 1;
-    border-bottom-width: 3px;
-    margin-bottom: 10px;
-    border-bottom-color: #2d353e;
-`;
-const TInput = styled.TextInput`
-    height: 40px;
-    width: 100%;
-    color: #2d353e;
-    text-align: center;
-    border-bottom-width: 3px;
-    border-bottom-color: white;    
 `;
 
 const SubHeading = styled.Text`

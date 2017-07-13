@@ -15,6 +15,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { ActionCreators } from "../../actions";
 
+import Input from "../input";
+
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -48,18 +50,16 @@ class LoginForm extends React.Component {
           ? <EmptyCol>
 
               <Row>
-                <BottomBorder>
-                  <TInput
-                    value={this.state.pass}
-                    placeholder={"Enter Password"}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    placeholderTextColor={"white"}
-                    selectTextOnFocus={true}
-                    onSubmitEditing={() => this.getAccount(this.state.pass)}
-                    onChangeText={pass => this.setState({ pass })}
-                  />
-                </BottomBorder>
+                <Input
+                  value={this.state.pass}
+                  placeholder={"Enter Password"}
+                  autoCorrect={false}
+                  secureTextEntry={true}
+                  placeholderTextColor={"white"}
+                  selectTextOnFocus={true}
+                  onSubmitEditing={() => this.getAccount(this.state.pass)}
+                  onChangeText={pass => this.setState({ pass })}
+                />
               </Row>
               <Row>
                 <Button onPress={() => this.getAccount(this.state.pass)}>
