@@ -16,29 +16,12 @@ import { converter } from "../../libs/utils";
 import { iota } from "../../libs/iota";
 
 import Input from "../input";
+import StepOne from "./stepOne";
+import StepTwo from "./stepTwo";
 
-export default class LoginForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      address: "",
-      amount: "0",
-      unit: "i",
-      message: ""
-    };
-  }
-
-  scan = () => {
-    this.props.navigator.showModal({
-      screen: "qr", // unique ID registered with Navigation.registerScreen
-      passProps: { function: this.fillAddress }, // simple serializable object that will pass as props to the modal (optional)
-      animationType: "slide-up" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
-    });
-  };
-
-  fillAddress = data => {
-    this.setState({ address: data });
-    console.log(data);
+export default class SendForm extends React.Component {
+  state = {
+    step: 1
   };
 
   create = (address, amount, unit, message) => {
@@ -90,144 +73,37 @@ export default class LoginForm extends React.Component {
   };
 
   render() {
-    var { loading } = this.props;
-    return (
-      <Wrapper>
-        <Padding />
-        <Row>
-          <Input
-            dark
-            value={this.state.address}
-            placeholder={"Paste Address"}
-            autoCorrect={false}
-            placeholderTextColor={"#2d353e"}
-            onChangeText={address => this.setState({ address })}
-          />
-          <ScanButton onPress={() => this.scan()}>
-            <Image
-              source={require("../../assets/icons8-qr_code_filled.png")}
-              style={{ width: 40, height: 40 }}
-            />
-          </ScanButton>
-        </Row>
-        <Row>
-          <Input
-            dark
-            value={this.state.amount}
-            placeholder={"Enter Amount"}
-            autoCorrect={false}
-            keyboardType={"numeric"}
-            placeholderTextColor={"#2d353e"}
-            onChangeText={amount => this.setState({ amount })}
-          />
-          <Select
-            onSelect={data => this.setState({ unit: data })}
-            defaultText="i"
-            style={{
-              borderWidth: 0,
-              width: 50,
-              backgroundColor: "#2d353e",
-              alignItems: "center",
-              marginLeft: 10
-            }}
-            transparent={true}
-            textStyle={{ fontSize: 18, color: "white" }}
-            optionListStyle={{
-              borderWidth: 0,
-              backgroundColor: "rgba(255,255,255,1)",
-              width: 50,
-              height: 200
-            }}
-          >
-            <Option value="i">i</Option>
-            <Option value="Ki">Ki</Option>
-            <Option value="Mi">Mi</Option>
-            <Option value="Gi">Gi</Option>
-            <Option value="Ti">Ti</Option>
-
-          </Select>
-        </Row>
-        <Row>
-          <Input
-            dark
-            value={this.state.message}
-            placeholder={"Enter Message"}
-            autoCorrect={false}
-            placeholderTextColor={"#2d353e"}
-            onChangeText={message => this.setState({ message })}
-          />
-        </Row>
-        <Row>
-          <FullButton
-            loading={loading}
-            onPress={() =>
-              !loading
-                ? this.create(
-                    this.state.address,
-                    this.state.amount,
-                    this.state.unit,
-                    this.state.message
-                  )
-                : null}
-          >
-            <ButtonText>
-              Send Transaction
-            </ButtonText>
-          </FullButton>
-        </Row>
-      </Wrapper>
-    );
+    var { step } = this.state;
+    console.log(step);
+    if (step === 1) {
+      return (
+        <Wrapper>
+          <StepOne navigator={this.props.navigator} />
+        </Wrapper>
+      );
+    } else if (step === 2) {
+      return (
+        <Wrapper>
+          <StepTwo />
+        </Wrapper>
+      );
+    } else {
+      return <Text>Hello</Text>;
+    }
   }
 }
 
-const ScanButton = styled.TouchableOpacity`
-    margin-left: 10px;
-    padding: 5px;
-    width: 50px;
-    height: 50px;
-`;
-
 const Wrapper = styled.View`
-    display: flex;
-    flex-direction: column;   
-    justify-content: space-between;
-    width:100%;
-    align-items: center;
-    padding: 10px 40px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 `;
 
-const Padding = styled.View`
-    padding-top: 30px;
-`;
 const Row = styled.View`
-    display: flex;
-    flex-direction: row;   
-    justify-content: center;
-`;
-
-const SubHeading = styled.Text`
-    color: white;
-    font-size: 24px;
-`;
-
-const FullButton = styled.TouchableOpacity`
-    flex: 1;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
-    flex-direction: row;   
-    justify-content: center;
-`;
-
-const Button = styled.TouchableOpacity`
-    flex: .2;
-    padding: 10px;
-    margin: 10px;
-    background-color: #2d353e;
-    flex-direction: row;   
-    justify-content: center;
-`;
-
-const ButtonText = styled.Text`
-    color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
