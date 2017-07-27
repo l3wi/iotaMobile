@@ -21,20 +21,47 @@ import Input from "../input";
 
 export default class StepTwo extends React.Component {
   state = {
+    price: 0.3,
     address: "",
-    amount: "0",
-    unit: "i",
+    value: "0",
+    unit: "Mi",
     message: ""
   };
 
+  _onPress = value => () => {
+    var calc = this.state.value * 10 + value;
+    this.setState({ value: calc });
+  };
+  _onDEL = value => () => {
+    var calc = (this.state.value - this.state.value % 10) / 10;
+    this.setState({ value: calc });
+  };
+  _onDouble = value => () => {
+    var calc = this.state.value * 100;
+    this.setState({ value: calc });
+  };
+
   render() {
+    var { value, unit, price } = this.state;
     var { loading } = this.props;
     return (
       <Wrapper>
         <Col>
           <TotalBox>
-            <Total>0.00</Total>
-            <SubText>$ 0.00 / $ 0.1524</SubText>
+            <Row>
+              <View />
+              <Total>
+                {value}
+              </Total>
+              <TouchableOpacity onPress={this._onDEL()}>
+                <Img source={require("../../assets/back.png")} />
+              </TouchableOpacity>
+            </Row>
+
+            <SubText>
+              ${(converter(value, unit) * (price / 1000000)).toFixed(2)} / $
+              0.1524
+            </SubText>
           </TotalBox>
           <Row>
             <Button>
@@ -72,7 +99,12 @@ export default class StepTwo extends React.Component {
           </Row>
         </Col>
 
-        <Numpad />
+        <Numpad
+          _onDouble={this._onDouble}
+          _onDEL={this._onDEL}
+          _onPress={this._onPress}
+          next={this._onDEL}
+        />
       </Wrapper>
     );
   }
@@ -90,6 +122,7 @@ const Row = styled.View`
   display: flex;
   flex-direction: row;
   width: 100%;
+  align-items: center;
   justify-content: space-between;
   padding: 20px;
 `;
@@ -124,3 +157,8 @@ const TotalBox = styled.View`
 `;
 const Total = styled.Text`font-size: 42px;`;
 const SubText = styled.Text`color: #afb5c5;`;
+
+const Img = styled.Image`
+  height: 30px;
+  width: 30px;
+`;

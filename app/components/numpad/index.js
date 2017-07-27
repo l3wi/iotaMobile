@@ -12,79 +12,44 @@ import {
   Vibration
 } from "react-native";
 
-export default class ManualScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: 0,
-      fontSize: 80
-    };
-  }
-
-  componentDidMount() {}
-
-  _onPress = value => () => {
-    var calc = this.state.value * 10 + value;
-    this.setState({ value: calc });
-  };
-  _onDEL = value => () => {
-    var calc = (this.state.value - this.state.value % 10) / 10;
-    this.setState({ value: calc });
-  };
-  _onDouble = value => () => {
-    var calc = this.state.value * 100;
-    this.setState({ value: calc });
-  };
-
-  chargeCard() {
-    if (this.state.value < 50) {
-      Alert.alert(
-        "Amount is to Small",
-        "The amount must be over $0.50 to account for Stripe's fees.",
-        [{ text: "OK", onPress: () => console.log("OK Pressed!") }]
-      );
-    } else {
-      this.props.navigation.navigate("Charge", { value: this.state.value });
-    }
-  }
-
+export default class extends Component {
   render() {
     return (
       <Num>
-        <Button onPress={this._onPress(1)}>
+        <Button onPress={this.props._onPress(1)}>
           <Number>1</Number>
         </Button>
-        <Button onPress={this._onPress(2)}>
+        <Button onPress={this.props._onPress(2)}>
           <Number>2</Number>
         </Button>
-        <Button onPress={this._onPress(3)}>
+        <Button onPress={this.props._onPress(3)}>
           <Number>3</Number>
         </Button>
-        <Button onPress={this._onPress(4)}>
+        <Button onPress={this.props._onPress(4)}>
           <Number>4</Number>
         </Button>
-        <Button onPress={this._onPress(5)}>
+        <Button onPress={this.props._onPress(5)}>
           <Number>5</Number>
         </Button>
-        <Button onPress={this._onPress(6)}>
+        <Button onPress={this.props._onPress(6)}>
           <Number>6</Number>
         </Button>
-        <Button onPress={this._onPress(7)}>
+        <Button onPress={this.props._onPress(7)}>
           <Number>7</Number>
         </Button>
-        <Button onPress={this._onPress(8)}>
+        <Button onPress={this.props._onPress(8)}>
           <Number>8</Number>
         </Button>
-        <Button onPress={this._onPress(9)}>
+        <Button onPress={this.props._onPress(9)}>
           <Number>9</Number>
         </Button>
-        <Button onPress={this._onDouble()}>
+        <Button onPress={this.props._onDouble()}>
           <Number>00</Number>
         </Button>
-        <Button onPress={this._onPress(0)}>
+        <Button onPress={this.props._onPress(0)}>
           <Number>0</Number>
         </Button>
-        <Button onPress={this._onDEL()}>
+        <Button onPress={this.props.next()}>
           <Number style={{ color: "#295FCC" }}>Next</Number>
         </Button>
       </Num>
