@@ -8,6 +8,7 @@ import { ActionCreators } from "../actions";
 
 import Balance from "../components/balance";
 import Transactions from "../components/transactions";
+import Button from "../components/listButton";
 
 class TransactionsScreen extends Component {
   constructor(props) {
@@ -45,6 +46,15 @@ class TransactionsScreen extends Component {
       this.props.getAccount(this.props.pwd);
     }
   };
+
+  action = () => {
+    console.log("Loading action");
+    this.props.navigator.showModal({
+      screen: "action", // unique ID registered with Navigation.registerScreen
+      animationType: "slide-up" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+    });
+  };
+
   render() {
     return (
       <Wrapper>
@@ -60,16 +70,19 @@ class TransactionsScreen extends Component {
           refresh={this.refresh}
           {...this.props}
         />
+        <Button func={this.action}>
+          <Text>Hello</Text>
+        </Button>
       </Wrapper>
     );
   }
 }
 const Wrapper = styled.View`
-    height: 100%;
-    width:100%;
-    display:flex;
-    align-items: center;
-    justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 function mapStateToProps(state, ownProps) {
