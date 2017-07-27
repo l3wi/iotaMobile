@@ -1,6 +1,6 @@
 import IOTA from "iota.lib.js";
 
-var defaultNode = "http://node.iotawallet.info:14265/";
+var defaultNode = "https://node.tangle.works";
 
 export var iota = new IOTA({
   provider: defaultNode
