@@ -59,9 +59,11 @@ export default class StepTwo extends React.Component {
               <Total>
                 {value}
               </Total>
-              <TouchableOpacity onPress={this._onDEL()}>
+              <View />
+
+              <Delete onPress={this._onDEL()}>
                 <Img source={require("../../assets/back.png")} />
-              </TouchableOpacity>
+              </Delete>
             </Row>
 
             <SubText>
@@ -168,4 +170,9 @@ const SubText = styled.Text`color: #afb5c5;`;
 const Img = styled.Image`
   height: 30px;
   width: 30px;
+`;
+
+const Delete = styled.TouchableOpacity`
+  position: absolute;
+  right: 25;
 `;
