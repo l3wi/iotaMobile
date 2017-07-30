@@ -22,10 +22,8 @@ import Input from "../input";
 export default class StepTwo extends React.Component {
   state = {
     price: 0.3,
-    address: "",
     value: "0",
-    unit: "Mi",
-    message: ""
+    unit: "Mi"
   };
 
   _onPress = value => () => {
@@ -39,6 +37,14 @@ export default class StepTwo extends React.Component {
   _onDouble = value => () => {
     var calc = this.state.value * 100;
     this.setState({ value: calc });
+  };
+
+  step = value => () => {
+    this.props.step({
+      step: 2,
+      amount: this.state.value,
+      unit: this.state.unit
+    });
   };
 
   render() {
@@ -103,7 +109,7 @@ export default class StepTwo extends React.Component {
           _onDouble={this._onDouble}
           _onDEL={this._onDEL}
           _onPress={this._onPress}
-          next={this._onDEL}
+          next={this.step}
         />
       </Wrapper>
     );
@@ -139,6 +145,7 @@ const Button = styled.TouchableOpacity`
   border-width: 2px;
   border-radius: 30px;
   border-color: #f0f2f5;
+  padding: 13px;
   width: 90px;
   flex-direction: row;
   align-items: center;
