@@ -23,7 +23,8 @@ import Send from "../components/send";
 
 class ActionScreen extends Component {
   state = {
-    allowed: false
+    allowed: false,
+    screen: 1
   };
   static navigatorStyle = {
     screenBackgroundColor: "transparent",
@@ -52,7 +53,7 @@ class ActionScreen extends Component {
               <MenuText active>Send</MenuText>
             </MenuButton>
           </Menu>
-          <Send />
+          <Send {...this.props} />
         </Wrapper>
       </View>
     );
