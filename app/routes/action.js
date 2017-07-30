@@ -43,7 +43,9 @@ class ActionScreen extends Component {
             this.props.navigator.dismissModal({
               animationType: "slide-down" // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
             })}
-        />
+        >
+          <CloText>Cancel</CloText>
+        </Close>
         <Wrapper>
           <Menu>
             <MenuButton>
@@ -53,6 +55,7 @@ class ActionScreen extends Component {
               <MenuText active>Send</MenuText>
             </MenuButton>
           </Menu>
+          {/* <Recieve {...this.props} /> */}
           <Send {...this.props} />
         </Wrapper>
       </View>
@@ -76,8 +79,6 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(ActionScreen);
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
-
-const Close = styled.TouchableOpacity`height: ${height * 0.1 + "px"};`;
 
 const Wrapper = styled.View`
   height: 90%;
@@ -111,4 +112,15 @@ const MenuButton = styled.TouchableOpacity`padding: 20px 40px;`;
 const MenuText = styled.Text`
   font-size: 16px;
   color: ${props => (props.active ? "#295fcc" : "#CBD2E3")};
+`;
+
+const Close = styled.TouchableOpacity`
+  height: ${height * 0.1 + "px"};
+  background-color: rgba(0, 0, 0, .6);
+`;
+
+const CloText = styled.Text`
+  padding: 30px 30px 0;
+  font-size: 16;
+  color: #d3d8e8;
 `;
