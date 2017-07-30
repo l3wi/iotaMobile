@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components/native";
-import { AppRegistry, StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image
+} from "react-native";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -70,9 +77,12 @@ class TransactionsScreen extends Component {
           refresh={this.refresh}
           {...this.props}
         />
-        <Button func={this.action}>
-          <Text>Hello</Text>
-        </Button>
+        <Fab onPress={this.action}>
+          <Image
+            source={require("../assets/up_arrow.png")}
+            style={{ height: 20, width: 20 }}
+          />
+        </Fab>
       </Wrapper>
     );
   }
@@ -83,6 +93,21 @@ const Wrapper = styled.View`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+`;
+
+const Fab = styled.TouchableOpacity`
+  width: 60px;
+  height: 60px;
+  border-width: 2px;
+  border-color: #d3d8e8;
+  border-radius: 30px;
+  background-color: white;
+  position: absolute;
+  bottom: 20;
+  right: 30;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 function mapStateToProps(state, ownProps) {
