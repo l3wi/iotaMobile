@@ -45,6 +45,7 @@ class ActionScreen extends Component {
             })}
         >
           <CloText>Cancel</CloText>
+          <View />
         </Close>
         <Wrapper>
           <Menu>
@@ -100,14 +101,20 @@ const Row = styled.View`
 
 const Menu = styled.View`
   width: 100%;
+  height: 64px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  border-color: #f0f2f5;
+  border-color: #f5f7fa;
   border-bottom-width: 1px;
 `;
 
-const MenuButton = styled.TouchableOpacity`padding: 20px 40px;`;
+const MenuButton = styled.TouchableOpacity`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 40px;
+`;
 
 const MenuText = styled.Text`
   font-size: 16px;
@@ -117,6 +124,9 @@ const MenuText = styled.Text`
 const Close = styled.TouchableOpacity`
   height: ${height * 0.1 + "px"};
   background-color: rgba(0, 0, 0, .6);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const CloText = styled.Text`

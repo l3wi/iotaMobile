@@ -68,7 +68,7 @@ export const getAccount = (pwd, navigator) => {
   };
 };
 
-export const getTransfers = (addresses, navigator) => {
+export const getTransfers = addresses => {
   return async (dispatch, getState) => {
     if (!addresses[0]) {
       Alert.alert(
@@ -99,7 +99,7 @@ export const getTransfers = (addresses, navigator) => {
           var balance = parseInt(balance, 10);
           data.balance += balance;
 
-          // Uncomment if you want inouts
+          // Uncomment if you want inputs
           // if (balance > 0) {
           //   var newInput = {
           //     address: data.addresses[index],
