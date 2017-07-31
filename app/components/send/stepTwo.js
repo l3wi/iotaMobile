@@ -58,43 +58,57 @@ export default class LoginForm extends React.Component {
             <Input
               dark
               value={this.state.address}
-              placeholder={"Enter address"}
+              placeholder={"Type in address or tag"}
               autoCorrect={false}
               placeholderTextColor={"#D3D8E8"}
+              autoCapitalize="characters"
               onChangeText={address => this.setState({ address })}
             >
               <ScanButton onPress={() => this.scan()}>
                 <Image
                   source={require("../../assets/light_qr_code.png")}
-                  style={{ width: 50, height: 50 }}
+                  style={{ width: 40, height: 40 }}
                 />
               </ScanButton>
             </Input>
             <Input
               dark
               value={this.state.message}
+              multiline={true}
               placeholder={"Message (Optional)"}
+              autoCorrect={false}
+              placeholderTextColor={"#D3D8E8"}
+              onChangeText={message => this.setState({ message })}
+            />
+            <Input
+              dark
+              value={this.state.message}
+              placeholder={"Name tag (Optional - Tag to save the address)"}
               autoCorrect={false}
               placeholderTextColor={"#D3D8E8"}
               onChangeText={message => this.setState({ message })}
             />
           </Col>
 
-          <FullButton
-            loading={false}
-            onPress={() =>
-              !loading
-                ? this.create(
-                    this.state.address,
-                    this.state.amount,
-                    this.state.unit,
-                    this.state.message
-                  )
-                : null}
-          >
-            <ButtonText>{`Send ${this.props.amount} ${this.props
-              .unit}`}</ButtonText>
-          </FullButton>
+          {!this.state.address
+            ? <FullButton disabled>
+                <ButtonText>{`No Address`}</ButtonText>
+              </FullButton>
+            : <FullButton
+                loading={false}
+                onPress={() =>
+                  !loading
+                    ? this.create(
+                        this.state.address,
+                        this.state.amount,
+                        this.state.unit,
+                        this.state.message
+                      )
+                    : null}
+              >
+                <ButtonText>{`Send ${this.props.amount} ${this.props
+                  .unit}`}</ButtonText>
+              </FullButton>}
         </Wrapper>
       </KeyboardAvoidingView>
     );
@@ -105,7 +119,7 @@ var { height, width } = Dimensions.get("window");
 
 const ScanButton = styled.TouchableOpacity`
   margin-left: 10px;
-  padding: 0px;
+  padding: 5px;
   width: 50px;
   height: 50px;
 `;
@@ -130,10 +144,12 @@ const SubHeading = styled.Text`
 
 const FullButton = styled.TouchableOpacity`
   width: 100%;
-  padding: 20px;
-  background-color: ${props => (props.loading ? "#9ea2a2" : "#0BA8FA")};
+  display: flex;
+  min-height: 64px;
+  background-color: ${props => (props.disabled ? "#B8BECC" : "#0BA8FA")};
   flex-direction: row;
   justify-content: center;
+  align-items: center;
 `;
 
 const ButtonText = styled.Text`color: white;`;

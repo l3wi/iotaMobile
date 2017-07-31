@@ -9,7 +9,8 @@ import {
   Image,
   Picker,
   TouchableOpacity,
-  Alert
+  Alert,
+  Dimensions
 } from "react-native";
 import { Select, Option } from "react-native-chooser";
 import { converter } from "../../libs/utils";
@@ -21,7 +22,9 @@ import StepTwo from "./stepTwo";
 
 export default class SendForm extends React.Component {
   state = {
-    step: 1
+    step: 1,
+    amount: 0,
+    unit: "Mi"
   };
 
   create = (address, amount, unit, message) => {
@@ -72,19 +75,28 @@ export default class SendForm extends React.Component {
     this.setState({ address: "", amount: "0", unit: "i", message: "" });
   };
 
+  setStep = data => {
+    this.setState({ ...data });
+  };
+
   render() {
     var { step } = this.state;
-    console.log(step);
+    console.log(this.state);
     if (step === 1) {
       return (
         <Wrapper>
-          <StepOne navigator={this.props.navigator} />
+          <StepOne step={this.setStep} navigator={this.props.navigator} />
         </Wrapper>
       );
     } else if (step === 2) {
       return (
         <Wrapper>
-          <StepTwo />
+          <StepTwo
+            setStep={this.setStep}
+            navigator={this.props.navigator}
+            amount={this.state.amount}
+            unit={this.state.unit}
+          />
         </Wrapper>
       );
     } else {
@@ -99,6 +111,7 @@ const Wrapper = styled.View`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+  height: 100%;
   align-items: center;
 `;
 

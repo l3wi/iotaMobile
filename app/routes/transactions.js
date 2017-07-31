@@ -77,12 +77,6 @@ class TransactionsScreen extends Component {
           refresh={this.refresh}
           {...this.props}
         />
-        <Fab onPress={this.action}>
-          <Image
-            source={require("../assets/up_arrow.png")}
-            style={{ height: 20, width: 20 }}
-          />
-        </Fab>
       </Wrapper>
     );
   }
