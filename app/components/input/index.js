@@ -12,14 +12,16 @@ const BottomBorder = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10%;
-  min-height: 60px;
+  padding: 0 16px;
+  min-height: ${props => (props.multiline ? "127px" : "64px")};
   border-bottom-width: 1px;
-  border-bottom-color: ${props => (props.dark ? "#D3D8E8" : "white")};
+  border-bottom-color: ${props => (props.dark ? "#F5F7FA" : "white")};
 `;
 
 const Input = styled.TextInput`
   flex: 1;
-  color: ${props => (props.dark ? "#D3D8E8" : "white")};
+  padding-top: ${props => (props.multiline ? "16" : "0")};
+  font-size: 16;
+  color: ${props => (props.dark ? "#041C4D" : "white")};
   text-align: left;
 `;
