@@ -1,6 +1,7 @@
 import { Navigation } from "react-native-navigation";
 import { Provider } from "react-redux";
 // Screens
+import Overview from "./routes/overview";
 import Transact from "./routes/transactions";
 import SendScreen from "./routes/send";
 import ActionScreen from "./routes/action";
@@ -14,6 +15,7 @@ import QRScreen from "./routes/qrcode";
 export function registerScreens(store, Provider) {
   Navigation.registerComponent("auth", () => InitialScreen, store, Provider);
   Navigation.registerComponent("menu", () => MenuScreen, store, Provider);
+  Navigation.registerComponent("overview", () => Overview, store, Provider);
   Navigation.registerComponent("transactions", () => Transact, store, Provider);
   Navigation.registerComponent("action", () => ActionScreen, store, Provider);
   Navigation.registerComponent("receive", () => RecieveScreen, store, Provider);

@@ -34,9 +34,9 @@ class LoginForm extends React.Component {
     this.props.startLoading("Getting Wallet");
     // Store password
     this.props.setPwd(passHash);
-    // // Push to new nav stateAccount
+    // Push to new nav stateAccount
     this.props.navigator.resetTo({
-      screen: "transactions"
+      screen: "overview"
     });
     // Get account
     this.props.getTransfers(this.props.account.addresses);
@@ -48,7 +48,6 @@ class LoginForm extends React.Component {
         <Logo source={require("../../assets/iota.png")} />
         {this.props.box
           ? <EmptyCol>
-
               <Row>
                 <Input
                   value={this.state.pass}
@@ -66,7 +65,6 @@ class LoginForm extends React.Component {
                   <AppText>Login</AppText>
                 </Button>
               </Row>
-
             </EmptyCol>
           : null}
 
@@ -81,54 +79,51 @@ class LoginForm extends React.Component {
 }
 
 const Row = styled.View`
-    display: flex;
-    flex-direction: row;   
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
 const Col = styled.View`
-    display: flex;
-    height:100%;
-    width:80%;
-    flex-direction: column;   
-    justify-content: space-around;
-    align-items: center;
+  display: flex;
+  height: 100%;
+  width: 80%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 `;
 
 const Logo = styled.Image`
   width: 160px;
-  height:160px;
+  height: 160px;
 `;
 
 const EmptyCol = styled.View`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 const BottomBorder = styled.View`
-    flex: 1;
-    border-bottom-width: 3px;
+  flex: 1;
+  border-bottom-width: 3px;
   border-bottom-color: white;
-
 `;
 const TInput = styled.TextInput`
-    height: 40px;
-    color: white;
-    text-align: center;
-    border-bottom-width: 3px;
-    border-bottom-color: white;    
+  height: 40px;
+  color: white;
+  text-align: center;
+  border-bottom-width: 3px;
+  border-bottom-color: white;
 `;
 
-const AppText = styled.Text`
-    color: white;
-`;
+const AppText = styled.Text`color: white;`;
 
 const Button = styled.TouchableOpacity`
-    flex: 1;
-    flex-direction: row;
-    justify-content: center;
-    padding: 10px;
-    margin: 20px 0;
-    background-color: rgba(255,255,255,.3);
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px;
+  margin: 20px 0;
+  background-color: rgba(255, 255, 255, .3);
 `;
 function mapStateToProps(state, ownProps) {
   return {};

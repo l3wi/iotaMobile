@@ -23,6 +23,14 @@ class MenuScreen extends Component {
         <MenuButton
           onPress={() =>
             this.props.navigator.handleDeepLink({
+              link: "overview"
+            })}
+        >
+          <MenuText>Overview</MenuText>
+        </MenuButton>
+        <MenuButton
+          onPress={() =>
+            this.props.navigator.handleDeepLink({
               link: "transactions"
             })}
         >
