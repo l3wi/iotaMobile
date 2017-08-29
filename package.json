@@ -11,7 +11,7 @@
   "dependencies": {
     "date-fns": "^1.28.5",
     "events": "^1.1.1",
-    "iota.lib.js": "https://github.com/l3wi/iota.lib.js.git",
+    "iota.lib.js": "l3wi/iota.lib.js",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
     "react-native-camera": "^0.9.4",
