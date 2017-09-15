@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import styled from "styled-components/native";
+import React, { Component } from "react"
+import styled from "styled-components/native"
 import {
   Text,
   View,
@@ -9,25 +9,25 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions
-} from "react-native";
+} from "react-native"
 
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { ActionCreators } from "../actions";
+import { bindActionCreators } from "redux"
+import { connect } from "react-redux"
+import { ActionCreators } from "../actions"
 
-import qr from "yaqrcode";
-import { iota } from "../libs/iota";
-import Balance from "../components/balance";
+import qr from "yaqrcode"
+import { iota } from "../libs/iota"
+import Balance from "../components/balance"
 
 copy = address => {
-  Clipboard.setString(address);
-  Alert.alert("Success", "Address has been copied to clip board");
-};
+  Clipboard.setString(address)
+  Alert.alert("Success", "Address has been copied to clip board")
+}
 
 class RecieveScreen extends Component {
   constructor(props) {
-    super(props);
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    super(props)
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   onNavigatorEvent(event) {
     if (event.type == "DeepLink") {
@@ -35,17 +35,17 @@ class RecieveScreen extends Component {
         screen: event.link,
         animationType: "fade",
         animated: true
-      });
+      })
       this.props.navigator.toggleDrawer({
         side: "left",
         to: "close"
-      });
+      })
     }
   }
   static navigatorStyle = {
     screenBackgroundColor: "#2d353e",
     navBarHidden: true // make the nav bar hidden
-  };
+  }
 
   newAddress = (pwd, index) => {
     // this.setState({ called: true });
@@ -56,15 +56,15 @@ class RecieveScreen extends Component {
           this.props.account.addresses.length - 1
         ],
         value: 0,
-        tag: iota.utils.toTrytes("iOSWALLET")
+        tag: "IOS9WALLET"
       }
-    ];
-    this.props.newAddress(pwd, index, transaction);
-  };
+    ]
+    this.props.newAddress(pwd, index, transaction)
+  }
 
-  static navigationOptions = {};
+  static navigationOptions = {}
   render() {
-    var { account, loading, called } = this.props;
+    var { account, loading, called } = this.props
     return (
       <Wrapper>
         <Balance
@@ -105,7 +105,6 @@ class RecieveScreen extends Component {
                         }}
                       />
                     : null}
-
                 </Col>
               : <Text style={{ marginTop: 20 }}>
                   Click below to generate your first Address
@@ -123,69 +122,62 @@ class RecieveScreen extends Component {
             >
               <WhiteText>New Address</WhiteText>
             </Button>
-
           </Col>
-
         </ScrollView>
-
       </Wrapper>
-    );
+    )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
+  console.log(state)
   return {
     account: state.iota.account,
     called: state.iota.addressStatus,
     pwd: state.crypto.pwd,
     loading: state.iota.loading
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionCreators, dispatch);
+  return bindActionCreators(ActionCreators, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecieveScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RecieveScreen)
 
-var { height, width } = Dimensions.get("window");
+var { height, width } = Dimensions.get("window")
 
 const Wrapper = styled.View`
-    height: 100%;
-    width:100%;
-    display:flex;
-    align-items: center;
-    justify-content: flex-start;
-`;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`
 const Col = styled.View`
   flex-direction: column;
   align-items: center;
   width: 100%;
-`;
+`
 const Button = styled.TouchableOpacity`
-    align-items: center;
-    padding: 10px;
-    margin: 20px 0px 20px 0 ;
-    background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
-    width: 80%;
-`;
+  align-items: center;
+  padding: 10px;
+  margin: 20px 0px 20px 0;
+  background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
+  width: 80%;
+`
 
 const CopyAddress = styled.TouchableOpacity`
-    align-items: center;
-    padding: 10px;
-    margin: 20px 0px;
-    background-color: #eee;
-    width: ${width - 60 + "px"};
-`;
-const WhiteText = styled.Text`
-  color: white;
-`;
-const Address = styled.Text`
-  text-align: center;
-`;
+  align-items: center;
+  padding: 10px;
+  margin: 20px 0px;
+  background-color: #eee;
+  width: ${width - 60 + "px"};
+`
+const WhiteText = styled.Text`color: white;`
+const Address = styled.Text`text-align: center;`
 
 const QR = styled.Image`
   height: ${width - 60 + "px"};
   width: ${width - 60 + "px"};
-`;
+`

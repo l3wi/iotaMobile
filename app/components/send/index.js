@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components/native";
+import React from "react"
+import styled from "styled-components/native"
 import {
   AppRegistry,
   StyleSheet,
@@ -10,20 +10,20 @@ import {
   Picker,
   TouchableOpacity,
   Alert
-} from "react-native";
-import { Select, Option } from "react-native-chooser";
-import { converter } from "../../libs/utils";
-import { iota } from "../../libs/iota";
+} from "react-native"
+import { Select, Option } from "react-native-chooser"
+import { converter } from "../../libs/utils"
+import { iota } from "../../libs/iota"
 
 export default class LoginForm extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       address: "",
       amount: "0",
       unit: "i",
       message: ""
-    };
+    }
   }
 
   scan = () => {
@@ -31,40 +31,40 @@ export default class LoginForm extends React.Component {
       screen: "qr", // unique ID registered with Navigation.registerScreen
       passProps: { function: this.fillAddress }, // simple serializable object that will pass as props to the modal (optional)
       animationType: "slide-up" // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
-    });
-  };
+    })
+  }
 
   fillAddress = data => {
-    this.setState({ address: data });
-    console.log(data);
-  };
+    this.setState({ address: data })
+    console.log(data)
+  }
 
   create = (address, amount, unit, message) => {
     // Thanks dom :)
     if (!address) {
-      Alert.alert("Address Error", "Address is required");
-      return;
+      Alert.alert("Address Error", "Address is required")
+      return
     } else if (address.length == 81) {
-      Alert.alert("Address Error", "Missing address checksum");
-      return;
+      Alert.alert("Address Error", "Missing address checksum")
+      return
     } else if (address.length != 90) {
-      Alert.alert("Address Error", "Incorrect address length");
-      return;
+      Alert.alert("Address Error", "Incorrect address length")
+      return
     } else if (isNaN(amount)) {
-      Alert.alert("Value Error", "Please enter a valid number");
-      return;
+      Alert.alert("Value Error", "Please enter a valid number")
+      return
     } else if (!iota.valid.isTrytes(this.state.message)) {
       Alert.alert(
         "Message Error",
         "Please enter message with the following valid characters: \n ABCDEFGHIJKLMNOPQRSTUVWXYZ9"
-      );
-      return;
+      )
+      return
     }
 
-    const value = converter(amount, unit);
+    const value = converter(amount, unit)
     if (value % 1 != 0) {
-      Alert.alert("Amount Error", "You can't send fractions of an IOTA");
-      return;
+      Alert.alert("Amount Error", "You can't send fractions of an IOTA")
+      return
     }
 
     const transfer = [
@@ -72,23 +72,23 @@ export default class LoginForm extends React.Component {
         address: address,
         value: parseInt(value, 10),
         message: this.state.message,
-        tag: iota.utils.toTrytes("iOSWALLET")
+        tag: "IOS9WALLET"
       }
-    ];
+    ]
     if (!iota.valid.isTransfersArray(transfer)) {
       Alert.alert(
         "Transfer Error",
         "The transaction object appears to be invalid. \n Please try again."
-      );
-      return;
+      )
+      return
     }
 
-    this.props.sendTransaction(this.props.pwd, 9, 15, transfer);
-    this.setState({ address: "", amount: "0", unit: "i", message: "" });
-  };
+    this.props.sendTransaction(this.props.pwd, 9, 15, transfer)
+    this.setState({ address: "", amount: "0", unit: "i", message: "" })
+  }
 
   render() {
-    var { loading } = this.props;
+    var { loading } = this.props
     return (
       <Wrapper>
         <Padding />
@@ -144,7 +144,6 @@ export default class LoginForm extends React.Component {
             <Option value="Mi">Mi</Option>
             <Option value="Gi">Gi</Option>
             <Option value="Ti">Ti</Option>
-
           </Select>
         </Row>
         <Row>
@@ -171,84 +170,78 @@ export default class LoginForm extends React.Component {
                   )
                 : null}
           >
-            <ButtonText>
-              Send Transaction
-            </ButtonText>
+            <ButtonText>Send Transaction</ButtonText>
           </FullButton>
         </Row>
       </Wrapper>
-    );
+    )
   }
 }
 
 const ScanButton = styled.TouchableOpacity`
-    padding: 5px;
-    width: 50px;
-    height: 50px;
-`;
+  padding: 5px;
+  width: 50px;
+  height: 50px;
+`
 
 const Wrapper = styled.View`
-    display: flex;
-    flex-direction: column;   
-    justify-content: space-between;
-    width:100%;
-    align-items: center;
-    padding: 10px 40px;
-`;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  padding: 10px 40px;
+`
 
-const Padding = styled.View`
-    padding-top: 30px;
-`;
+const Padding = styled.View`padding-top: 30px;`
 const Row = styled.View`
-    display: flex;
-    flex-direction: row;   
-    justify-content: center;
-`;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`
 
 const Long = styled.View`
-    flex: 1;
-    border-bottom-width: 3px;
-    margin-bottom: 10px;
-    border-bottom-color: #2d353e;
-`;
+  flex: 1;
+  border-bottom-width: 3px;
+  margin-bottom: 10px;
+  border-bottom-color: #2d353e;
+`
 const Short = styled.View`
-    flex: 1;
-    border-bottom-width: 3px;
-    margin-bottom: 10px;
-    border-bottom-color: #2d353e;
-`;
+  flex: 1;
+  border-bottom-width: 3px;
+  margin-bottom: 10px;
+  border-bottom-color: #2d353e;
+`
 const TInput = styled.TextInput`
-    height: 40px;
-    width: 100%;
-    color: #2d353e;
-    text-align: center;
-    border-bottom-width: 3px;
-    border-bottom-color: white;    
-`;
+  height: 40px;
+  width: 100%;
+  color: #2d353e;
+  text-align: center;
+  border-bottom-width: 3px;
+  border-bottom-color: white;
+`
 
 const SubHeading = styled.Text`
-    color: white;
-    font-size: 24px;
-`;
+  color: white;
+  font-size: 24px;
+`
 
 const FullButton = styled.TouchableOpacity`
-    flex: 1;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
-    flex-direction: row;   
-    justify-content: center;
-`;
+  flex: 1;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: ${props => (props.loading ? "#9ea2a2" : "#2d353e")};
+  flex-direction: row;
+  justify-content: center;
+`
 
 const Button = styled.TouchableOpacity`
-    flex: .2;
-    padding: 10px;
-    margin: 10px;
-    background-color: #2d353e;
-    flex-direction: row;   
-    justify-content: center;
-`;
+  flex: .2;
+  padding: 10px;
+  margin: 10px;
+  background-color: #2d353e;
+  flex-direction: row;
+  justify-content: center;
+`
 
-const ButtonText = styled.Text`
-    color: white;
-`;
+const ButtonText = styled.Text`color: white;`
